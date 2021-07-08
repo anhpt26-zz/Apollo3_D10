@@ -1,0 +1,15 @@
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\bin\armproc.dll" 
+
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\bin\armjlink2.dll" 
+
+"\\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\freertos_mspi_mspi_display.out" 
+
+--plugin="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\bin\armbat.dll" 
+
+--device_macro="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\config\debugger\AmbiqMicro\apollo3p.dmac" 
+
+--flash_loader="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\config\flashloader\AmbiqMicro\FlashApollo3p_2048.board" 
+
+
+
+

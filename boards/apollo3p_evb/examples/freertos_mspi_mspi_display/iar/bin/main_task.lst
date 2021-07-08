@@ -1,0 +1,362 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.50.6.265/W32 for ARM         08/Jul/2021  07:47:50
+# Copyright 1999-2020 IAR Systems AB.
+#
+#    Cpu mode                        
+#    Endian                       =  little
+#    Source file                  =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\main_task.c
+#    Command line                 =
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EWA0F.tmp
+#        (\\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\main_task.c
+#        -D iar -D AM_UTIL_FAULTISR_PRINT -D AM_FREERTOS -D APS6404L -D
+#        AM_DEBUG_PRINTF -D AM_PART_APOLLO3P -D AM_PACKAGE_BGA -lcN
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --diag_suppress Pa050 -o
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --debug --endian=little --cpu=Cortex-M4 --no_path_in_file_macros -e
+#        --fpu=VFPv4_sp --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.4\arm\inc\c\DLib_Config_Normal.h" -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\mcu\apollo3p\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\src\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\AmbiqMicro\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\devices\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\bsp\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\ARM\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\utils\\
+#        -Ohs --no_size_constraints)
+#    Locale                       =  C
+#    List file                    =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\main_task.lst
+#    Object file                  =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\main_task.o
+#    Runtime model:                  
+#      __SystemLibrary            =  DLib
+#      __dlib_full_locale_support =  0
+#      __dlib_version             =  6
+#
+###############################################################################
+
+\\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\main_task.c
+      1          //*****************************************************************************
+      2          //
+      3          //! @file main_task.c
+      4          //!
+      5          //! @brief Task to handle main operation.
+      6          //!
+      7          //*****************************************************************************
+      8          
+      9          //*****************************************************************************
+     10          //
+     11          // Copyright (c) 2020, Ambiq Micro, Inc.
+     12          // All rights reserved.
+     13          //
+     14          // Redistribution and use in source and binary forms, with or without
+     15          // modification, are permitted provided that the following conditions are met:
+     16          //
+     17          // 1. Redistributions of source code must retain the above copyright notice,
+     18          // this list of conditions and the following disclaimer.
+     19          //
+     20          // 2. Redistributions in binary form must reproduce the above copyright
+     21          // notice, this list of conditions and the following disclaimer in the
+     22          // documentation and/or other materials provided with the distribution.
+     23          //
+     24          // 3. Neither the name of the copyright holder nor the names of its
+     25          // contributors may be used to endorse or promote products derived from this
+     26          // software without specific prior written permission.
+     27          //
+     28          // Third party software included in this distribution is subject to the
+     29          // additional license terms as defined in the /docs/licenses directory.
+     30          //
+     31          // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+     32          // AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+     33          // IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+     34          // ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+     35          // LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+     36          // CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+     37          // SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+     38          // INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+     39          // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+     40          // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+     41          // POSSIBILITY OF SUCH DAMAGE.
+     42          //
+     43          // This is part of revision 2.5.1 of the AmbiqSuite Development Package.
+     44          //
+     45          //*****************************************************************************
+     46          
+     47          //*****************************************************************************
+     48          //
+     49          // Global includes for this project.
+     50          //
+     51          //*****************************************************************************
+     52          #include "freertos_mspi_mspi_display.h"
+     53          
+     54          // Position independent prime function
+     55          #define SZ_PRIME_MPI    98
+     56          const unsigned char Kc_PRIME_MPI[SZ_PRIME_MPI] =
+     57          {
+     58          0x70, 0xB4, 0x04, 0x46,  0x00, 0x20, 0x89, 0x1C,  0x8C, 0x42, 0x28, 0xDB,  0x45, 0x1C, 0x02, 0x26,
+     59          0x8E, 0x42, 0x20, 0xDA,  0x91, 0xFB, 0xF6, 0xF3,  0x06, 0xFB, 0x13, 0x13,  0xD3, 0xB1, 0x76, 0x1C,
+     60          0x8E, 0x42, 0x18, 0xDA,  0x91, 0xFB, 0xF6, 0xF3,  0x06, 0xFB, 0x13, 0x13,  0x93, 0xB1, 0x76, 0x1C,
+     61          0x8E, 0x42, 0x10, 0xDA,  0x91, 0xFB, 0xF6, 0xF3,  0x06, 0xFB, 0x13, 0x13,  0x53, 0xB1, 0x76, 0x1C,
+     62          0x8E, 0x42, 0x08, 0xDA,  0x91, 0xFB, 0xF6, 0xF3,  0x06, 0xFB, 0x13, 0x13,  0x00, 0x2B, 0x18, 0xBF,
+     63          0x76, 0x1C, 0xDD, 0xD1,  0x05, 0x46, 0x51, 0x18,  0x8C, 0x42, 0x28, 0x46,  0xD6, 0xDA, 0x70, 0xBC,
+     64          0x70, 0x47,
+     65          };
+     66          
+     67          
+     68          
+     69          //*****************************************************************************
+     70          //
+     71          // Composition task handle.
+     72          //
+     73          //*****************************************************************************
+     74          TaskHandle_t main_task_handle;
+     75          
+     76          //*****************************************************************************
+     77          //
+     78          // Handle for Compose-related events.
+     79          //
+     80          //*****************************************************************************
+     81          EventGroupHandle_t xMainEventHandle;
+     82          
+     83          
+     84          // MSPI HAL can be accessed both from Render and Compose. So we need to use a mutex to ensure HAL is not re-entered
+     85          // This is technically only needed if the RTOS is configured for pre-emptive scheduling
+     86          SemaphoreHandle_t xMSPIMutex;
+     87          
+     88          
+     89          //*****************************************************************************
+     90          //
+     91          // Interrupt handler for the GPIO pins.
+     92          //
+     93          //*****************************************************************************
+     94          void am_gpio_isr(void)
+     95          {
+     96              //
+     97              // Read and clear the GPIO interrupt status.
+     98              //
+     99          #if defined(AM_PART_APOLLO3P)
+    100              AM_HAL_GPIO_MASKCREATE(GpioIntStatusMask);
+    101          
+    102              am_hal_gpio_interrupt_status_get(false, pGpioIntStatusMask);
+    103              am_hal_gpio_interrupt_clear(pGpioIntStatusMask);
+    104              am_hal_gpio_interrupt_service(pGpioIntStatusMask);
+    105          #elif defined(AM_PART_APOLLO3)
+    106              uint64_t ui64Status;
+    107          
+    108              am_hal_gpio_interrupt_status_get(false, &ui64Status);
+    109              am_hal_gpio_interrupt_clear(ui64Status);
+    110              am_hal_gpio_interrupt_service(ui64Status);
+    111          #else
+    112              #error Unknown device.
+    113          #endif
+    114          }
+    115          
+    116          //*****************************************************************************
+    117          //
+    118          // Perform initial setup for the main task.
+    119          //
+    120          //*****************************************************************************
+    121          void
+    122          MainTaskSetup(void)
+    123          {
+    124              int iRet;
+    125          
+    126              am_util_debug_printf("MainTask: setup\r\n");
+    127              //
+    128              // Create an event handle for our wake-up events.
+    129              //
+    130              xMainEventHandle = xEventGroupCreate();
+    131          
+    132              //
+    133              // Make sure we actually allocated space for the events we need.
+    134              //
+    135              while (xMainEventHandle == NULL);
+    136          
+    137              NVIC_SetPriority(DISPLAY_MSPI_IRQn, NVIC_configMAX_SYSCALL_INTERRUPT_PRIORITY);
+    138              NVIC_SetPriority(PSRAM_MSPI_IRQn, NVIC_configMAX_SYSCALL_INTERRUPT_PRIORITY);
+    139              NVIC_SetPriority(GPIO_IRQn, NVIC_configMAX_SYSCALL_INTERRUPT_PRIORITY);
+    140          
+    141              // Initialize the MSPI PSRAM
+    142              iRet = psram_init();
+    143              if (iRet)
+    144              {
+    145                  DEBUG_PRINT("Unable to initialize MSPI psram\n");
+    146                  while(1);
+    147              }
+    148          
+    149              // Initialize the IOM Display
+    150          
+    151              iRet = display_init();
+    152              if (iRet)
+    153              {
+    154                  DEBUG_PRINT("Unable to initialize Display\n");
+    155                  while(1);
+    156              }
+    157          
+    158              am_hal_interrupt_master_enable();
+    159          
+    160              xMSPIMutex = xSemaphoreCreateMutex();
+    161              if (xMSPIMutex == NULL)
+    162              {
+    163                  DEBUG_PRINT("Unable to Create xMspiMutex\n");
+    164                  while(1);
+    165              }
+    166          }
+    167          
+    168          typedef enum
+    169          {
+    170              DISPLAY_IDLE,
+    171              DISPLAY_SCHEDULED,
+    172              DISPLAY_STARTED
+    173          } display_state_e;
+    174          
+    175          //*****************************************************************************
+    176          //
+    177          // Short Description.
+    178          //
+    179          //*****************************************************************************
+    180          void
+    181          MainTask(void *pvParameters)
+    182          {
+    183              uint32_t eventMask;
+    184              display_state_e displayState = DISPLAY_IDLE;
+    185              uint32_t numFBReadyForDisplay = 0;
+    186              // One FB composition is already started outside
+    187              uint32_t numFBAvailForComposition = NUM_FB - 1;
+    188              bool     bCompositionInProgress = true;
+    189          
+    190              while (1)
+    191              {
+    192                  //
+    193                  // Wait for an event to be posted to the Radio Event Handle.
+    194                  //
+    195                  eventMask = xEventGroupWaitBits(xMainEventHandle, 0xF, pdTRUE,
+    196                                      pdFALSE, portMAX_DELAY);
+    197                  if (eventMask != 0)
+    198                  {
+    199                      if (eventMask & MAIN_EVENT_NEW_FRAME_READY)
+    200                      {
+    201                          numFBReadyForDisplay++;
+    202                          bCompositionInProgress = false;
+    203                      }
+    204                      if (eventMask & MAIN_EVENT_DISPLAY_DONE)
+    205                      {
+    206                          displayState = DISPLAY_IDLE;
+    207          #ifdef SERIALIZE_COMPOSITION_WITH_RENDERING
+    208                          // Frame is available for composition only once display rendering is done
+    209                          numFBAvailForComposition++;
+    210          #endif
+    211                      }
+    212          #if !defined(SERIALIZE_COMPOSITION_WITH_RENDERING) && defined(START_MSPI_IOM_XFER_ASAP)
+    213                      // Frame is available for composition as soon as Rendering starts (indicated by TE)
+    214                      if ((displayState == DISPLAY_SCHEDULED) && (eventMask & MAIN_EVENT_TE))
+    215                      {
+    216                          displayState = DISPLAY_STARTED;
+    217                          numFBAvailForComposition++;
+    218                      }
+    219          #endif
+    220          #ifndef START_MSPI_IOM_XFER_ASAP
+    221                      if ((displayState == DISPLAY_IDLE) && numFBReadyForDisplay && (eventMask & MAIN_EVENT_TE))
+    222                      {
+    223                          numFBReadyForDisplay--;
+    224          #if !defined(SERIALIZE_COMPOSITION_WITH_RENDERING) && !defined(START_MSPI_IOM_XFER_ASAP)
+    225                          // Frame is available for composition as soon as Rendering starts (now)
+    226                          displayState = DISPLAY_STARTED;
+    227                          numFBAvailForComposition++;
+    228          #else
+    229                          // Frame is not available for composition till Rendering starts (on next TE)
+    230                          displayState = DISPLAY_SCHEDULED;
+    231          #endif
+    232                          // Initiate new frame transfer
+    233                          xEventGroupSetBits(xRenderEventHandle, RENDER_EVENT_START_NEW_FRAME);
+    234                      }
+    235          #else
+    236                      if ((displayState == DISPLAY_IDLE) && numFBReadyForDisplay)
+    237                      {
+    238                          numFBReadyForDisplay--;
+    239          #if !defined(SERIALIZE_COMPOSITION_WITH_RENDERING) && !defined(START_MSPI_IOM_XFER_ASAP)
+    240                          // Frame is available for composition as soon as Rendering starts (now)
+    241                          displayState = DISPLAY_STARTED;
+    242                          numFBAvailForComposition++;
+    243          #else
+    244                          // Frame is not available for composition till Rendering starts (on next TE)
+    245                          displayState = DISPLAY_SCHEDULED;
+    246          #endif
+    247                          // Initiate new frame transfer
+    248                          xEventGroupSetBits(xRenderEventHandle, RENDER_EVENT_START_NEW_FRAME);
+    249                      }
+    250          #endif
+    251                      if (numFBAvailForComposition && !bCompositionInProgress)
+    252                      {
+    253                          numFBAvailForComposition--;
+    254                          bCompositionInProgress = true;
+    255                          // Initiate new frame composition
+    256                          xEventGroupSetBits(xComposeEventHandle, COMPOSE_EVENT_START_NEW_FRAME);
+    257                      }
+    258                  }
+    259              }
+    260          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      40   MainTask
+        40   -> xEventGroupSetBits
+        40   -> xEventGroupWaitBits
+       8   MainTaskSetup
+         8   -> am_hal_interrupt_master_enable
+         8   -> am_util_stdio_printf
+         8   -> display_init
+         8   -> psram_init
+         8   -> xEventGroupCreate
+         8   -> xQueueCreateMutex
+      16   am_gpio_isr
+        16   -> am_hal_gpio_interrupt_clear
+        16   -> am_hal_gpio_interrupt_service
+        16   -> am_hal_gpio_interrupt_status_get
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable3
+       4  ??DataTable3_1
+       4  ??DataTable3_2
+       4  ??DataTable3_3
+      20  ?_0
+     100  Kc_PRIME_MPI
+     112  MainTask
+      66  MainTaskSetup
+      34  am_gpio_isr
+       4  main_task_handle
+       8  xMainEventHandle
+          xMSPIMutex
+
+ 
+  12 bytes in section .bss
+ 100 bytes in section .rodata
+ 248 bytes in section .text
+ 
+ 248 bytes of CODE  memory
+ 100 bytes of CONST memory
+  12 bytes of DATA  memory
+
+Errors: none
+Warnings: none

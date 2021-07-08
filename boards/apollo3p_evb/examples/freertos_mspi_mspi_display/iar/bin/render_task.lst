@@ -1,0 +1,1207 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.50.6.265/W32 for ARM         08/Jul/2021  07:47:52
+# Copyright 1999-2020 IAR Systems AB.
+#
+#    Cpu mode                        
+#    Endian                       =  little
+#    Source file                  =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\render_task.c
+#    Command line                 =
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EWF80.tmp
+#        (\\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\render_task.c
+#        -D iar -D AM_UTIL_FAULTISR_PRINT -D AM_FREERTOS -D APS6404L -D
+#        AM_DEBUG_PRINTF -D AM_PART_APOLLO3P -D AM_PACKAGE_BGA -lcN
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --diag_suppress Pa050 -o
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --debug --endian=little --cpu=Cortex-M4 --no_path_in_file_macros -e
+#        --fpu=VFPv4_sp --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.4\arm\inc\c\DLib_Config_Normal.h" -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\mcu\apollo3p\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\src\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\AmbiqMicro\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\devices\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\bsp\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\ARM\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\utils\\
+#        -Ohs --no_size_constraints)
+#    Locale                       =  C
+#    List file                    =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\render_task.lst
+#    Object file                  =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\render_task.o
+#    Runtime model:                  
+#      __SystemLibrary            =  DLib
+#      __dlib_full_locale_support =  0
+#      __dlib_version             =  6
+#
+###############################################################################
+
+\\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\render_task.c
+      1          //*****************************************************************************
+      2          //
+      3          //! @file render_task.c
+      4          //!
+      5          //! @brief Task to handle rendering operation.
+      6          //!
+      7          //*****************************************************************************
+      8          
+      9          //*****************************************************************************
+     10          //
+     11          // Copyright (c) 2020, Ambiq Micro, Inc.
+     12          // All rights reserved.
+     13          //
+     14          // Redistribution and use in source and binary forms, with or without
+     15          // modification, are permitted provided that the following conditions are met:
+     16          //
+     17          // 1. Redistributions of source code must retain the above copyright notice,
+     18          // this list of conditions and the following disclaimer.
+     19          //
+     20          // 2. Redistributions in binary form must reproduce the above copyright
+     21          // notice, this list of conditions and the following disclaimer in the
+     22          // documentation and/or other materials provided with the distribution.
+     23          //
+     24          // 3. Neither the name of the copyright holder nor the names of its
+     25          // contributors may be used to endorse or promote products derived from this
+     26          // software without specific prior written permission.
+     27          //
+     28          // Third party software included in this distribution is subject to the
+     29          // additional license terms as defined in the /docs/licenses directory.
+     30          //
+     31          // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+     32          // AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+     33          // IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+     34          // ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+     35          // LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+     36          // CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+     37          // SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+     38          // INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+     39          // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+     40          // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+     41          // POSSIBILITY OF SUCH DAMAGE.
+     42          //
+     43          // This is part of revision 2.5.1 of the AmbiqSuite Development Package.
+     44          //
+     45          //*****************************************************************************
+     46          #include "freertos_mspi_mspi_display.h"
+     47          
+     48          //*****************************************************************************
+     49          //
+     50          // MSPI <==> MSPI Handshake Signals
+     51          //
+     52          //*****************************************************************************
+     53          #define MSPI_SIGNAL_SOURCE_BUFFER0      (MSPI0_CQFLAGS_CQFLAGS_SWFLAG0 << 8)
+     54          #define MSPI_SIGNAL_SOURCE_BUFFER1      (MSPI0_CQFLAGS_CQFLAGS_SWFLAG1 << 8)
+     55          #define MSPI_SIGNAL_SINK_BUFFER0        (MSPI0_CQFLAGS_CQFLAGS_SWFLAG0 << 8)
+     56          #define MSPI_SIGNAL_SINK_BUFFER1        (MSPI0_CQFLAGS_CQFLAGS_SWFLAG1 << 8)
+     57          
+     58          #define MSPI_WAIT_FOR_SOURCE_BUFFER0    (_VAL2FLD(MSPI0_CQPAUSE_CQMASK, MSPI0_CQPAUSE_CQMASK_BUF0XOREN))
+     59          #define MSPI_WAIT_FOR_SOURCE_BUFFER1    (_VAL2FLD(MSPI0_CQPAUSE_CQMASK, MSPI0_CQPAUSE_CQMASK_BUF1XOREN))
+     60          #define MSPI_WAIT_FOR_SINK_BUFFER0      (_VAL2FLD(MSPI0_CQPAUSE_CQMASK, MSPI0_CQPAUSE_CQMASK_IOM0READY))
+     61          #define MSPI_WAIT_FOR_SINK_BUFFER1      (_VAL2FLD(MSPI0_CQPAUSE_CQMASK, MSPI0_CQPAUSE_CQMASK_IOM1READY))
+     62          
+     63          //*****************************************************************************
+     64          //
+     65          // Render Fragments
+     66          //
+     67          //*****************************************************************************
+     68          // Control the granularity of composition
+     69          // For SWIPE - this also controls the size of temp buffer
+     70          #define NUM_ROW_PER_RENDER_FRAGMENT     (TEMP_BUFFER_SIZE / ROW_SIZE)
+     71          #define RENDER_FRAGMENT_SIZE            (NUM_ROW_PER_RENDER_FRAGMENT * ROW_SIZE)
+     72          #define NUM_RENDER_FRAGMENTS            ((ROW_NUM + NUM_ROW_PER_RENDER_FRAGMENT - 1) / NUM_ROW_PER_RENDER_FRAGMENT)
+     73          
+     74          //*****************************************************************************
+     75          //
+     76          // Global Variables
+     77          //
+     78          //*****************************************************************************
+     79          volatile bool         g_bDisplayDone = false;
+     80          volatile bool         g_bTEInt = false;
+     81          void                  *g_MSPIDisplayHandle;
+     82          void                  *g_DisplayHandle;
+     83          
+     84          //*****************************************************************************
+     85          //
+     86          // Local Variables
+     87          //
+     88          //*****************************************************************************
+     89          // Buffer for non-blocking transactions for Display MSPI - Needs to be big enough to accomodate
+     90          // all the transactions
+     91          #ifndef CQ_RAW
+     92          static uint32_t        g_MspiDisplayQBuffer[(AM_HAL_MSPI_CQ_ENTRY_SIZE / 4) * (NUM_FRAGMENTS + 1)];
+     93          #else
+     94          static uint32_t        g_MspiDisplayQBuffer[(AM_HAL_MSPI_CQ_ENTRY_SIZE / 4) * (2 + 1)];
+     95          #endif
+     96          
+     97          // Temp Buffer in SRAM to read PSRAM data to, and write DISPLAY data from
+     98          uint32_t        g_TempBuf[2][TEMP_BUFFER_SIZE / 4];
+     99          
+    100          // Display MSPI configuration
+    101          static am_devices_mspi_rm67162_config_t SerialDisplayMSPICfg =
+    102          {
+    103              .eDeviceConfig            = AM_HAL_MSPI_FLASH_SERIAL_CE0,
+    104              .eClockFreq               = AM_HAL_MSPI_CLK_48MHZ,
+    105              .ui32NBTxnBufLength       = sizeof(g_MspiDisplayQBuffer) / sizeof(uint32_t),
+    106              .pNBTxnBuf                = g_MspiDisplayQBuffer,
+    107              .ui32ScramblingStartAddr  = 0,
+    108              .ui32ScramblingEndAddr    = 0,
+    109          };
+    110          
+    111          //! MSPI interrupts.
+    112          static const IRQn_Type mspi_display_interrupts[] =
+    113          {
+    114              MSPI0_IRQn,
+    115          #if defined(AM_PART_APOLLO3P)
+    116              MSPI1_IRQn,
+    117              MSPI2_IRQn,
+    118          #endif
+    119          };
+    120          
+    121          //
+    122          // Take over the interrupt handler for whichever MSPI we're using.
+    123          //
+    124          #define display_mspi_isr                                                          \
+    125              am_mspi_isr1(DISPLAY_MSPI_MODULE)
+    126          #define am_mspi_isr1(n)                                                        \
+    127              am_mspi_isr(n)
+    128          #define am_mspi_isr(n)                                                         \
+    129              am_mspi ## n ## _isr
+    130          
+    131          //*****************************************************************************
+    132          //
+    133          // MSPI ISRs.
+    134          //
+    135          //*****************************************************************************
+    136          void display_mspi_isr(void)
+    137          {
+    138              uint32_t      ui32Status;
+    139          
+    140              am_hal_mspi_interrupt_status_get(g_MSPIDisplayHandle, &ui32Status, false);
+    141          
+    142              am_hal_mspi_interrupt_clear(g_MSPIDisplayHandle, ui32Status);
+    143          
+    144              am_hal_mspi_interrupt_service(g_MSPIDisplayHandle, ui32Status);
+    145          }
+    146          
+    147          //*****************************************************************************
+    148          //
+    149          // Render task handle.
+    150          //
+    151          //*****************************************************************************
+    152          TaskHandle_t render_task_handle;
+    153          
+    154          //*****************************************************************************
+    155          //
+    156          // Handle for Render-related events.
+    157          //
+    158          //*****************************************************************************
+    159          EventGroupHandle_t xRenderEventHandle;
+    160          
+    161          uint32_t g_numDisplay = 0;
+    162          
+    163          static void teInt_handler(void)
+    164          {
+    165              BaseType_t xHigherPriorityTaskWoken, xResult;
+    166              // Signal main task that TE has arrived
+    167              static uint32_t teCount = 0;
+    168              if (teCount++ < TE_DELAY)
+    169              {
+    170                  return;
+    171              }
+    172              teCount = 0;
+    173              xHigherPriorityTaskWoken = pdFALSE;
+    174          
+    175              xResult = xEventGroupSetBitsFromISR(xMainEventHandle, MAIN_EVENT_TE,
+    176                                                  &xHigherPriorityTaskWoken);
+    177          
+    178              if (xResult != pdFAIL)
+    179              {
+    180                  portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    181              }
+    182          }
+    183          
+    184          // Initialization
+    185          uint32_t
+    186          display_init(void)
+    187          {
+    188              uint32_t ui32Status;
+    189          
+    190              NVIC_SetPriority(DISPLAY_MSPI_IRQn, 0x4);
+    191          
+    192          
+    193              am_hal_gpio_pinconfig(AM_BSP_GPIO_DISPLAY_TE, g_AM_BSP_GPIO_DISPLAY_TE);
+    194              am_hal_gpio_pinconfig(AM_BSP_GPIO_DISPLAY_RESET, g_AM_BSP_GPIO_DISPLAY_RESET);
+    195              // Initialize the MSPI Display
+    196              ui32Status = am_devices_mspi_rm67162_init(DISPLAY_MSPI_MODULE, &SerialDisplayMSPICfg, &g_DisplayHandle, &g_MSPIDisplayHandle);
+    197              if (AM_DEVICES_RM67162_STATUS_SUCCESS != ui32Status)
+    198              {
+    199                DEBUG_PRINT("Failed to init Display device\n");
+    200              }
+    201              NVIC_EnableIRQ(mspi_display_interrupts[DISPLAY_MSPI_MODULE]);
+    202          
+    203              am_hal_interrupt_master_enable();
+    204              AM_HAL_GPIO_MASKCREATE(GpioIntMask);
+    205              am_hal_gpio_interrupt_clear( AM_HAL_GPIO_MASKBIT(pGpioIntMask, AM_BSP_GPIO_DISPLAY_TE));
+    206              am_hal_gpio_interrupt_register(AM_BSP_GPIO_DISPLAY_TE, teInt_handler);
+    207              am_hal_gpio_interrupt_enable(AM_HAL_GPIO_MASKBIT(pGpioIntMask, AM_BSP_GPIO_DISPLAY_TE));
+    208              NVIC_EnableIRQ(GPIO_IRQn);
+    209          
+    210            return ui32Status;
+    211          }
+    212          
+    213          void
+    214          psram_read_complete(void *pCallbackCtxt, uint32_t transactionStatus)
+    215          {
+    216              if (transactionStatus != AM_HAL_STATUS_SUCCESS)
+    217              {
+    218                  DEBUG_PRINT("\nPSRAM Read Failed 0x%x\n", transactionStatus);
+    219              }
+    220              else
+    221              {
+    222                  DEBUG_PRINT("\nPSRAM Read Done 0x%x\n", transactionStatus);
+    223              }
+    224          }
+    225          
+    226          void
+    227          display_write_complete(void *pCallbackCtxt, uint32_t transactionStatus)
+    228          {
+    229              BaseType_t xHigherPriorityTaskWoken, xResult;
+    230              if (transactionStatus != AM_HAL_STATUS_SUCCESS)
+    231              {
+    232                  DEBUG_PRINT("\nDisplay# %d:FRAM Write Failed 0x%x\n", g_numDisplay, transactionStatus);
+    233              }
+    234              else
+    235              {
+    236                  DEBUG_PRINT_SUCCESS("\nDisplay# %d:FRAM Write Done 0x%x\n", g_numDisplay, transactionStatus);
+    237              }
+    238              g_numDisplay++;
+    239              // Signal main task that display is done
+    240              xHigherPriorityTaskWoken = pdFALSE;
+    241          
+    242              xResult = xEventGroupSetBitsFromISR(xMainEventHandle, MAIN_EVENT_DISPLAY_DONE,
+    243                                                  &xHigherPriorityTaskWoken);
+    244          
+    245              if (xResult != pdFAIL)
+    246              {
+    247                  portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    248              }
+    249          }
+    250          
+    251          #ifdef CQ_RAW
+    252          // Jump - by reprogramming the CQADDR
+    253          typedef struct
+    254          {
+    255              uint32_t    ui32CQAddrAddr;
+    256              uint32_t    ui32CQAddrVal;
+    257          } am_hal_cq_jmp_t;
+    258          
+    259          //
+    260          // Command Queue entry structure for DMA transfer.
+    261          //
+    262          typedef struct
+    263          {
+    264              uint32_t                    ui32DMATARGADDRAddr;
+    265              uint32_t                    ui32DMATARGADDRVal;
+    266              uint32_t                    ui32DMADEVADDRAddr;
+    267              // DEVADDR is don't care for display
+    268              uint32_t                    ui32DMADEVADDRVal;
+    269              uint32_t                    ui32DMATOTCOUNTAddr;
+    270              uint32_t                    ui32DMATOTCOUNTVal;
+    271              uint32_t                    ui32DMACFG1Addr;
+    272              uint32_t                    ui32DMACFG1Val;
+    273              // Need to insert couple of Dummy's
+    274              uint32_t                    ui32DummyAddr1;
+    275              uint32_t                    ui32DummyVal1;
+    276              uint32_t                    ui32DummyAddr2;
+    277              uint32_t                    ui32DummyVal2;
+    278              // Need to disable the DMA to prepare for next reconfig
+    279              // Need to have this following the DMAEN for CMDQ
+    280              uint32_t                    ui32DMACFG2Addr;
+    281              uint32_t                    ui32DMACFG2Val;
+    282          } mspi_cq_dma_entry_core_t;
+    283          
+    284          //
+    285          // Command Queue entry structure for DMA transfer.
+    286          //
+    287          typedef struct
+    288          {
+    289              uint32_t                    ui32PAUSENAddr;
+    290              uint32_t                    ui32PAUSEENVal;
+    291              uint32_t                    ui32PAUSEN2Addr;
+    292              uint32_t                    ui32PAUSEEN2Val;
+    293              mspi_cq_dma_entry_core_t    core;
+    294              uint32_t                    ui32SETCLRAddr;
+    295              uint32_t                    ui32SETCLRVal;
+    296          } mspi_cq_dma_entry_t;
+    297          
+    298          typedef struct
+    299          {
+    300              mspi_cq_dma_entry_core_t    core;
+    301              am_hal_cq_jmp_t             jmp;
+    302          } mspi_cq_seg_t;
+    303          
+    304          //
+    305          //
+    306          // Command Queue entry structure for DMA transfer.
+    307          //
+    308          typedef struct
+    309          {
+    310              uint32_t                    ui32PAUSENAddr;
+    311              uint32_t                    ui32PAUSEENVal;
+    312              uint32_t                    ui32PAUSEN2Addr;
+    313              uint32_t                    ui32PAUSEEN2Val;
+    314              mspi_cq_seg_t               segment[NUM_ROW_PER_RENDER_FRAGMENT][4];
+    315              uint32_t                    ui32SETCLRAddr;
+    316              uint32_t                    ui32SETCLRVal;
+    317          } mspi_cq_frag_entry_t;
+    318          
+    319          typedef struct
+    320          {
+    321              mspi_cq_dma_entry_t       block[NUM_FRAGMENTS + 1];
+    322              am_hal_cq_jmp_t           jmpOut; // Programmable address to jump back to the original CQ
+    323          } mspi_long_txn_t;
+    324          
+    325          typedef struct
+    326          {
+    327              mspi_cq_frag_entry_t      fragment[NUM_RENDER_FRAGMENTS];
+    328              am_hal_cq_jmp_t           jmpOut; // Programmable address to jump back to the original CQ
+    329          } mspi_split_long_read_txn_t;
+    330          
+    331          typedef struct
+    332          {
+    333              mspi_cq_dma_entry_t       fragment[NUM_RENDER_FRAGMENTS];
+    334              am_hal_cq_jmp_t           jmpOut; // Programmable address to jump back to the original CQ
+    335          } mspi_split_long_write_txn_t;
+    336          
+    337          mspi_long_txn_t gMspiDisplayCQ;
+    338          mspi_long_txn_t gMspiPsramCQ;
+    339          mspi_split_long_read_txn_t gMspiPsramSplitLineCQ;
+    340          mspi_split_long_write_txn_t gMspiDisplaySplitLineCQ;
+    341          
+    342          // MSPI
+    343          // One time initialization
+    344          void mspi_init_cq_long(uint32_t ui32Module, uint8_t ui8Priority, mspi_long_txn_t *pMspiLong, bool bSource, uint32_t blockSize)
+    345          {
+    346              uint32_t ui32DmaCfg;
+    347              if (bSource)
+    348              {
+    349                  ui32DmaCfg =
+    350                      _VAL2FLD(MSPI0_DMACFG_DMAPWROFF, 0)   |  // DMA Auto Power-off not supported!
+    351                      _VAL2FLD(MSPI0_DMACFG_DMAPRI, ui8Priority)    |
+    352                      _VAL2FLD(MSPI0_DMACFG_DMADIR, AM_HAL_MSPI_RX)     |
+    353                      _VAL2FLD(MSPI0_DMACFG_DMAEN, 3);
+    354              }
+    355              else
+    356              {
+    357                  ui32DmaCfg =
+    358                      _VAL2FLD(MSPI0_DMACFG_DMAPWROFF, 0)   |  // DMA Auto Power-off not supported!
+    359                      _VAL2FLD(MSPI0_DMACFG_DMAPRI, ui8Priority)    |
+    360                      _VAL2FLD(MSPI0_DMACFG_DMADIR, AM_HAL_MSPI_TX)     |
+    361                      _VAL2FLD(MSPI0_DMACFG_DMAEN, 3);
+    362              }
+    363              // Initialize the sequence blocks
+    364              for (uint32_t i = 0; i < (NUM_FRAGMENTS + 1); i++)
+    365              {
+    366                  pMspiLong->block[i].ui32PAUSENAddr = (uint32_t)&MSPIn(ui32Module)->CQPAUSE;
+    367                  pMspiLong->block[i].ui32PAUSEN2Addr = (uint32_t)&MSPIn(ui32Module)->CQPAUSE;
+    368                  pMspiLong->block[i].ui32SETCLRAddr = (uint32_t)&MSPIn(ui32Module)->CQSETCLEAR;
+    369                  pMspiLong->block[i].core.ui32DMATARGADDRAddr = (uint32_t)&MSPIn(ui32Module)->DMATARGADDR;
+    370                  pMspiLong->block[i].core.ui32DMADEVADDRAddr = (uint32_t)&MSPIn(ui32Module)->DMADEVADDR;
+    371                  pMspiLong->block[i].core.ui32DMATOTCOUNTAddr = (uint32_t)&MSPIn(ui32Module)->DMATOTCOUNT;
+    372                  pMspiLong->block[i].core.ui32DMACFG1Addr = (uint32_t)&MSPIn(ui32Module)->DMACFG;
+    373                  pMspiLong->block[i].core.ui32DMACFG2Addr = (uint32_t)&MSPIn(ui32Module)->DMACFG;
+    374                  pMspiLong->block[i].core.ui32DummyAddr1 = (uint32_t)&MSPIn(ui32Module)->CQSETCLEAR;
+    375                  pMspiLong->block[i].core.ui32DummyAddr2 = (uint32_t)&MSPIn(ui32Module)->CQSETCLEAR;
+    376                  // Pause Conditions
+    377                  // This is the Pause Boundary for HiPrio transactions
+    378                  if (bSource)
+    379                  {
+    380                      pMspiLong->block[i].ui32PAUSEENVal = AM_HAL_MSPI_CQP_PAUSE_DEFAULT | ((i % 2) ? MSPI_WAIT_FOR_SINK_BUFFER1 : MSPI_WAIT_FOR_SINK_BUFFER0);
+    381                      pMspiLong->block[i].ui32SETCLRVal = (i % 2) ? MSPI_SIGNAL_SINK_BUFFER1 : MSPI_SIGNAL_SINK_BUFFER0;
+    382                  }
+    383                  else
+    384                  {
+    385                      pMspiLong->block[i].ui32PAUSEENVal = AM_HAL_MSPI_CQP_PAUSE_DEFAULT | ((i % 2) ? MSPI_WAIT_FOR_SOURCE_BUFFER1 : MSPI_WAIT_FOR_SOURCE_BUFFER0);
+    386                      pMspiLong->block[i].ui32SETCLRVal = (i % 2) ? MSPI_SIGNAL_SOURCE_BUFFER1 : MSPI_SIGNAL_SOURCE_BUFFER0;
+    387                  }
+    388                  pMspiLong->block[i].core.ui32DMATOTCOUNTVal = blockSize;
+    389                  pMspiLong->block[i].core.ui32DMATARGADDRVal = (i % 2) ? (uint32_t)&g_TempBuf[1] : (uint32_t)&g_TempBuf[0];
+    390                  pMspiLong->block[i].core.ui32DMACFG1Val = ui32DmaCfg;
+    391                  pMspiLong->block[i].core.ui32DMACFG2Val = _VAL2FLD(MSPI0_DMACFG_DMAEN, 0);
+    392                  pMspiLong->block[i].core.ui32DummyVal1 = 0;
+    393                  pMspiLong->block[i].core.ui32DummyVal2 = 0;
+    394                  pMspiLong->block[i].core.ui32DMADEVADDRVal = 0;
+    395                  pMspiLong->block[i].ui32PAUSEEN2Val = AM_HAL_MSPI_PAUSE_DEFAULT;
+    396              }
+    397              pMspiLong->block[0].core.ui32DMATOTCOUNTVal = blockSize / 2;
+    398              pMspiLong->block[1].core.ui32DMATOTCOUNTVal = blockSize / 2;
+    399              pMspiLong->jmpOut.ui32CQAddrAddr = (uint32_t)&MSPIn(ui32Module)->CQADDR;
+    400          }
+    401          
+    402          #ifdef SWIPE
+    403          void mspi_init_split_read_cq_long(uint32_t ui32Module, uint8_t ui8Priority, mspi_split_long_read_txn_t *pMspiLong)
+    404          {
+    405              uint32_t ui32DmaCfg;
+    406              ui32DmaCfg =
+    407                  _VAL2FLD(MSPI0_DMACFG_DMAPWROFF, 0)   |  // DMA Auto Power-off not supported!
+    408                  _VAL2FLD(MSPI0_DMACFG_DMAPRI, ui8Priority)    |
+    409                  _VAL2FLD(MSPI0_DMACFG_DMADIR, AM_HAL_MSPI_RX)     |
+    410                  _VAL2FLD(MSPI0_DMACFG_DMAEN, 3);
+    411              // Initialize the sequence blocks
+    412              for (uint32_t i = 0; i < NUM_RENDER_FRAGMENTS; i++)
+    413              {
+    414                  pMspiLong->fragment[i].ui32PAUSENAddr = (uint32_t)&MSPIn(ui32Module)->CQPAUSE;
+    415                  pMspiLong->fragment[i].ui32PAUSEN2Addr = (uint32_t)&MSPIn(ui32Module)->CQPAUSE;
+    416                  pMspiLong->fragment[i].ui32SETCLRAddr = (uint32_t)&MSPIn(ui32Module)->CQSETCLEAR;
+    417                  // Pause Conditions
+    418                  // This is the Pause Boundary for HiPrio transactions
+    419                  pMspiLong->fragment[i].ui32PAUSEENVal = AM_HAL_MSPI_CQP_PAUSE_DEFAULT | ((i % 2) ? MSPI_WAIT_FOR_SINK_BUFFER1 : MSPI_WAIT_FOR_SINK_BUFFER0);
+    420                  pMspiLong->fragment[i].ui32SETCLRVal = (i % 2) ? MSPI_SIGNAL_SINK_BUFFER1 : MSPI_SIGNAL_SINK_BUFFER0;
+    421                  pMspiLong->fragment[i].ui32PAUSEEN2Val = AM_HAL_MSPI_PAUSE_DEFAULT;
+    422          
+    423                  for (uint32_t k = 0; k < NUM_ROW_PER_RENDER_FRAGMENT; k++)
+    424                  {
+    425                      for (uint32_t j = 0; j < 4; j++)
+    426                      {
+    427                          pMspiLong->fragment[i].segment[k][j].core.ui32DMATARGADDRAddr = (uint32_t)&MSPIn(ui32Module)->DMATARGADDR;
+    428                          pMspiLong->fragment[i].segment[k][j].core.ui32DMADEVADDRAddr = (uint32_t)&MSPIn(ui32Module)->DMADEVADDR;
+    429                          pMspiLong->fragment[i].segment[k][j].core.ui32DMATOTCOUNTAddr = (uint32_t)&MSPIn(ui32Module)->DMATOTCOUNT;
+    430                          pMspiLong->fragment[i].segment[k][j].core.ui32DMACFG1Addr = (uint32_t)&MSPIn(ui32Module)->DMACFG;
+    431                          pMspiLong->fragment[i].segment[k][j].core.ui32DMACFG2Addr = (uint32_t)&MSPIn(ui32Module)->DMACFG;
+    432                          pMspiLong->fragment[i].segment[k][j].core.ui32DummyAddr1 = (uint32_t)&MSPIn(ui32Module)->CQSETCLEAR;
+    433                          pMspiLong->fragment[i].segment[k][j].core.ui32DummyAddr2 = (uint32_t)&MSPIn(ui32Module)->CQSETCLEAR;
+    434                          pMspiLong->fragment[i].segment[k][j].core.ui32DMACFG1Val = ui32DmaCfg;
+    435                          pMspiLong->fragment[i].segment[k][j].core.ui32DMACFG2Val = _VAL2FLD(MSPI0_DMACFG_DMAEN, 0);
+    436                          pMspiLong->fragment[i].segment[k][j].core.ui32DummyVal1 = 0;
+    437                          pMspiLong->fragment[i].segment[k][j].core.ui32DummyVal2 = 0;
+    438                          pMspiLong->fragment[i].segment[k][j].core.ui32DMADEVADDRVal = 0;
+    439                          pMspiLong->fragment[i].segment[k][j].jmp.ui32CQAddrAddr = (uint32_t)&MSPIn(ui32Module)->CQADDR;
+    440                      }
+    441                  }
+    442              }
+    443              // Special processing for last fragment
+    444              if (ROW_NUM < (NUM_ROW_PER_RENDER_FRAGMENT * NUM_RENDER_FRAGMENTS))
+    445              {
+    446                  uint32_t lastFragRows = ROW_NUM - (NUM_RENDER_FRAGMENTS - 1)*NUM_ROW_PER_RENDER_FRAGMENT;
+    447                  // Insert a jump to skip remaining row entries
+    448                  am_hal_cq_jmp_t *pJmp = (am_hal_cq_jmp_t *)&pMspiLong->fragment[NUM_RENDER_FRAGMENTS - 1].segment[lastFragRows];
+    449                  pJmp->ui32CQAddrAddr = (uint32_t)&MSPIn(ui32Module)->CQADDR;
+    450                  pJmp->ui32CQAddrVal = (uint32_t)&pMspiLong->fragment[NUM_RENDER_FRAGMENTS - 1].segment[NUM_ROW_PER_RENDER_FRAGMENT];
+    451              }
+    452              pMspiLong->jmpOut.ui32CQAddrAddr = (uint32_t)&MSPIn(ui32Module)->CQADDR;
+    453          }
+    454          #endif
+    455          
+    456          // One time initialization
+    457          void mspi_init_split_write_cq_long(uint32_t ui32Module, uint8_t ui8Priority, mspi_split_long_write_txn_t *pMspiLong)
+    458          {
+    459              uint32_t ui32DmaCfg;
+    460              ui32DmaCfg =
+    461                  _VAL2FLD(MSPI0_DMACFG_DMAPWROFF, 0)   |  // DMA Auto Power-off not supported!
+    462                  _VAL2FLD(MSPI0_DMACFG_DMAPRI, ui8Priority)    |
+    463                  _VAL2FLD(MSPI0_DMACFG_DMADIR, AM_HAL_MSPI_TX)     |
+    464                  _VAL2FLD(MSPI0_DMACFG_DMAEN, 3);
+    465              // Initialize the sequence blocks
+    466              for (uint32_t i = 0; i < NUM_RENDER_FRAGMENTS; i++)
+    467              {
+    468                  pMspiLong->fragment[i].ui32PAUSENAddr = (uint32_t)&MSPIn(ui32Module)->CQPAUSE;
+    469                  pMspiLong->fragment[i].ui32PAUSEN2Addr = (uint32_t)&MSPIn(ui32Module)->CQPAUSE;
+    470                  pMspiLong->fragment[i].ui32SETCLRAddr = (uint32_t)&MSPIn(ui32Module)->CQSETCLEAR;
+    471                  pMspiLong->fragment[i].core.ui32DMATARGADDRAddr = (uint32_t)&MSPIn(ui32Module)->DMATARGADDR;
+    472                  pMspiLong->fragment[i].core.ui32DMADEVADDRAddr = (uint32_t)&MSPIn(ui32Module)->DMADEVADDR;
+    473                  pMspiLong->fragment[i].core.ui32DMATOTCOUNTAddr = (uint32_t)&MSPIn(ui32Module)->DMATOTCOUNT;
+    474                  pMspiLong->fragment[i].core.ui32DMACFG1Addr = (uint32_t)&MSPIn(ui32Module)->DMACFG;
+    475                  pMspiLong->fragment[i].core.ui32DMACFG2Addr = (uint32_t)&MSPIn(ui32Module)->DMACFG;
+    476                  pMspiLong->fragment[i].core.ui32DummyAddr1 = (uint32_t)&MSPIn(ui32Module)->CQSETCLEAR;
+    477                  pMspiLong->fragment[i].core.ui32DummyAddr2 = (uint32_t)&MSPIn(ui32Module)->CQSETCLEAR;
+    478                  // Pause Conditions
+    479                  // This is the Pause Boundary for HiPrio transactions
+    480                  pMspiLong->fragment[i].ui32PAUSEENVal = AM_HAL_MSPI_CQP_PAUSE_DEFAULT | ((i % 2) ? MSPI_WAIT_FOR_SOURCE_BUFFER1 : MSPI_WAIT_FOR_SOURCE_BUFFER0);
+    481                  pMspiLong->fragment[i].ui32SETCLRVal = (i % 2) ? MSPI_SIGNAL_SOURCE_BUFFER1 : MSPI_SIGNAL_SOURCE_BUFFER0;
+    482                  pMspiLong->fragment[i].core.ui32DMATOTCOUNTVal = ROW_SIZE * NUM_ROW_PER_RENDER_FRAGMENT;
+    483                  pMspiLong->fragment[i].core.ui32DMATARGADDRVal = (i % 2) ? (uint32_t)&g_TempBuf[1] : (uint32_t)&g_TempBuf[0];
+    484                  pMspiLong->fragment[i].core.ui32DMACFG1Val = ui32DmaCfg;
+    485                  pMspiLong->fragment[i].core.ui32DMACFG2Val = _VAL2FLD(MSPI0_DMACFG_DMAEN, 0);
+    486                  pMspiLong->fragment[i].core.ui32DummyVal1 = 0;
+    487                  pMspiLong->fragment[i].core.ui32DummyVal2 = 0;
+    488                  pMspiLong->fragment[i].core.ui32DMADEVADDRVal = 0;
+    489                  pMspiLong->fragment[i].ui32PAUSEEN2Val = AM_HAL_MSPI_PAUSE_DEFAULT;
+    490              }
+    491              // Special processing for last fragment
+    492              if (ROW_NUM < (NUM_ROW_PER_RENDER_FRAGMENT * NUM_RENDER_FRAGMENTS))
+    493              {
+    494                  uint32_t lastFragRows = ROW_NUM - (NUM_RENDER_FRAGMENTS - 1)*NUM_ROW_PER_RENDER_FRAGMENT;
+    495                  pMspiLong->fragment[NUM_RENDER_FRAGMENTS - 1].core.ui32DMATOTCOUNTVal = ROW_SIZE * lastFragRows;
+    496              }
+    497              pMspiLong->jmpOut.ui32CQAddrAddr = (uint32_t)&MSPIn(ui32Module)->CQADDR;
+    498          }
+    499          
+    500          static void
+    501          update_mspi_mspi_transaction(uint32_t blockSize,
+    502                                       uint32_t ui32DevAddr,
+    503                                       mspi_long_txn_t *pMspiSrc,
+    504                                       mspi_long_txn_t *pMspiSink,
+    505                                       uint32_t ui32NumBytes)
+    506          {
+    507              uint32_t headerSize = ui32DevAddr & 0x3;
+    508              pMspiSrc->block[0].core.ui32DMADEVADDRVal = ui32DevAddr;
+    509              if (headerSize)
+    510              {
+    511                  headerSize = 4 - headerSize;
+    512                  // Special treatment needed as the address is not word aligned
+    513                  // We split the transaction in two - first just for the preceding bytes, and remaining in second one
+    514                  pMspiSrc->block[0].core.ui32DMATOTCOUNTVal = headerSize;
+    515                  pMspiSink->block[0].core.ui32DMATOTCOUNTVal = headerSize;
+    516                  ui32DevAddr += headerSize;
+    517                  pMspiSrc->block[1].core.ui32DMADEVADDRVal = ui32DevAddr;
+    518                  pMspiSrc->block[1].core.ui32DMATOTCOUNTVal = blockSize;
+    519                  pMspiSink->block[1].core.ui32DMATOTCOUNTVal = blockSize;
+    520              }
+    521              else
+    522              {
+    523                  pMspiSrc->block[0].core.ui32DMATOTCOUNTVal = blockSize / 2;
+    524                  pMspiSink->block[0].core.ui32DMATOTCOUNTVal = blockSize / 2;
+    525                  pMspiSrc->block[1].core.ui32DMADEVADDRVal = ui32DevAddr + blockSize / 2;
+    526                  pMspiSrc->block[1].core.ui32DMATOTCOUNTVal = blockSize / 2;
+    527                  pMspiSink->block[1].core.ui32DMATOTCOUNTVal = blockSize / 2;
+    528              }
+    529              for (uint32_t i = 2; i < (NUM_FRAGMENTS + 1); i++)
+    530              {
+    531                  pMspiSrc->block[i].core.ui32DMADEVADDRVal = ui32DevAddr + (i - 1) * blockSize;
+    532              }
+    533              // Initialize the count & command for tail
+    534              if ((ui32NumBytes - headerSize) > (blockSize * (NUM_FRAGMENTS - 1)))
+    535              {
+    536                  pMspiSrc->block[NUM_FRAGMENTS].core.ui32DMATOTCOUNTVal  = ui32NumBytes - headerSize - blockSize*(NUM_FRAGMENTS-1);
+    537                  pMspiSink->block[NUM_FRAGMENTS].core.ui32DMATOTCOUNTVal  = ui32NumBytes - headerSize - blockSize*(NUM_FRAGMENTS-1);
+    538                  pMspiSrc->block[NUM_FRAGMENTS-1].core.ui32DMATOTCOUNTVal = blockSize;
+    539              }
+    540              else
+    541              {
+    542                  // Need to make sure there is non-zero last element
+    543                  // Adjust the second last
+    544                  pMspiSrc->block[NUM_FRAGMENTS-1].core.ui32DMATOTCOUNTVal = blockSize - 4;
+    545                  pMspiSrc->block[NUM_FRAGMENTS].core.ui32DMADEVADDRVal -= 4;
+    546                  pMspiSrc->block[NUM_FRAGMENTS].core.ui32DMATOTCOUNTVal  = ui32NumBytes - headerSize - blockSize*(NUM_FRAGMENTS-1) + 4;
+    547                  pMspiSink->block[NUM_FRAGMENTS].core.ui32DMATOTCOUNTVal  = ui32NumBytes - headerSize - blockSize*(NUM_FRAGMENTS-1) + 4;
+    548              }
+    549          }
+    550          
+    551          #ifdef SWIPE
+    552          static void
+    553          update_mspi_hsplit_transaction(uint32_t fb1, uint32_t fb2, uint32_t fb2ColOffset,
+    554                                         mspi_split_long_read_txn_t *pMspiSrc,
+    555                                         mspi_split_long_write_txn_t *pMspiSink)
+    556          {
+    557              uint32_t headerSize1, headerSize2;
+    558              uint32_t seg = 0;
+    559          
+    560              uint32_t fb1RowSize = fb2ColOffset*PIXEL_SIZE;
+    561              uint32_t fb2RowSize = ROW_SIZE - fb2ColOffset*PIXEL_SIZE;
+    562              headerSize1 = (fb1 & 0x3) ? (4 - (fb1 & 0x3)): 0;
+    563              headerSize2 = (fb2 & 0x3) ? (4 - (fb2 & 0x3)): 0;
+    564              // Offset in FB1
+    565              fb1 = fb1 + ROW_SIZE - fb1RowSize;
+    566          
+    567              for (uint32_t i = 0; i < NUM_RENDER_FRAGMENTS; i++)
+    568              {
+    569                  uint32_t bufAddr = (i % 2) ? (uint32_t)&g_TempBuf[1] : (uint32_t)&g_TempBuf[0];
+    570                  for (uint32_t k = 0; k < NUM_ROW_PER_RENDER_FRAGMENT; k++)
+    571                  {
+    572                      uint32_t remaining;
+    573                      uint32_t srcAddr;
+    574                      seg = 0;
+    575                      if (fb1RowSize)
+    576                      {
+    577                          remaining = fb1RowSize;
+    578                          srcAddr = fb1;
+    579                          if (headerSize1)
+    580                          {
+    581                              uint32_t size = headerSize1;
+    582                              if (headerSize1 > remaining)
+    583                              {
+    584                                  size = remaining;
+    585                              }
+    586                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMADEVADDRVal = srcAddr;
+    587                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATOTCOUNTVal = size;
+    588                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATARGADDRVal = bufAddr;
+    589                              pMspiSrc->fragment[i].segment[k][seg].jmp.ui32CQAddrVal = (uint32_t)&pMspiSrc->fragment[i].segment[k][seg + 1];
+    590                              remaining -= size;
+    591                              srcAddr += size;
+    592                              bufAddr += size;
+    593                              seg++;
+    594                          }
+    595                          if (remaining)
+    596                          {
+    597                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMADEVADDRVal = srcAddr;
+    598                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATOTCOUNTVal = remaining;
+    599                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATARGADDRVal = bufAddr;
+    600                              pMspiSrc->fragment[i].segment[k][seg].jmp.ui32CQAddrVal = (uint32_t)&pMspiSrc->fragment[i].segment[k][seg + 1];
+    601                              seg++;
+    602                              bufAddr += remaining;
+    603                          }
+    604                      }
+    605                      if (fb2RowSize)
+    606                      {
+    607                          remaining = fb2RowSize;
+    608                          srcAddr = fb2;
+    609                          if (headerSize2)
+    610                          {
+    611                              uint32_t size = headerSize2;
+    612                              if (headerSize2 > remaining)
+    613                              {
+    614                                  size = remaining;
+    615                              }
+    616                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMADEVADDRVal = srcAddr;
+    617                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATOTCOUNTVal = size;
+    618                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATARGADDRVal = bufAddr;
+    619                              pMspiSrc->fragment[i].segment[k][seg].jmp.ui32CQAddrVal = (uint32_t)&pMspiSrc->fragment[i].segment[k][seg + 1];
+    620                              remaining -= size;
+    621                              srcAddr += size;
+    622                              bufAddr += size;
+    623                              seg++;
+    624                          }
+    625                          if (remaining)
+    626                          {
+    627                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMADEVADDRVal = srcAddr;
+    628                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATOTCOUNTVal = remaining;
+    629                              pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATARGADDRVal = bufAddr;
+    630                              pMspiSrc->fragment[i].segment[k][seg].jmp.ui32CQAddrVal = (uint32_t)&pMspiSrc->fragment[i].segment[k][seg + 1];
+    631                              seg++;
+    632                              bufAddr += remaining;
+    633                          }
+    634                      }
+    635                      // Advance to end of segments
+    636                      pMspiSrc->fragment[i].segment[k][seg-1].jmp.ui32CQAddrVal = (uint32_t)&pMspiSrc->fragment[i].segment[k][4];
+    637                      fb1 += ROW_SIZE;
+    638                      fb2 += ROW_SIZE;
+    639                  }
+    640              }
+    641          }
+    642          
+    643          static void
+    644          update_mspi_vsplit_transaction(uint32_t fb1, uint32_t fb2, uint32_t fb2RowOffset,
+    645                                         mspi_split_long_read_txn_t *pMspiSrc,
+    646                                         mspi_split_long_write_txn_t *pMspiSink)
+    647          {
+    648              uint32_t headerSize1, headerSize2, fb, headerSize;
+    649              uint32_t seg = 0;
+    650          
+    651              headerSize1 = (fb1 & 0x3) ? (4 - (fb1 & 0x3)): 0;
+    652              headerSize2 = (fb2 & 0x3) ? (4 - (fb2 & 0x3)): 0;
+    653          
+    654              // Offset in FB1
+    655              fb = fb1 + ROW_SIZE * (ROW_NUM - fb2RowOffset);
+    656              headerSize = headerSize1;
+    657          
+    658              for (uint32_t i = 0; i < NUM_RENDER_FRAGMENTS; i++)
+    659              {
+    660                  uint32_t bufAddr = (i % 2) ? (uint32_t)&g_TempBuf[1] : (uint32_t)&g_TempBuf[0];
+    661                  for (uint32_t k = 0; k < NUM_ROW_PER_RENDER_FRAGMENT; k++)
+    662                  {
+    663                      uint32_t remaining;
+    664                      uint32_t srcAddr;
+    665                      seg = 0;
+    666                      remaining = ROW_SIZE;
+    667                      srcAddr = fb;
+    668                      if (headerSize)
+    669                      {
+    670                          uint32_t size = headerSize;
+    671                          pMspiSrc->fragment[i].segment[k][seg].core.ui32DMADEVADDRVal = srcAddr;
+    672                          pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATOTCOUNTVal = size;
+    673                          pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATARGADDRVal = bufAddr;
+    674                          pMspiSrc->fragment[i].segment[k][seg].jmp.ui32CQAddrVal = (uint32_t)&pMspiSrc->fragment[i].segment[k][seg + 1];
+    675                          remaining -= size;
+    676                          srcAddr += size;
+    677                          bufAddr += size;
+    678                          seg++;
+    679                      }
+    680                      if (remaining)
+    681                      {
+    682                          pMspiSrc->fragment[i].segment[k][seg].core.ui32DMADEVADDRVal = srcAddr;
+    683                          pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATOTCOUNTVal = remaining;
+    684                          pMspiSrc->fragment[i].segment[k][seg].core.ui32DMATARGADDRVal = bufAddr;
+    685                          pMspiSrc->fragment[i].segment[k][seg].jmp.ui32CQAddrVal = (uint32_t)&pMspiSrc->fragment[i].segment[k][seg + 1];
+    686                          seg++;
+    687                          bufAddr += remaining;
+    688                      }
+    689                      // Advance to end of segments
+    690                      pMspiSrc->fragment[i].segment[k][seg-1].jmp.ui32CQAddrVal = (uint32_t)&pMspiSrc->fragment[i].segment[k][4];
+    691                      if (--fb2RowOffset)
+    692                      {
+    693                          fb += ROW_SIZE;
+    694                      }
+    695                      else
+    696                      {
+    697                          fb = fb2;
+    698                          headerSize = headerSize2;
+    699                      }
+    700                  }
+    701              }
+    702          }
+    703          #endif
+    704          #endif // CQ_RAW
+    705          
+    706          
+    707          // Initialization
+    708          uint32_t
+    709          init_mspi_mspi_xfer(void)
+    710          {
+    711              uint32_t ui32Status = 0;
+    712              uint32_t      u32Arg;
+    713          
+    714              if (xSemaphoreTake(xMSPIMutex, portMAX_DELAY) != pdTRUE)
+    715              {
+    716                  goto _init_mspi_mspi_xfer_fail2;
+    717              }
+    718              // Clear flags
+    719              u32Arg = AM_HAL_MSPI_SC_CLEAR(0xFF) & ~AM_HAL_MSPI_SC_RESV_MASK;  // clear all flags
+    720              ui32Status = am_hal_mspi_control(g_MSPIPsramHandle, AM_HAL_MSPI_REQ_FLAG_SETCLR, &u32Arg);
+    721              if (ui32Status)
+    722              {
+    723                  goto _init_mspi_mspi_xfer_fail1;
+    724              }
+    725          
+    726              ui32Status = am_hal_mspi_control(g_MSPIDisplayHandle, AM_HAL_MSPI_REQ_FLAG_SETCLR, &u32Arg);
+    727              if (ui32Status)
+    728              {
+    729                  goto _init_mspi_mspi_xfer_fail1;
+    730              }
+    731          
+    732              // Link MSPI Source and Sink instances.
+    733              u32Arg = DISPLAY_MSPI_MODULE;
+    734              ui32Status = am_hal_mspi_control(g_MSPIPsramHandle, AM_HAL_MSPI_REQ_LINK_MSPI, &u32Arg);
+    735              if (ui32Status)
+    736              {
+    737                  goto _init_mspi_mspi_xfer_fail1;
+    738              }
+    739          
+    740              u32Arg = PSRAM_MSPI_MODULE;
+    741              ui32Status = am_hal_mspi_control(g_MSPIDisplayHandle, AM_HAL_MSPI_REQ_LINK_MSPI, &u32Arg);
+    742              if (ui32Status)
+    743              {
+    744                  goto _init_mspi_mspi_xfer_fail1;
+    745              }
+    746          
+    747              ui32Status = am_devices_mspi_rm67162_set_transfer_window(g_DisplayHandle, 0, 0, ROW_NUM - 1, COLUMN_NUM - 1);
+    748              if (ui32Status)
+    749              {
+    750                  DEBUG_PRINT("\nFailed to set transfer window\n");
+    751                  goto _init_mspi_mspi_xfer_fail1;
+    752              }
+    753          #ifdef CQ_RAW
+    754          #ifdef SWIPE
+    755              mspi_init_split_read_cq_long(PSRAM_MSPI_MODULE, 1, &gMspiPsramSplitLineCQ);
+    756              mspi_init_split_write_cq_long(DISPLAY_MSPI_MODULE, 1, &gMspiDisplaySplitLineCQ);
+    757          #else
+    758              mspi_init_cq_long(PSRAM_MSPI_MODULE, 1, &gMspiPsramCQ, true, TEMP_BUFFER_SIZE);
+    759              mspi_init_cq_long(DISPLAY_MSPI_MODULE, 1, &gMspiDisplayCQ, false, TEMP_BUFFER_SIZE);
+    760          #endif
+    761          #endif
+    762          _init_mspi_mspi_xfer_fail1:
+    763              xSemaphoreGive(xMSPIMutex);
+    764          _init_mspi_mspi_xfer_fail2:
+    765              return ui32Status;
+    766          }
+    767          
+    768          // Rendering
+    769          uint32_t
+    770          start_mspi_mspi_xfer(uint32_t psramOffset, uint32_t ui32NumBytes)
+    771          {
+    772              uint32_t      ui32Status = 0;
+    773              am_hal_mspi_callback_t  mspiSourceCb = 0;
+    774              am_hal_mspi_callback_t  mspiSinkCb = 0;
+    775          
+    776              //DEBUG_GPIO_HIGH(DBG1_GPIO);
+    777              mspiSourceCb = psram_read_complete;
+    778              mspiSinkCb = display_write_complete;
+    779              DEBUG_PRINT("\nInitiating MSPI -> MSPI Transfer\n");
+    780              if (xSemaphoreTake(xMSPIMutex, portMAX_DELAY) != pdTRUE)
+    781              {
+    782                  return AM_HAL_STATUS_FAIL;
+    783              }
+    784          
+    785          #ifdef CONFIG_DISPLAY_WINDOW
+    786              ui32Status = am_devices_mspi_rm67162_set_transfer_window(g_DisplayHandle, 0, 0, ROW_NUM - 1, COLUMN_NUM - 1);
+    787              if (ui32Status)
+    788              {
+    789                  DEBUG_PRINT("\nFailed to set transfer window\n");
+    790                  xSemaphoreGive(xMSPIMutex);
+    791                  return ui32Status;
+    792              }
+    793          #endif
+    794          
+    795          #ifdef CQ_RAW
+    796              // Queue up the CQ Raw
+    797              am_hal_cmdq_entry_t jump;
+    798              am_hal_mspi_cq_raw_t rawMspiCfg;
+    799          
+    800              rawMspiCfg.ui32PauseCondition = 0;
+    801              rawMspiCfg.ui32StatusSetClr = 0;
+    802              rawMspiCfg.pCQEntry = &jump;
+    803              rawMspiCfg.numEntries = sizeof(am_hal_cmdq_entry_t) / 8;
+    804              rawMspiCfg.pCallbackCtxt = 0;
+    805          
+    806              update_mspi_mspi_transaction(TEMP_BUFFER_SIZE,
+    807                                            psramOffset,
+    808                                            &gMspiPsramCQ,
+    809                                            &gMspiDisplayCQ,
+    810                                            ui32NumBytes);
+    811          
+    812              rawMspiCfg.pJmpAddr = &gMspiPsramCQ.jmpOut.ui32CQAddrVal;
+    813              jump.value = (uint32_t)&gMspiPsramCQ;
+    814              rawMspiCfg.pfnCallback = mspiSourceCb;
+    815              jump.address = (uint32_t)&MSPIn(PSRAM_MSPI_MODULE)->CQADDR;
+    816          
+    817              ui32Status = am_hal_mspi_control(g_MSPIPsramHandle, AM_HAL_MSPI_REQ_CQ_RAW, &rawMspiCfg);
+    818              if (ui32Status)
+    819              {
+    820                  DEBUG_PRINT("\nFailed to queue up MSPI Read transaction\n");
+    821                  while(1);
+    822              }
+    823          
+    824              rawMspiCfg.pJmpAddr = &gMspiDisplayCQ.jmpOut.ui32CQAddrVal;
+    825              jump.value = (uint32_t)&gMspiDisplayCQ;
+    826              rawMspiCfg.pfnCallback = mspiSinkCb;
+    827              jump.address = (uint32_t)&MSPIn(DISPLAY_MSPI_MODULE)->CQADDR;
+    828          
+    829              ui32Status = am_hal_mspi_control(g_MSPIDisplayHandle, AM_HAL_MSPI_REQ_CQ_RAW, &rawMspiCfg);
+    830              if (ui32Status)
+    831              {
+    832                  DEBUG_PRINT("\nFailed to queue up MSPI Write transaction\n");
+    833                  while(1);
+    834              }
+    835          #else
+    836              // Queue up Display Writes and PSRAM Reads
+    837              for (uint32_t address = 0, bufIdx = 0; address < ui32NumBytes; address += TEMP_BUFFER_SIZE, bufIdx++)
+    838              {
+    839                  uint32_t bufOdd = bufIdx % 2;
+    840                  ui32Status = am_devices_mspi_psram_read_adv(g_PsramHandle,
+    841                                                              (uint8_t *)g_TempBuf[bufOdd],
+    842                                                              psramOffset + address,
+    843                                                              (((address + TEMP_BUFFER_SIZE) >= ui32NumBytes) ? (ui32NumBytes - address) : TEMP_BUFFER_SIZE),
+    844                                                              (bufOdd ? MSPI_WAIT_FOR_SINK_BUFFER1 : MSPI_WAIT_FOR_SINK_BUFFER0),
+    845                                                              (bufOdd ? MSPI_SIGNAL_SINK_BUFFER1 : MSPI_SIGNAL_SINK_BUFFER0),
+    846                                                              (((address + TEMP_BUFFER_SIZE) >= ui32NumBytes) ? mspiSourceCb : 0),
+    847                                                              0);
+    848                  if (ui32Status)
+    849                  {
+    850                      DEBUG_PRINT("\nFailed to queue up MSPI Read transaction\n");
+    851                      break;
+    852                  }
+    853                  ui32Status = am_devices_rm67162_nonblocking_write_adv(g_DisplayHandle,
+    854                                                             (uint8_t *)g_TempBuf[bufOdd],
+    855                                                             (((address + TEMP_BUFFER_SIZE) >= ui32NumBytes) ? (ui32NumBytes - address) : TEMP_BUFFER_SIZE),
+    856                                                             (bufOdd ? MSPI_WAIT_FOR_SOURCE_BUFFER1 : MSPI_WAIT_FOR_SOURCE_BUFFER0),
+    857                                                             (bufOdd ? MSPI_SIGNAL_SOURCE_BUFFER1 : MSPI_SIGNAL_SOURCE_BUFFER0),
+    858                                                             (((address + TEMP_BUFFER_SIZE) >= ui32NumBytes) ? mspiSinkCb : 0),
+    859                                                             0);
+    860                  if (ui32Status)
+    861                  {
+    862                     DEBUG_PRINT("\nFailed to queue up MSPI Write transaction\n");
+    863                     break;
+    864                  }
+    865              }
+    866          #endif
+    867              xSemaphoreGive(xMSPIMutex);
+    868              return ui32Status;
+    869          }
+    870          
+    871          #ifdef SWIPE
+    872          uint32_t
+    873          start_split_mspi_mspi_xfer(uint32_t fb1, uint32_t fb2, uint32_t fb2Offset)
+    874          {
+    875              uint32_t      ui32Status = 0;
+    876              am_hal_mspi_callback_t  mspiSourceCb = 0;
+    877              am_hal_mspi_callback_t  mspiSinkCb = 0;
+    878          
+    879              //DEBUG_GPIO_HIGH(DBG1_GPIO);
+    880              mspiSourceCb = psram_read_complete;
+    881              mspiSinkCb = display_write_complete;
+    882              DEBUG_PRINT("\nInitiating MSPI -> MSPI Transfer\n");
+    883              if (xSemaphoreTake(xMSPIMutex, portMAX_DELAY) != pdTRUE)
+    884              {
+    885                  return AM_HAL_STATUS_FAIL;
+    886              }
+    887          
+    888          #ifdef CONFIG_DISPLAY_WINDOW
+    889              ui32Status = am_devices_mspi_rm67162_set_transfer_window(g_DisplayHandle, 0, 0, ROW_NUM - 1, COLUMN_NUM - 1);
+    890              if (ui32Status)
+    891              {
+    892                  DEBUG_PRINT("\nFailed to set transfer window\n");
+    893                  xSemaphoreGive(xMSPIMutex);
+    894                  return ui32Status;
+    895              }
+    896          #endif
+    897          
+    898              // Queue up the CQ Raw
+    899              am_hal_cmdq_entry_t jump;
+    900              am_hal_mspi_cq_raw_t rawMspiCfg;
+    901          
+    902              rawMspiCfg.ui32PauseCondition = 0;
+    903              rawMspiCfg.ui32StatusSetClr = 0;
+    904              rawMspiCfg.pCQEntry = &jump;
+    905              rawMspiCfg.numEntries = sizeof(am_hal_cmdq_entry_t) / 8;
+    906              rawMspiCfg.pCallbackCtxt = 0;
+    907          
+    908              if (bSwipeHorizontal)
+    909              {
+    910                  update_mspi_hsplit_transaction(fb1, fb2, fb2Offset, &gMspiPsramSplitLineCQ, &gMspiDisplaySplitLineCQ);
+    911              }
+    912              else
+    913              {
+    914                  update_mspi_vsplit_transaction(fb1, fb2, fb2Offset, &gMspiPsramSplitLineCQ, &gMspiDisplaySplitLineCQ);
+    915              }
+    916          
+    917              rawMspiCfg.pJmpAddr = &gMspiPsramSplitLineCQ.jmpOut.ui32CQAddrVal;
+    918              jump.value = (uint32_t)&gMspiPsramSplitLineCQ;
+    919              rawMspiCfg.pfnCallback = mspiSourceCb;
+    920              jump.address = (uint32_t)&MSPIn(PSRAM_MSPI_MODULE)->CQADDR;
+    921          
+    922              ui32Status = am_hal_mspi_control(g_MSPIPsramHandle, AM_HAL_MSPI_REQ_CQ_RAW, &rawMspiCfg);
+    923              if (ui32Status)
+    924              {
+    925                  DEBUG_PRINT("\nFailed to queue up MSPI Read transaction\n");
+    926                  while(1);
+    927              }
+    928          
+    929              rawMspiCfg.pJmpAddr = &gMspiDisplaySplitLineCQ.jmpOut.ui32CQAddrVal;
+    930              jump.value = (uint32_t)&gMspiDisplaySplitLineCQ;
+    931              rawMspiCfg.pfnCallback = mspiSinkCb;
+    932              jump.address = (uint32_t)&MSPIn(DISPLAY_MSPI_MODULE)->CQADDR;
+    933          
+    934              ui32Status = am_hal_mspi_control(g_MSPIDisplayHandle, AM_HAL_MSPI_REQ_CQ_RAW, &rawMspiCfg);
+    935              if (ui32Status)
+    936              {
+    937                  DEBUG_PRINT("\nFailed to queue up MSPI Write transaction\n");
+    938                  while(1);
+    939              }
+    940              xSemaphoreGive(xMSPIMutex);
+    941              return ui32Status;
+    942          }
+    943          #endif
+    944          
+    945          void
+    946          RenderTaskSetup(void)
+    947          {
+    948              am_util_debug_printf("RenderTask: setup\r\n");
+    949              //
+    950              // Create an event handle for our wake-up events.
+    951              //
+    952              xRenderEventHandle = xEventGroupCreate();
+    953          
+    954              //
+    955              // Make sure we actually allocated space for the events we need.
+    956              //
+    957              while (xRenderEventHandle == NULL);
+    958          
+    959              //
+    960              // Run display
+    961              //
+    962              if (init_mspi_mspi_xfer())
+    963              {
+    964                  while(1);
+    965              }
+    966          
+    967          #ifdef SWIPE
+    968              if (start_split_mspi_mspi_xfer(fb1, fb2, fb2Offset))
+    969              {
+    970                  while(1);
+    971              }
+    972          
+    973          #else
+    974              if (start_mspi_mspi_xfer(fb1, FRAME_SIZE))
+    975              {
+    976                  while(1);
+    977              }
+    978          
+    979          #endif
+    980          }
+    981          
+    982          //*****************************************************************************
+    983          //
+    984          // Short Description.
+    985          //
+    986          //*****************************************************************************
+    987          void
+    988          RenderTask(void *pvParameters)
+    989          {
+    990              uint32_t eventMask;
+    991          
+    992              while (1)
+    993              {
+    994                  //
+    995                  // Wait for an event to be posted to the Radio Event Handle.
+    996                  //
+    997                  eventMask = xEventGroupWaitBits(xRenderEventHandle, 0xF, pdTRUE,
+    998                                      pdFALSE, portMAX_DELAY);
+    999                  if (eventMask != 0)
+   1000                  {
+   1001                      if (eventMask & RENDER_EVENT_START_NEW_FRAME)
+   1002                      {
+   1003          #ifdef SWIPE
+   1004                          if ( start_split_mspi_mspi_xfer(fb1, fb2, fb2Offset) )
+   1005                          {
+   1006                              while(1);
+   1007                          }
+   1008          #else
+   1009                          uint32_t psramFbOffset;
+   1010                          psramFbOffset = (g_numDisplay & 0x1) ? fb2: fb1;
+   1011                          DEBUG_PRINT("Rendering ActFB %d\n", (g_numDisplay & 0x1));
+   1012                          if (start_mspi_mspi_xfer(psramFbOffset, FRAME_SIZE))
+   1013                          {
+   1014                              while(1);
+   1015                          }
+   1016          #endif
+   1017                      }
+   1018                  }
+   1019              }
+   1020          }
+   1021          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      24   RenderTask
+        24   -> start_split_mspi_mspi_xfer
+        24   -> xEventGroupWaitBits
+      56   RenderTaskSetup
+        56   -> am_devices_mspi_rm67162_set_transfer_window
+        56   -> am_hal_mspi_control
+        56   -> am_util_stdio_printf
+        56   -> mspi_init_split_read_cq_long
+        56   -> start_split_mspi_mspi_xfer
+        56   -> xEventGroupCreate
+        56   -> xQueueGenericSend
+        56   -> xQueueSemaphoreTake
+      16   am_mspi1_isr
+        16   -> am_hal_mspi_interrupt_clear
+        16   -> am_hal_mspi_interrupt_service
+        16   -> am_hal_mspi_interrupt_status_get
+      24   display_init
+        24   -> am_devices_mspi_rm67162_init
+        24   -> am_hal_gpio_interrupt_clear
+        24   -> am_hal_gpio_interrupt_enable
+        24   -> am_hal_gpio_interrupt_register
+        24   -> am_hal_gpio_pinconfig
+        24   -> am_hal_interrupt_master_enable
+       8   display_write_complete
+         8   -> xTimerPendFunctionCallFromISR
+      56   init_mspi_mspi_xfer
+        56   -> am_devices_mspi_rm67162_set_transfer_window
+        56   -> am_hal_mspi_control
+        56   -> mspi_init_split_read_cq_long
+        56   -> xQueueGenericSend
+        56   -> xQueueSemaphoreTake
+      60   mspi_init_cq_long
+      40   mspi_init_split_read_cq_long
+      44   mspi_init_split_write_cq_long
+       0   psram_read_complete
+      56   start_mspi_mspi_xfer
+        56   -> am_hal_mspi_control
+        56   -> xQueueGenericSend
+        56   -> xQueueSemaphoreTake
+      96   start_split_mspi_mspi_xfer
+        96   -> am_hal_mspi_control
+        96   -> xQueueGenericSend
+        96   -> xQueueSemaphoreTake
+       8   teInt_handler
+         8   -> xTimerPendFunctionCallFromISR
+
+
+   Section sizes:
+
+   Bytes    Function/Label
+   -----    --------------
+         4  ??DataTable10
+         4  ??DataTable10_1
+         4  ??DataTable10_10
+         4  ??DataTable10_2
+         4  ??DataTable10_3
+         4  ??DataTable10_4
+         4  ??DataTable10_5
+         4  ??DataTable10_6
+         4  ??DataTable10_7
+         4  ??DataTable10_8
+         4  ??DataTable10_9
+         4  ??DataTable12
+         4  ??DataTable12_1
+         4  ??DataTable12_10
+         4  ??DataTable12_11
+         4  ??DataTable12_12
+         4  ??DataTable12_13
+         4  ??DataTable12_14
+         4  ??DataTable12_15
+         4  ??DataTable12_16
+         4  ??DataTable12_17
+         4  ??DataTable12_18
+         4  ??DataTable12_19
+         4  ??DataTable12_2
+         4  ??DataTable12_20
+         4  ??DataTable12_21
+         4  ??DataTable12_22
+         4  ??DataTable12_23
+         4  ??DataTable12_24
+         4  ??DataTable12_25
+         4  ??DataTable12_3
+         4  ??DataTable12_4
+         4  ??DataTable12_5
+         4  ??DataTable12_6
+         4  ??DataTable12_7
+         4  ??DataTable12_8
+         4  ??DataTable12_9
+        20  ?_0
+        56  RenderTask
+       712  RenderTaskSetup
+        44  am_mspi1_isr
+       122  display_init
+        68  display_write_complete
+     6'576  gMspiDisplayCQ
+            gMspiPsramCQ
+    11'432  gMspiDisplaySplitLineCQ
+            g_MSPIDisplayHandle
+            g_DisplayHandle
+            xRenderEventHandle
+            g_TempBuf
+            SerialDisplayMSPICfg
+   103'368  gMspiPsramSplitLineCQ
+       264  g_MspiDisplayQBuffer
+         1  g_bDisplayDone
+         1  g_bTEInt
+         4  g_numDisplay
+       696  init_mspi_mspi_xfer
+       288  mspi_init_cq_long
+       360  mspi_init_split_read_cq_long
+       294  mspi_init_split_write_cq_long
+         2  psram_read_complete
+         4  render_task_handle
+       306  start_mspi_mspi_xfer
+       832  start_split_mspi_mspi_xfer
+         4  teCount
+        76  teInt_handler
+
+ 
+ 110'222 bytes in section .bss
+  11'432 bytes in section .data
+   4'024 bytes in section .text
+ 
+   4'024 bytes of CODE memory
+ 121'654 bytes of DATA memory
+
+Errors: none
+Warnings: none

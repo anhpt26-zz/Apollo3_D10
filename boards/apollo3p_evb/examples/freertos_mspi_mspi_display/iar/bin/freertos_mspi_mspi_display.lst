@@ -1,0 +1,318 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.50.6.265/W32 for ARM         08/Jul/2021  07:47:48
+# Copyright 1999-2020 IAR Systems AB.
+#
+#    Cpu mode                        
+#    Endian                       =  little
+#    Source file                  =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\freertos_mspi_mspi_display.c
+#    Command line                 =
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EW123.tmp
+#        (\\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\freertos_mspi_mspi_display.c
+#        -D iar -D AM_UTIL_FAULTISR_PRINT -D AM_FREERTOS -D APS6404L -D
+#        AM_DEBUG_PRINTF -D AM_PART_APOLLO3P -D AM_PACKAGE_BGA -lcN
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --diag_suppress Pa050 -o
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --debug --endian=little --cpu=Cortex-M4 --no_path_in_file_macros -e
+#        --fpu=VFPv4_sp --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.4\arm\inc\c\DLib_Config_Normal.h" -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\mcu\apollo3p\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\src\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\AmbiqMicro\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\devices\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\bsp\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\ARM\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\utils\\
+#        -Ohs --no_size_constraints)
+#    Locale                       =  C
+#    List file                    =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\freertos_mspi_mspi_display.lst
+#    Object file                  =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\freertos_mspi_mspi_display.o
+#    Runtime model:                  
+#      __SystemLibrary            =  DLib
+#      __dlib_full_locale_support =  0
+#      __dlib_version             =  6
+#
+###############################################################################
+
+\\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\freertos_mspi_mspi_display.c
+      1          //*****************************************************************************
+      2          //
+      3          //! @file freertos_mspi_iom_display.c
+      4          //!
+      5          //! @brief Example demonstrating frame buffer compositing and display rendering
+      6          //!
+      7          //! This example demonstrates frame buffer compositing and display rendering
+      8          //! using the hardware assisted MSPI to IOM transfer under FreeRTOS.
+      9          //! To demonstrate full speed frame composition and rendering, a ping-pong
+     10          //! Frame buffer is used in the PSRAM, and composition is done in parallel,
+     11          //! while rendering is ongoing from alternate frame buffer
+     12          //!
+     13          //! At initialization, both the Display and PSRAM are initialized and the Src images
+     14          //! initialized
+     15          //!
+     16          //! The program operates in one of the two modes - as directed by preprocessor macro SWIPE
+     17          //! If SWIPE is defined, the program demonstrates vertical and horizontal scrolling of
+     18          //! the Src Images - solely using scatter-gather of the Source images - with no CPU based
+     19          //! composition.
+     20          //!
+     21          //! If SWIPE is not defined, the example demonstrates Compostion using CPU and Rendering
+     22          //! happen in parallel - using a Ping-Pong FrameBuffer.
+     23          //!
+     24          //! Composition:
+     25          //! Composition uses two source images, again in PSRAM.
+     26          //! Src1 & Src2 - both containing a small vertical bar.
+     27          //! Composition creates a sliding bar effect, with the Src1 and Src2 bars moving
+     28          //! in opposite directions, overlapped with each other. In addition the background
+     29          //! color is changed for each update as well.
+     30          //! Compositing is done in internal SRAM, with small fragments
+     31          //! of Src images brought in to SRAM from PSRAM using DMA.
+     32          //! CPU computes the final image fragment using these two Src image fragments
+     33          //! brought into SRAM, which is then DMA'ed to PSRAM.
+     34          //! Compile time modes allow direct composition in PSRAM using XIPMM (or a combination
+     35          //! of XIP and XIPMM) as well.
+     36          //! The process repeats till the whole image is constructed.
+     37          //!
+     38          //! Rendering:
+     39          //! This example demonstrates transferring a large buffer from a PSRAM device
+     40          //! connected on MSPI, to a Display device connected to another MSPI, using
+     41          //! hardware handshaking in Apollo3 Blue Plus - with minimal CPU involvement.
+     42          //! MSPI PSRAM imposes limits on max transaction size as well as page size
+     43          //! restrictions which need to be accounted for each MSPI transcation. Most of
+     44          //! these are handled by the Apollo3 Blue Plus hardware itself.
+     45          //! For the hardware based transaction splitting to work though, the address
+     46          //! needs to be word aligned.  Hence the SW still takes care of some splitting
+     47          //! of transactions, if needed.
+     48          //!
+     49          //! The program here creates a command queue for both the MSPIs, to
+     50          //! create a sequence of transactions - each reading a segment of the source
+     51          //! buffer to a temp buffer in internal SRAM, and then writing the same to the
+     52          //! Display. It uses hardware handshaking so that the Display transaction
+     53          //! is started only once the segement is read out completely from MSPI PSRAM.
+     54          //! To best utilize the buses, a ping-pong model is used using two temporary
+     55          //! buffers in SRAM. This allows the interfaces to not idle while waiting for
+     56          //! other to finish - essentially achieving close to the bandwidth achieved by
+     57          //! the slower of the two.
+     58          //! Rendering is synchronized with the TE signal from the display to ensure
+     59          //! no tearing on the display as the display buffer is being updated
+     60          //!
+     61          //! XIP:
+     62          //! If enabled, a timer is started to run a prime function out of PSRAM periodically
+     63          //!
+     64          //! XIPMM:
+     65          //! If enabled, a timer is started to run a demo function to exercise XIPMM out of PSRAM
+     66          //!
+     67          //! Configurable parameters at compile time:
+     68          //! MSPI to use for DISPLAY  (DISPLAY_MSPI_MODULE)
+     69          //! MSPI to use for PSRAM  (PSRAM_MSPI_MODULE)
+     70          //!
+     71          //! Operating modes:
+     72          //! CQ_RAW - Uses Preconstructed CQ (only small changes done at
+     73          //! run time) - to save on the time to program the same at run time
+     74          //!
+     75          //! Memory Impacts of modes: If CQ_RAW is used - the buffer supplied to HAL for CQ could be very small,
+     76          //! as the raw CQ is supplied by the application. So overall memory usage is still about the same
+     77          //!
+     78          //! Independent Controls:
+     79          //! Composition Modes:
+     80          //!     How to Read Src Buffer: MODE_SRCBUF_READ (DMA/XIP/XIPMM <Apollo3-B0 Only>)
+     81          //!     How to Write to Frame Buffer: MODE_DESTBUF_WRITE (DMA/XIPMM <Apollo3-B0 Only>)
+     82          //!
+     83          //! @verbatim
+     84          //! Pin connections:
+     85          //!
+     86          //
+     87          //*****************************************************************************
+     88          
+     89          //*****************************************************************************
+     90          //
+     91          // Copyright (c) 2020, Ambiq Micro, Inc.
+     92          // All rights reserved.
+     93          //
+     94          // Redistribution and use in source and binary forms, with or without
+     95          // modification, are permitted provided that the following conditions are met:
+     96          //
+     97          // 1. Redistributions of source code must retain the above copyright notice,
+     98          // this list of conditions and the following disclaimer.
+     99          //
+    100          // 2. Redistributions in binary form must reproduce the above copyright
+    101          // notice, this list of conditions and the following disclaimer in the
+    102          // documentation and/or other materials provided with the distribution.
+    103          //
+    104          // 3. Neither the name of the copyright holder nor the names of its
+    105          // contributors may be used to endorse or promote products derived from this
+    106          // software without specific prior written permission.
+    107          //
+    108          // Third party software included in this distribution is subject to the
+    109          // additional license terms as defined in the /docs/licenses directory.
+    110          //
+    111          // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    112          // AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    113          // IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+    114          // ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+    115          // LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+    116          // CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    117          // SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    118          // INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    119          // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    120          // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    121          // POSSIBILITY OF SUCH DAMAGE.
+    122          //
+    123          // This is part of revision 2.5.1 of the AmbiqSuite Development Package.
+    124          //
+    125          //*****************************************************************************
+    126          
+    127          //*****************************************************************************
+    128          //
+    129          // This application has a large number of common include files. For
+    130          // convenience, we'll collect them all together in a single header and include
+    131          // that everywhere.
+    132          //
+    133          //*****************************************************************************
+    134          #include "freertos_mspi_mspi_display.h"
+    135          #include "rtos.h"
+    136          
+    137          
+    138          //*****************************************************************************
+    139          //
+    140          // Enable printing to the console.
+    141          //
+    142          //*****************************************************************************
+    143          void
+    144          enable_print_interface(void)
+    145          {
+    146              //
+    147              // Initialize a debug printing interface.
+    148              //
+    149              am_bsp_itm_printf_enable();
+    150          }
+    151          
+    152          
+    153          //*****************************************************************************
+    154          //
+    155          // Main Function
+    156          //
+    157          //*****************************************************************************
+    158          int
+    159          main(void)
+    160          {
+    161              //
+    162              // Set the clock frequency
+    163              //
+    164              am_hal_clkgen_control(AM_HAL_CLKGEN_CONTROL_SYSCLK_MAX, 0);
+    165          
+    166          #if 1
+    167              //
+    168              // Set the default cache configuration
+    169              //
+    170              am_hal_cachectrl_config(&am_hal_cachectrl_defaults);
+    171              am_hal_cachectrl_enable();
+    172          #endif
+    173          
+    174          #ifndef NOFPU
+    175              //
+    176              // Enable the floating point module, and configure the core for lazy
+    177              // stacking.
+    178              //
+    179              am_hal_sysctrl_fpu_enable();
+    180              am_hal_sysctrl_fpu_stacking_enable(true);
+    181          #else
+    182              am_hal_sysctrl_fpu_disable();
+    183          #endif
+    184          
+    185              //
+    186              // Configure the board for low power.
+    187              //
+    188              am_bsp_low_power_init();
+    189          
+    190              //
+    191              // Enable printing to the console.
+    192              //
+    193          #ifdef AM_DEBUG_PRINTF
+    194              enable_print_interface();
+    195          #endif
+    196          
+    197              //
+    198              // Initialize plotting interface.
+    199              //
+    200              am_util_debug_printf("FreeRTOS MSPI-MSPI Display Example\n");
+    201          
+    202          
+    203              //
+    204              // Debug GPIO
+    205              //
+    206              am_hal_gpio_pinconfig(DBG1_GPIO, g_AM_HAL_GPIO_OUTPUT_12);
+    207              DEBUG_GPIO_LOW(DBG1_GPIO);
+    208              am_hal_gpio_pinconfig(DBG2_GPIO, g_AM_HAL_GPIO_OUTPUT_12);
+    209              DEBUG_GPIO_LOW(DBG2_GPIO);
+    210          
+    211              //
+    212              // Run the application.
+    213              //
+    214              run_tasks();
+    215          
+    216              //
+    217              // We shouldn't ever get here.
+    218              //
+    219              while (1)
+    220              {
+    221              }
+    222          
+    223          }
+    224          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   enable_print_interface
+         0   -> am_bsp_itm_printf_enable
+       8   main
+         8   -> am_bsp_itm_printf_enable
+         8   -> am_bsp_low_power_init
+         8   -> am_hal_cachectrl_config
+         8   -> am_hal_cachectrl_enable
+         8   -> am_hal_clkgen_control
+         8   -> am_hal_gpio_pinconfig
+         8   -> am_hal_gpio_state_write
+         8   -> am_hal_sysctrl_fpu_enable
+         8   -> am_hal_sysctrl_fpu_stacking_enable
+         8   -> am_util_stdio_printf
+         8   -> run_tasks
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+       4  ??DataTable1_1
+       4  ??DataTable1_2
+      36  ?_0
+       4  enable_print_interface
+      84  main
+
+ 
+  36 bytes in section .rodata
+ 100 bytes in section .text
+ 
+ 100 bytes of CODE  memory
+  36 bytes of CONST memory
+
+Errors: none
+Warnings: none

@@ -1,0 +1,1134 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.50.6.265/W32 for ARM         08/Jul/2021  07:47:43
+# Copyright 1999-2020 IAR Systems AB.
+#
+#    Cpu mode             
+#    Endian            =  little
+#    Source file       =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\devices\am_devices_mspi_rm67162.c
+#    Command line      =
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EWEF0A.tmp
+#        (\\Mac\Home\Documents\Apollo3\A3_SDK\devices\am_devices_mspi_rm67162.c
+#        -D iar -D AM_UTIL_FAULTISR_PRINT -D AM_FREERTOS -D APS6404L -D
+#        AM_DEBUG_PRINTF -D AM_PART_APOLLO3P -D AM_PACKAGE_BGA -lcN
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --diag_suppress Pa050 -o
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --debug --endian=little --cpu=Cortex-M4 --no_path_in_file_macros -e
+#        --fpu=VFPv4_sp --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.4\arm\inc\c\DLib_Config_Normal.h" -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\mcu\apollo3p\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\src\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\AmbiqMicro\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\devices\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\bsp\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\ARM\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\utils\\
+#        -Ohs --no_size_constraints)
+#    Locale            =  C
+#    List file         =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\am_devices_mspi_rm67162.lst
+#    Object file       =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\am_devices_mspi_rm67162.o
+#    Runtime model:       
+#      __SystemLibrary =  DLib
+#      __dlib_version  =  6
+#
+###############################################################################
+
+\\Mac\Home\Documents\Apollo3\A3_SDK\devices\am_devices_mspi_rm67162.c
+      1          //*****************************************************************************
+      2          //
+      3          //! @file am_devices_mspi_rm67162.c
+      4          //!
+      5          //! @brief Generic Raydium TFT display driver.
+      6          //
+      7          //*****************************************************************************
+      8          
+      9          //*****************************************************************************
+     10          //
+     11          // Copyright (c) 2020, Ambiq Micro, Inc.
+     12          // All rights reserved.
+     13          //
+     14          // Redistribution and use in source and binary forms, with or without
+     15          // modification, are permitted provided that the following conditions are met:
+     16          //
+     17          // 1. Redistributions of source code must retain the above copyright notice,
+     18          // this list of conditions and the following disclaimer.
+     19          //
+     20          // 2. Redistributions in binary form must reproduce the above copyright
+     21          // notice, this list of conditions and the following disclaimer in the
+     22          // documentation and/or other materials provided with the distribution.
+     23          //
+     24          // 3. Neither the name of the copyright holder nor the names of its
+     25          // contributors may be used to endorse or promote products derived from this
+     26          // software without specific prior written permission.
+     27          //
+     28          // Third party software included in this distribution is subject to the
+     29          // additional license terms as defined in the /docs/licenses directory.
+     30          //
+     31          // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+     32          // AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+     33          // IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+     34          // ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+     35          // LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+     36          // CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+     37          // SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+     38          // INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+     39          // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+     40          // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+     41          // POSSIBILITY OF SUCH DAMAGE.
+     42          //
+     43          // This is part of revision 2.5.1 of the AmbiqSuite Development Package.
+     44          //
+     45          //*****************************************************************************
+     46          
+     47          
+     48          #include <string.h>
+     49          #include "am_mcu_apollo.h"
+     50          #include "am_devices_mspi_rm67162.h"
+     51          #include "am_bsp.h"
+     52          #include "am_util_delay.h"
+     53          #include "am_util.h"
+     54          
+     55          //*****************************************************************************
+     56          //
+     57          // Global variables.
+     58          //
+     59          //*****************************************************************************
+     60          #define BYTE_NUM_PER_WRITE  65535
+     61          //#define BYTE_NUM_PER_WRITE              AM_HAL_MSPI_MAX_TRANS_SIZE
+     62          #define AM_DEVICES_MSPI_TIMEOUT         1000000
+     63          
+     64          static struct
+     65          {
+     66              uint32_t row_start;
+     67              uint32_t row_end;
+     68              uint32_t col_start;
+     69              uint32_t col_end;
+     70          } gs_display_info;
+     71          
+     72          static am_devices_rm67162_graphic_conf_t g_sGraphic_conf =
+     73          {
+     74              .bus_mode       = AM_DEVICES_RM67162_SPI_WRAM,
+     75              .color_mode     = AM_DEVICES_RM67162_COLOR_MODE_8BIT,
+     76              .scan_mode      = AM_DEVICES_RM67162_SCAN_MODE_0,
+     77              .max_row        = 400, //390,
+     78              .max_col        = 400, // 390,
+     79              .row_offset     = 0,
+     80              .col_offset     = 0 // 6
+     81          //    .col_offset     = 100
+     82          };
+     83          
+     84          // Display MSPI configuration
+     85          static am_hal_mspi_dev_config_t  SerialDisplayMSPICfg =
+     86          {
+     87              .ui8TurnAround        = 1,
+     88              .eAddrCfg             = AM_HAL_MSPI_ADDR_3_BYTE,
+     89              .eInstrCfg            = AM_HAL_MSPI_INSTR_1_BYTE,
+     90              .ui8ReadInstr         = AM_DEVICES_RM67162_MEMORY_READ,
+     91              .ui8WriteInstr        = AM_DEVICES_RM67162_MEMORY_WRITE_CONTINUE, // AM_DEVICES_RM67162_MEMORY_WRITE_CONTINUE,
+     92              .eDeviceConfig        = AM_HAL_MSPI_FLASH_SERIAL_CE0,
+     93              .ui8WriteLatency      = 0,
+     94              .eSpiMode             = AM_HAL_MSPI_SPI_MODE_0,
+     95              .eClockFreq           = AM_HAL_MSPI_CLK_48MHZ,
+     96              .bEnWriteLatency      = false,
+     97              .bSendAddr            = false,
+     98              .bSendInstr           = true,
+     99              .bTurnaround          = false,
+    100              .bEmulateDDR          = false,
+    101              .ui16DMATimeLimit     = 0,
+    102              .eDMABoundary         = AM_HAL_MSPI_BOUNDARY_NONE,
+    103              .ui32TCBSize          = 0,
+    104              .pTCB                 = 0,
+    105              .scramblingStartAddr  = 0,
+    106              .scramblingEndAddr    = 0,
+    107          };
+    108          
+    109          typedef struct
+    110          {
+    111              uint32_t                    ui32Module;
+    112              am_hal_mspi_clock_e         eClockFreq;
+    113              void                        *pMspiHandle;
+    114              bool                        bOccupied;
+    115          } am_devices_mspi_rm67162_t;
+    116          
+    117          am_devices_mspi_rm67162_t gAmRm67162[AM_DEVICES_MSPI_RM67162_MAX_DEVICE_NUM];
+    118          
+    119          am_hal_mspi_clock_e g_MaxReadFreq = AM_HAL_MSPI_CLK_8MHZ;
+    120          
+    121          void pfnMSPI_RM67162_Callback(void *pCallbackCtxt, uint32_t status)
+    122          {
+    123              // Set the DMA complete flag.
+    124              *(volatile bool *)pCallbackCtxt = true;
+    125          }
+    126          
+    127          //*****************************************************************************
+    128          //
+    129          // Generic Command Write function.
+    130          //
+    131          //*****************************************************************************
+    132          uint32_t
+    133          am_devices_rm67162_command_write(void *pHandle,
+    134                                           uint32_t ui32Instr,
+    135                                           uint8_t *pData,
+    136                                           uint32_t ui32NumBytes)
+    137          {
+    138            am_hal_mspi_pio_transfer_t  Transaction;
+    139            am_devices_mspi_rm67162_t *pDisplay = (am_devices_mspi_rm67162_t *)pHandle;
+    140          
+    141            // Create the individual write transaction.
+    142            Transaction.ui32NumBytes            = ui32NumBytes;
+    143            Transaction.bScrambling             = false;
+    144            Transaction.bDCX                    = true;
+    145            Transaction.eDirection              = AM_HAL_MSPI_TX;
+    146            Transaction.bSendAddr               = false;
+    147            Transaction.ui32DeviceAddr          = 0;
+    148            Transaction.bSendInstr              = true;
+    149            Transaction.ui16DeviceInstr         = ui32Instr;
+    150            Transaction.bTurnaround             = false;
+    151            Transaction.bEnWRLatency            = false;
+    152            Transaction.bQuadCmd                = false;
+    153            Transaction.bContinue               = false;
+    154            Transaction.pui32Buffer             = (uint32_t *)pData;
+    155          
+    156            //
+    157            // Execute the transction over MSPI.
+    158            //
+    159            if (am_hal_mspi_blocking_transfer(pDisplay->pMspiHandle, &Transaction, AM_DEVICES_MSPI_TIMEOUT))
+    160            {
+    161              return AM_DEVICES_RM67162_STATUS_ERROR;
+    162            }
+    163          
+    164            return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    165          }
+    166          
+    167          static uint32_t
+    168          am_devices_rm67162_command_read(void *pHandle,
+    169                                          uint32_t ui32Instr,
+    170                                          uint32_t *pData,
+    171                                          uint32_t ui32NumBytes,
+    172                                          bool bTurnaround)
+    173          {
+    174            am_hal_mspi_pio_transfer_t  Transaction;
+    175            am_devices_mspi_rm67162_t *pDisplay = (am_devices_mspi_rm67162_t *)pHandle;
+    176            uint32_t        ui32Status = AM_DEVICES_RM67162_STATUS_SUCCESS;
+    177          
+    178            // Create the individual write transaction.
+    179            Transaction.ui32NumBytes            = ui32NumBytes;
+    180            Transaction.bScrambling             = false;
+    181            Transaction.bDCX                    = true;
+    182            Transaction.eDirection              = AM_HAL_MSPI_RX;
+    183            Transaction.bSendAddr               = false;
+    184            Transaction.ui32DeviceAddr          = 0;
+    185            Transaction.bSendInstr              = true;
+    186            Transaction.ui16DeviceInstr         = ui32Instr;
+    187            Transaction.bTurnaround             = bTurnaround;
+    188            Transaction.bEnWRLatency            = false;
+    189            Transaction.bQuadCmd                = false;
+    190            Transaction.bContinue               = false;
+    191            Transaction.pui32Buffer             = pData;
+    192          
+    193            am_hal_mspi_control(pDisplay->pMspiHandle, AM_HAL_MSPI_REQ_CLOCK_CONFIG, &g_MaxReadFreq);
+    194          
+    195            //
+    196            // Execute the transction over MSPI.
+    197            //
+    198            if (am_hal_mspi_blocking_transfer(pDisplay->pMspiHandle,
+    199                                              &Transaction,
+    200                                              AM_DEVICES_MSPI_TIMEOUT))
+    201            {
+    202              ui32Status = AM_DEVICES_RM67162_STATUS_ERROR;
+    203            }
+    204            am_hal_mspi_control(pDisplay->pMspiHandle, AM_HAL_MSPI_REQ_CLOCK_CONFIG, &pDisplay->eClockFreq);
+    205            return ui32Status;
+    206          }
+    207          
+    208          //*****************************************************************************
+    209          //
+    210          //! @brief Reads the current status of the external display
+    211          //!
+    212          //! @param ui32DeviceNumber - Device number of the external display
+    213          //!
+    214          //! This function reads the device ID register of the external display, and returns
+    215          //! the result as an 32-bit unsigned integer value.
+    216          //!
+    217          //! @return 32-bit status
+    218          //
+    219          //*****************************************************************************
+    220          uint32_t
+    221          am_devices_rm67162_reset(void *pHandle)
+    222          {
+    223              // Hardware Reset
+    224          #if 1
+    225              am_hal_gpio_state_write(AM_BSP_GPIO_DISPLAY_RESET, AM_HAL_GPIO_OUTPUT_SET);
+    226              am_util_delay_ms(20);
+    227              am_hal_gpio_state_write(AM_BSP_GPIO_DISPLAY_RESET, AM_HAL_GPIO_OUTPUT_CLEAR);
+    228              am_util_delay_ms(20);
+    229              am_hal_gpio_state_write(AM_BSP_GPIO_DISPLAY_RESET, AM_HAL_GPIO_OUTPUT_SET);
+    230              am_util_delay_ms(20);
+    231          #endif
+    232              if ( am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_SWRESET, NULL, 0) )
+    233              {
+    234                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    235              }
+    236              am_util_delay_ms(300);
+    237          
+    238              return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    239          }
+    240          
+    241          uint32_t
+    242          am_devices_rm67162_display_off(void *pHandle)
+    243          {
+    244              if ( am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_DISPLAY_OFF, NULL, 0) )
+    245              {
+    246                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    247              }
+    248          
+    249              if ( am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_SLEEP_IN, NULL, 0) )
+    250              {
+    251                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    252              }
+    253          
+    254              return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    255          }
+    256          
+    257          uint32_t
+    258          am_devices_rm67162_display_on(void *pHandle)
+    259          {
+    260              if ( am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_DISPLAY_ON, NULL, 0) )
+    261              {
+    262                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    263              }
+    264          
+    265              return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    266          }
+    267          
+    268          //*****************************************************************************
+    269          //
+    270          //! @brief Programs the given range of flash addresses.
+    271          //!
+    272          //! @param pui8TxBuffer - Buffer to write the external flash data from
+    273          //! @param ui32NumBytes - Number of bytes to write to the external flash
+    274          //!
+    275          //! This function uses the data in the provided pui8TxBuffer and copies it to
+    276          //! the external flash at the address given by ui32WriteAddress. It will copy
+    277          //! exactly ui32NumBytes of data from the original pui8TxBuffer pointer. The
+    278          //! user is responsible for ensuring that they do not overflow the target flash
+    279          //! memory or underflow the pui8TxBuffer array
+    280          //
+    281          //! @return 32-bit status
+    282          //
+    283          //*****************************************************************************
+    284          uint32_t
+    285          am_devices_rm67162_blocking_write(void *pHandle,
+    286                                            uint8_t *pui8TxBuffer,
+    287                                            uint32_t ui32NumBytes)
+    288          {
+    289            am_hal_mspi_pio_transfer_t  Transaction;
+    290            am_devices_mspi_rm67162_t *pDisplay = (am_devices_mspi_rm67162_t *)pHandle;
+    291          
+    292            // Create the individual write transaction.
+    293            Transaction.ui32NumBytes              = 0;
+    294            Transaction.bScrambling               = false;
+    295            Transaction.bDCX                      = true;
+    296            Transaction.eDirection                = AM_HAL_MSPI_TX;
+    297            Transaction.bSendAddr                 = false;
+    298            Transaction.ui32DeviceAddr            = 0;
+    299            Transaction.bSendInstr                = true;
+    300            Transaction.ui16DeviceInstr           = AM_DEVICES_RM67162_MEMORY_WRITE;
+    301            Transaction.bTurnaround               = false;
+    302            Transaction.bEnWRLatency              = false;
+    303            Transaction.bQuadCmd                  = false;
+    304            Transaction.bContinue                 = true;
+    305            Transaction.pui32Buffer               = NULL;
+    306          
+    307            //
+    308            // Execute the transction over MSPI.
+    309            //
+    310            if (am_hal_mspi_blocking_transfer(pDisplay->pMspiHandle, &Transaction, AM_DEVICES_MSPI_TIMEOUT))
+    311            {
+    312              return AM_DEVICES_RM67162_STATUS_ERROR;
+    313            }
+    314          
+    315            while (ui32NumBytes)
+    316            {
+    317              // Create the individual write transaction.
+    318              Transaction.ui32NumBytes            = (ui32NumBytes > BYTE_NUM_PER_WRITE) ? BYTE_NUM_PER_WRITE : ui32NumBytes;
+    319              Transaction.bScrambling             = false;
+    320              Transaction.bDCX                    = false;
+    321              Transaction.eDirection              = AM_HAL_MSPI_TX;
+    322              Transaction.bSendAddr               = false;
+    323              Transaction.ui32DeviceAddr          = 0;
+    324              Transaction.bSendInstr              = false;
+    325              Transaction.ui16DeviceInstr         = 0;
+    326              Transaction.bTurnaround             = false;
+    327              Transaction.bEnWRLatency            = false;
+    328              Transaction.bQuadCmd                = false;
+    329              Transaction.bContinue               = (ui32NumBytes > BYTE_NUM_PER_WRITE) ? true : false;
+    330              Transaction.pui32Buffer             = (uint32_t *)pui8TxBuffer;
+    331          
+    332              //
+    333              // Execute the transction over MSPI.
+    334              //
+    335              if (am_hal_mspi_blocking_transfer(pDisplay->pMspiHandle, &Transaction, AM_DEVICES_MSPI_TIMEOUT))
+    336              {
+    337                return AM_DEVICES_RM67162_STATUS_ERROR;
+    338              }
+    339          
+    340              ui32NumBytes -= Transaction.ui32NumBytes;
+    341              pui8TxBuffer += Transaction.ui32NumBytes;
+    342            }
+    343            return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    344          }
+    345          
+    346          //*****************************************************************************
+    347          //
+    348          //! @brief Reads the contents of the fram into a buffer.
+    349          //!
+    350          //! @param pui8RxBuffer - Buffer to store the received data from the flash
+    351          //! @param ui32ReadAddress - Address of desired data in external flash
+    352          //! @param ui32NumBytes - Number of bytes to read from external flash
+    353          //!
+    354          //! This function reads the external flash at the provided address and stores
+    355          //! the received data into the provided buffer location. This function will
+    356          //! only store ui32NumBytes worth of data.
+    357          //
+    358          //! @return 32-bit status
+    359          //
+    360          //*****************************************************************************
+    361          uint32_t
+    362          am_devices_rm67162_blocking_read(void *pHandle,
+    363                                           uint8_t *pui8RxBuffer,
+    364                                           uint32_t ui32NumBytes)
+    365          {
+    366            am_hal_mspi_pio_transfer_t  Transaction;
+    367            am_devices_mspi_rm67162_t *pDisplay = (am_devices_mspi_rm67162_t *)pHandle;
+    368          
+    369            // Create the individual write transaction.
+    370            Transaction.ui32NumBytes            = 0;
+    371            Transaction.bScrambling             = false;
+    372            Transaction.bDCX                    = true;
+    373            Transaction.eDirection              = AM_HAL_MSPI_RX;
+    374            Transaction.bSendAddr               = false;
+    375            Transaction.ui32DeviceAddr          = 0;
+    376            Transaction.bSendInstr              = true;
+    377            Transaction.ui16DeviceInstr         = AM_DEVICES_RM67162_MEMORY_READ;
+    378            Transaction.bTurnaround             = false;
+    379            Transaction.bEnWRLatency            = false;
+    380            Transaction.bQuadCmd                = false;
+    381            Transaction.bContinue               = true;
+    382            Transaction.pui32Buffer             = NULL;
+    383          
+    384            am_hal_mspi_control(pDisplay->pMspiHandle, AM_HAL_MSPI_REQ_CLOCK_CONFIG, &g_MaxReadFreq);
+    385          
+    386            //
+    387            // Execute the transction over MSPI.
+    388            //
+    389            if (am_hal_mspi_blocking_transfer(pDisplay->pMspiHandle, &Transaction, AM_DEVICES_MSPI_TIMEOUT))
+    390            {
+    391              am_hal_mspi_control(pDisplay->pMspiHandle, AM_HAL_MSPI_REQ_CLOCK_CONFIG, &pDisplay->eClockFreq);
+    392              return AM_DEVICES_RM67162_STATUS_ERROR;
+    393            }
+    394          
+    395            while (ui32NumBytes)
+    396            {
+    397              // Create the individual write transaction.
+    398              Transaction.ui32NumBytes            = (ui32NumBytes > BYTE_NUM_PER_WRITE) ? BYTE_NUM_PER_WRITE : ui32NumBytes;
+    399              Transaction.bScrambling             = false;
+    400              Transaction.bDCX                    = false;
+    401              Transaction.eDirection              = AM_HAL_MSPI_RX;
+    402              Transaction.bSendAddr               = false;
+    403              Transaction.ui32DeviceAddr          = 0;
+    404              Transaction.bSendInstr              = false;
+    405              Transaction.ui16DeviceInstr         = 0;
+    406              Transaction.bTurnaround             = false;
+    407              Transaction.bEnWRLatency            = false;
+    408              Transaction.bQuadCmd                = false;
+    409              Transaction.bContinue               = (ui32NumBytes > BYTE_NUM_PER_WRITE) ? true : false;
+    410              Transaction.pui32Buffer             = (uint32_t *)pui8RxBuffer;
+    411          
+    412              //
+    413              // Execute the transction over MSPI.
+    414              //
+    415              if (am_hal_mspi_blocking_transfer(pDisplay->pMspiHandle,
+    416                                                &Transaction,
+    417                                                AM_DEVICES_MSPI_TIMEOUT))
+    418              {
+    419                am_hal_mspi_control(pDisplay->pMspiHandle, AM_HAL_MSPI_REQ_CLOCK_CONFIG, &pDisplay->eClockFreq);
+    420                return AM_DEVICES_RM67162_STATUS_ERROR;
+    421              }
+    422          
+    423              ui32NumBytes -= Transaction.ui32NumBytes;
+    424              pui8RxBuffer += Transaction.ui32NumBytes;
+    425            }
+    426            am_hal_mspi_control(pDisplay->pMspiHandle, AM_HAL_MSPI_REQ_CLOCK_CONFIG, &pDisplay->eClockFreq);
+    427            return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    428          }
+    429          
+    430          //*****************************************************************************
+    431          //
+    432          //! @brief Programs the given range of display addresses.
+    433          //!
+    434          //! @param ui32Module - MSPI Instance
+    435          //! @param pui8TxBuffer - Buffer to write the data from
+    436          //! @param ui32NumBytes - Number of bytes to write to the display memory
+    437          //! @param bWaitForCompletion - Waits for CQ/DMA to complete before return.
+    438          //!
+    439          //! This function uses the data in the provided pui8TxBuffer and copies it to
+    440          //! the external flash at the address given by ui32WriteAddress. It will copy
+    441          //! exactly ui32NumBytes of data from the original pui8TxBuffer pointer. The
+    442          //! user is responsible for ensuring that they do not overflow the target flash
+    443          //! memory or underflow the pui8TxBuffer array
+    444          //
+    445          //! @return 32-bit status
+    446          //
+    447          //*****************************************************************************
+    448          uint32_t
+    449          am_devices_rm67162_nonblocking_write(void *pHandle,
+    450                                               uint8_t *pui8TxBuffer,
+    451                                               uint32_t ui32NumBytes,
+    452                                               bool bWaitForCompletion)
+    453          {
+    454            am_hal_mspi_dma_transfer_t    Transaction;
+    455            volatile bool                 bDMAComplete = false;
+    456            am_devices_mspi_rm67162_t *pDisplay = (am_devices_mspi_rm67162_t *)pHandle;
+    457          
+    458            //
+    459            // Enable DCX for DMA Transactions.
+    460            //
+    461            if (am_hal_mspi_control(pDisplay->pMspiHandle, AM_HAL_MSPI_REQ_DCX_EN, 0))
+    462            {
+    463              return AM_DEVICES_RM67162_STATUS_ERROR;
+    464            }
+    465          
+    466            //
+    467            // Create the transaction.
+    468            //
+    469            Transaction.ui8Priority               = 1;
+    470            Transaction.eDirection                = AM_HAL_MSPI_TX;
+    471            Transaction.ui32TransferCount         = ui32NumBytes;
+    472            Transaction.ui32DeviceAddress         = 0;
+    473            Transaction.ui32SRAMAddress           = (uint32_t)pui8TxBuffer;
+    474            Transaction.ui32PauseCondition        = 0;
+    475            Transaction.ui32StatusSetClr          = 0;
+    476          
+    477            //
+    478            // Execute the transction over MSPI.
+    479            //
+    480            if (am_hal_mspi_nonblocking_transfer(pDisplay->pMspiHandle,
+    481                                                 &Transaction,
+    482                                                 AM_HAL_MSPI_TRANS_DMA,
+    483                                                 pfnMSPI_RM67162_Callback,
+    484                                                 (void *)&bDMAComplete))
+    485            {
+    486              return AM_DEVICES_RM67162_STATUS_ERROR;
+    487            }
+    488          
+    489            if (bWaitForCompletion)
+    490            {
+    491          
+    492              // Wait for DMA Complete or Timeout
+    493              for (uint32_t i = 0; i < AM_DEVICES_MSPI_TIMEOUT; i++)
+    494              {
+    495                if (bDMAComplete)
+    496                {
+    497                  break;
+    498                }
+    499                //
+    500                // Call the BOOTROM cycle function to delay for about 1 microsecond.
+    501                //
+    502                am_hal_flash_delay( FLASH_CYCLES_US(1) );
+    503              }
+    504          
+    505              // Check the status.
+    506              if (!bDMAComplete)
+    507              {
+    508                return AM_DEVICES_RM67162_STATUS_ERROR;
+    509              }
+    510          
+    511            }
+    512            return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    513          }
+    514          
+    515          //*****************************************************************************
+    516          //
+    517          //! @brief Programs the given range of display addresses.
+    518          //!
+    519          //! @param ui32Module - MSPI Instance
+    520          //! @param pui8TxBuffer - Buffer to write the data from
+    521          //! @param ui32NumBytes - Number of bytes to write to the display memory
+    522          //! @param ui32PauseCondition - CQ Pause condition before execution.
+    523          //! @param ui32StatusSetClr - CQ Set/Clear condition after execution.
+    524          //! @param pfnCallback - Callback function after execution.
+    525          //! @param pCallbackCtxt - Callback context after execution.
+    526          //!
+    527          //! This function uses the data in the provided pui8TxBuffer and copies it to
+    528          //! the external display the address given by ui32WriteAddress. It will copy
+    529          //! exactly ui32NumBytes of data from the original pui8TxBuffer pointer. The
+    530          //! user is responsible for ensuring that they do not overflow the target display
+    531          //! memory or underflow the pui8TxBuffer array
+    532          //
+    533          //! @return 32-bit status
+    534          //
+    535          //*****************************************************************************
+    536          uint32_t
+    537          am_devices_rm67162_nonblocking_write_adv(void *pHandle,
+    538                                                   uint8_t *pui8TxBuffer,
+    539                                                   uint32_t ui32NumBytes,
+    540                                                   uint32_t ui32PauseCondition,
+    541                                                   uint32_t ui32StatusSetClr,
+    542                                                   am_hal_mspi_callback_t pfnCallback,
+    543                                                   void *pCallbackCtxt)
+    544          {
+    545            am_hal_mspi_dma_transfer_t Transaction;
+    546            am_devices_mspi_rm67162_t *pDisplay = (am_devices_mspi_rm67162_t *)pHandle;
+    547          
+    548            //
+    549            // Create the transaction.
+    550            //
+    551            Transaction.ui8Priority               = 1;
+    552            Transaction.eDirection                = AM_HAL_MSPI_TX;
+    553            Transaction.ui32TransferCount         = ui32NumBytes;
+    554            Transaction.ui32DeviceAddress         = 0;
+    555            Transaction.ui32SRAMAddress           = (uint32_t)pui8TxBuffer;
+    556            Transaction.ui32PauseCondition        = ui32PauseCondition;
+    557            Transaction.ui32StatusSetClr          = ui32StatusSetClr;
+    558          
+    559            //    am_hal_gpio_state_write(AM_BSP_GPIO_IOM0_DCX, AM_HAL_GPIO_OUTPUT_CLEAR);
+    560            //
+    561            // Execute the transction over IOM.
+    562            //
+    563            if (am_hal_mspi_nonblocking_transfer(pDisplay->pMspiHandle,
+    564                                                 &Transaction,
+    565                                                 AM_HAL_MSPI_TRANS_DMA,
+    566                                                 pfnCallback,
+    567                                                 pCallbackCtxt))
+    568            {
+    569              return AM_DEVICES_RM67162_STATUS_ERROR;
+    570            }
+    571          
+    572            return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    573          }
+    574          
+    575          //*****************************************************************************
+    576          //
+    577          //! @brief Reads the contents of the display into a buffer.
+    578          //!
+    579          //! @param ui32Module - MSPI Instance
+    580          //! @param pui8RxBuffer - Buffer to store the received data from the flash
+    581          //! @param ui32NumBytes - Number of bytes to read from external flash
+    582          //! @param bWaitForCompletion - Waits for CQ/DMA to complete before return.
+    583          //!
+    584          //! This function reads the external display at the provided address and stores
+    585          //! the received data into the provided buffer location. This function will
+    586          //! only store ui32NumBytes worth of data.
+    587          //
+    588          //! @return 32-bit status
+    589          //
+    590          //*****************************************************************************
+    591          uint32_t
+    592          am_devices_rm67162_nonblocking_read(void *pHandle,
+    593                                              uint8_t *pui8RxBuffer,
+    594                                              uint32_t ui32NumBytes,
+    595                                              bool bWaitForCompletion)
+    596          {
+    597            am_hal_mspi_dma_transfer_t    Transaction;
+    598            volatile bool                 bDMAComplete = false;
+    599            am_devices_mspi_rm67162_t *pDisplay = (am_devices_mspi_rm67162_t *)pHandle;
+    600          
+    601            //
+    602            // Create the transaction.
+    603            //
+    604            Transaction.ui8Priority               = 1;
+    605            Transaction.eDirection                = AM_HAL_MSPI_RX;
+    606            Transaction.ui32TransferCount         = ui32NumBytes;
+    607            Transaction.ui32DeviceAddress         = 0;
+    608            Transaction.ui32SRAMAddress           = (uint32_t)pui8RxBuffer;
+    609            Transaction.ui32PauseCondition        = 0;
+    610            Transaction.ui32StatusSetClr          = 0;
+    611          
+    612            am_hal_mspi_control(pDisplay->pMspiHandle, AM_HAL_MSPI_REQ_CLOCK_CONFIG, &g_MaxReadFreq);
+    613          
+    614            //
+    615            // Execute the transction over MSPI.
+    616            //
+    617            if (am_hal_mspi_nonblocking_transfer(pDisplay->pMspiHandle,
+    618                                                 &Transaction,
+    619                                                 AM_HAL_MSPI_TRANS_DMA,
+    620                                                 pfnMSPI_RM67162_Callback,
+    621                                                 (void *)&bDMAComplete))
+    622            {
+    623              am_hal_mspi_control(pDisplay->pMspiHandle, AM_HAL_MSPI_REQ_CLOCK_CONFIG, &pDisplay->eClockFreq);
+    624              return AM_DEVICES_RM67162_STATUS_ERROR;
+    625            }
+    626          
+    627            if (bWaitForCompletion)
+    628            {
+    629              // Wait for DMA Complete or Timeout
+    630              for (uint32_t i = 0; i < AM_DEVICES_MSPI_TIMEOUT; i++)
+    631              {
+    632                if (bDMAComplete)
+    633                {
+    634                  break;
+    635                }
+    636                //
+    637                // Call the BOOTROM cycle function to delay for about 1 microsecond.
+    638                //
+    639                am_hal_flash_delay( FLASH_CYCLES_US(1) );
+    640              }
+    641          
+    642              // Check the status.
+    643              if (!bDMAComplete)
+    644              {
+    645                am_hal_mspi_control(pDisplay->pMspiHandle, AM_HAL_MSPI_REQ_CLOCK_CONFIG, &pDisplay->eClockFreq);
+    646                return AM_DEVICES_RM67162_STATUS_ERROR;
+    647              }
+    648            }
+    649            am_hal_mspi_control(pDisplay->pMspiHandle, AM_HAL_MSPI_REQ_CLOCK_CONFIG, &pDisplay->eClockFreq);
+    650            return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    651          }
+    652          
+    653          static uint32_t
+    654          am_devices_set_row_col(void *pHandle, am_devices_rm67162_graphic_conf_t *psGraphic_conf)
+    655          {
+    656              uint8_t data[10] = {0};
+    657          
+    658              gs_display_info.row_start = psGraphic_conf->row_offset;
+    659              gs_display_info.row_end = psGraphic_conf->max_row + psGraphic_conf->row_offset - 1;
+    660              gs_display_info.col_start = psGraphic_conf->col_offset;
+    661              gs_display_info.col_end = psGraphic_conf->max_col + psGraphic_conf->col_offset - 1;
+    662          
+    663              /* set column start address */
+    664              data[0] = (gs_display_info.col_start / 256);
+    665              data[1] = (gs_display_info.col_start % 256);
+    666              data[2] = (gs_display_info.col_end / 256);
+    667              data[3] = (gs_display_info.col_end % 256);
+    668              if (am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_COLUMN_ADDR_SETTING, data, 4))//Column
+    669              {
+    670                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    671              }
+    672          
+    673              /* set row start address */
+    674              data[0] = (gs_display_info.row_start / 256);
+    675              data[1] = (gs_display_info.row_start % 256);
+    676              data[2] = (gs_display_info.row_end / 256);
+    677              data[3] = (gs_display_info.row_end % 256);
+    678              if (am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_ROW_ADDR_SETTING, data, 4))//raw
+    679              {
+    680                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    681              }
+    682          
+    683              return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    684          }
+    685          
+    686          static uint32_t
+    687          am_devices_lcm_init(void *pHandle, am_devices_rm67162_graphic_conf_t *psGraphic_conf)
+    688          {
+    689              uint8_t data[10] = {0};
+    690          
+    691              /*     Tearing effect line ON */
+    692              data[0] = 0x0;
+    693              if (am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_TEARING_EFFECT_LINE_ON, data, 1))
+    694              {
+    695                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    696              }
+    697          
+    698              data[0] = psGraphic_conf->bus_mode;
+    699              if (am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_SET_DSPI_MODE, data, 1))
+    700              {
+    701                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    702              }
+    703          
+    704              data[0] = psGraphic_conf->color_mode ;
+    705              if (am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_DATA_FORMAT_SEL, data, 1))
+    706              {
+    707                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    708              }
+    709          
+    710              data[0] = psGraphic_conf->scan_mode;
+    711              if (am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_SCAN_MODE, data, 1))
+    712              {
+    713                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    714              }
+    715          
+    716              data[0] = 0x20;
+    717              if (am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_SET_WRITE_DISPLAY_CTRL, data, 1))
+    718              {
+    719                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    720              }
+    721          
+    722              //
+    723              // Set row/col start/end addresses.
+    724              //
+    725              am_devices_set_row_col(pHandle, psGraphic_conf);
+    726          
+    727              /* set tear scan-line */
+    728              data[0] = 0x00;
+    729              data[1] = 0x28; // 0xf0
+    730              if ( am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_SET_TEAR_SCANLINE, data, 2) )
+    731              {
+    732                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    733              }
+    734              if ( am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_SLEEP_OUT, NULL, 0) )
+    735              {
+    736                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    737              }
+    738          
+    739              am_util_delay_ms(130);
+    740          
+    741              if ( am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_DISPLAY_ON, NULL, 0) )
+    742              {
+    743                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    744              }
+    745          
+    746              am_util_delay_ms(200);
+    747          
+    748              //    am_hal_gpio_state_write(AM_BSP_GPIO_DISPLAY_BL, AM_HAL_GPIO_OUTPUT_CLEAR);
+    749          
+    750              am_util_stdio_printf("AM_BSP_GPIO_DISPLAY_BL set on \n");
+    751          
+    752              return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    753          }
+    754          
+    755          //*****************************************************************************
+    756          //
+    757          //! @brief Initialize the rm67162 driver.
+    758          //!
+    759          //! @param ui32Module      - MSPI module ID.
+    760          //! @param psMSPISettings  - MSPI device structure describing the target spiflash.
+    761          //! @param ppMspiHandle    - MSPI handler.
+    762          //!
+    763          //! This function should be called before any other am_devices_rm67162
+    764          //! functions. It is used to set tell the other functions how to communicate
+    765          //! with the TFT display hardware.
+    766          //!
+    767          //! @return Status.
+    768          //
+    769          //*****************************************************************************
+    770          uint32_t
+    771          am_devices_mspi_rm67162_init(uint32_t ui32Module,
+    772                                       am_devices_mspi_rm67162_config_t *psMSPISettings,
+    773                                       void **ppHandle,
+    774                                       void **ppMspiHandle)
+    775          {
+    776            uint32_t      ui32Status;
+    777            uint32_t      ui32DeviceID;
+    778            uint32_t      ui32Index = 0;
+    779            am_hal_mspi_dev_config_t    mspiDevCfg;
+    780            void                       *pMspiHandle;
+    781          
+    782            if ((ui32Module > AM_REG_MSPI_NUM_MODULES) || (psMSPISettings == NULL))
+    783            {
+    784              return AM_DEVICES_RM67162_STATUS_ERROR;
+    785            }
+    786          
+    787            // Allocate a vacant device handle
+    788            for ( ui32Index = 0; ui32Index < AM_DEVICES_MSPI_RM67162_MAX_DEVICE_NUM; ui32Index++ )
+    789            {
+    790                if ( gAmRm67162[ui32Index].bOccupied == false )
+    791                {
+    792                    break;
+    793                }
+    794            }
+    795            if ( ui32Index == AM_DEVICES_MSPI_RM67162_MAX_DEVICE_NUM )
+    796            {
+    797                return AM_DEVICES_RM67162_STATUS_ERROR;
+    798            }
+    799          
+    800            //
+    801            // Re-Configure the MSPI for the requested operation mode.
+    802            //
+    803            mspiDevCfg = SerialDisplayMSPICfg;
+    804            mspiDevCfg.eClockFreq = psMSPISettings->eClockFreq;
+    805            //mspiDevCfg.eDeviceConfig = psMSPISettings->eDeviceConfig;
+    806            mspiDevCfg.ui32TCBSize = psMSPISettings->ui32NBTxnBufLength;
+    807            mspiDevCfg.pTCB = psMSPISettings->pNBTxnBuf;
+    808            mspiDevCfg.scramblingStartAddr = psMSPISettings->ui32ScramblingStartAddr;
+    809            mspiDevCfg.scramblingEndAddr = psMSPISettings->ui32ScramblingEndAddr;
+    810          
+    811            //
+    812            // Configure the MSPI pins.
+    813            //
+    814            am_bsp_mspi_pins_enable(ui32Module, mspiDevCfg.eDeviceConfig);
+    815          
+    816            //
+    817            // Initialize the MSPI instance.
+    818            // Enable power to the MSPI instance.
+    819            // Configure the MSPI for Serial operation during initialization.
+    820            // Enable the MSPI.
+    821            // HAL Success return is 0
+    822            //
+    823            if ( am_hal_mspi_initialize(ui32Module, &pMspiHandle)                      ||
+    824                 am_hal_mspi_power_control(pMspiHandle, AM_HAL_SYSCTRL_WAKE, false)    ||
+    825                 am_hal_mspi_device_configure(pMspiHandle, &mspiDevCfg)                ||
+    826                 am_hal_mspi_enable(pMspiHandle) )
+    827            {
+    828              return AM_DEVICES_RM67162_STATUS_ERROR;
+    829            }
+    830            else
+    831            {
+    832              //
+    833              // Enable DCX for DMA Transactions.
+    834              //
+    835              if ( am_hal_mspi_control(pMspiHandle, AM_HAL_MSPI_REQ_DCX_EN, 0) )
+    836              {
+    837                return AM_DEVICES_RM67162_STATUS_ERROR;
+    838              }
+    839              //
+    840              // Enable MSPI interrupts.
+    841              //
+    842              ui32Status = am_hal_mspi_interrupt_clear(pMspiHandle, AM_HAL_MSPI_INT_CQUPD | AM_HAL_MSPI_INT_ERR );
+    843              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    844              {
+    845                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    846              }
+    847          
+    848              ui32Status = am_hal_mspi_interrupt_enable(pMspiHandle, AM_HAL_MSPI_INT_CQUPD | AM_HAL_MSPI_INT_ERR );
+    849              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    850              {
+    851                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    852              }
+    853          
+    854              gAmRm67162[ui32Index].pMspiHandle = pMspiHandle;
+    855              gAmRm67162[ui32Index].ui32Module = ui32Module;
+    856              gAmRm67162[ui32Index].eClockFreq = psMSPISettings->eClockFreq;
+    857              *ppMspiHandle = pMspiHandle;
+    858              *ppHandle = (void *)&gAmRm67162[ui32Index];
+    859          
+    860              //
+    861              // Read the Device ID.
+    862              //
+    863              am_devices_rm67162_read_id((void*)&gAmRm67162[ui32Index], &ui32DeviceID);
+    864              am_util_stdio_printf("RM67167 Device ID = %6X\n", (ui32DeviceID & 0x00FFFFFF));
+    865          
+    866              //
+    867              // Device specific TFT display initialization.
+    868              //
+    869              am_util_delay_ms(500);
+    870              am_devices_rm67162_reset((void*)&gAmRm67162[ui32Index]);
+    871              ui32Status = am_devices_lcm_init((void*)&gAmRm67162[ui32Index], &g_sGraphic_conf);
+    872              if (AM_DEVICES_RM67162_STATUS_SUCCESS != ui32Status)
+    873              {
+    874                return AM_DEVICES_RM67162_STATUS_ERROR;
+    875              }
+    876              gAmRm67162[ui32Index].bOccupied = true;
+    877          
+    878              //am_hal_gpio_state_write(AM_BSP_GPIO_DISPLAY_BL, AM_HAL_GPIO_OUTPUT_SET);
+    879              //
+    880              // Return the status.
+    881              //
+    882              return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    883            }
+    884          }
+    885          
+    886          uint32_t
+    887          am_devices_mspi_rm67162_row_col_reset(void *pHandle)
+    888          {
+    889            uint32_t ui32Status = am_devices_set_row_col(pHandle, &g_sGraphic_conf);
+    890            if (AM_DEVICES_RM67162_STATUS_SUCCESS != ui32Status)
+    891            {
+    892              return AM_DEVICES_RM67162_STATUS_ERROR;
+    893            }
+    894            return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    895          }
+    896          
+    897          //*****************************************************************************
+    898          //
+    899          //! @brief De-Initialize the rm67162 driver.
+    900          //!
+    901          //! @param ui32Module     - MSPI Module#
+    902          //!
+    903          //! This function reverses the initialization
+    904          //!
+    905          //! @return Status.
+    906          //
+    907          //*****************************************************************************
+    908          uint32_t
+    909          am_devices_rm67162_term(void *pHandle)
+    910          {
+    911              am_devices_mspi_rm67162_t *pDisplay = (am_devices_mspi_rm67162_t *)pHandle;
+    912          
+    913              if ( pDisplay->ui32Module > AM_REG_IOM_NUM_MODULES )
+    914              {
+    915                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    916              }
+    917          
+    918              //    am_hal_gpio_interrupt_clear(AM_HAL_GPIO_MASKBIT(pGpioIntMask, AM_BSP_GPIO_DISPLAY_TE));
+    919              //    am_hal_gpio_interrupt_disable(AM_HAL_GPIO_MASKBIT(pGpioIntMask, AM_BSP_GPIO_DISPLAY_TE));
+    920              //    NVIC_DisableIRQ(GPIO_IRQn);
+    921          
+    922              // Disable the pins
+    923              //    am_bsp_iom_display_pins_disable(AM_BSP_4_WIRES_SPI_MODE);
+    924          
+    925              //
+    926              // Disable the MSPI.
+    927              //
+    928              am_hal_mspi_disable(pDisplay->pMspiHandle);
+    929          
+    930              //
+    931              // Disable power to and uninitialize the MSPI instance.
+    932              //
+    933              am_hal_mspi_power_control(pDisplay->pMspiHandle, AM_HAL_SYSCTRL_DEEPSLEEP, false);
+    934          
+    935              am_hal_mspi_deinitialize(pDisplay->pMspiHandle);
+    936          
+    937              // Free this device handle
+    938              pDisplay->bOccupied = false;
+    939          
+    940              //
+    941              // Return the status.
+    942              //
+    943              return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    944          }
+    945          
+    946          uint32_t
+    947          am_devices_rm67162_read_id(void *pHandle, uint32_t *pdata)
+    948          {
+    949              if (am_devices_rm67162_command_read(pHandle, AM_DEVICES_RM67162_READ_ID, pdata, 3, true))
+    950              {
+    951                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    952              }
+    953          
+    954              return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    955          }
+    956          
+    957          uint32_t
+    958          am_devices_mspi_rm67162_set_transfer_window(void *pHandle, uint32_t startRow, uint32_t startCol, uint32_t endRow, uint32_t endCol)
+    959          {
+    960              uint8_t data[4] = {0};
+    961          
+    962              /* set column start address */
+    963              data[0] = (startCol / 256);
+    964              data[1] = (startCol % 256);
+    965              data[2] = (endCol / 256);
+    966              data[3] = (endCol % 256);
+    967              if (am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_COLUMN_ADDR_SETTING, data, 4))//Column
+    968              {
+    969                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    970              }
+    971          
+    972              /* set row start address */
+    973              data[0] = (startRow / 256);
+    974              data[1] = (startRow % 256);
+    975              data[2] = (endRow / 256);
+    976              data[3] = (endRow % 256);
+    977              if (am_devices_rm67162_command_write(pHandle, AM_DEVICES_RM67162_ROW_ADDR_SETTING, data, 4))//raw
+    978              {
+    979                  return AM_DEVICES_RM67162_STATUS_ERROR;
+    980              }
+    981          
+    982              return AM_DEVICES_RM67162_STATUS_SUCCESS;
+    983          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+     120   am_devices_mspi_rm67162_init
+       120   -> __aeabi_memclr4
+       120   -> am_bsp_mspi_pins_enable
+       120   -> am_hal_gpio_state_write
+       120   -> am_hal_mspi_blocking_transfer
+       120   -> am_hal_mspi_control
+       120   -> am_hal_mspi_device_configure
+       120   -> am_hal_mspi_enable
+       120   -> am_hal_mspi_initialize
+       120   -> am_hal_mspi_interrupt_clear
+       120   -> am_hal_mspi_interrupt_enable
+       120   -> am_hal_mspi_power_control
+       120   -> am_util_delay_ms
+       120   -> am_util_stdio_printf
+      56   am_devices_mspi_rm67162_row_col_reset
+        56   -> __aeabi_memclr4
+        56   -> am_hal_mspi_blocking_transfer
+      56   am_devices_mspi_rm67162_set_transfer_window
+        56   -> am_hal_mspi_blocking_transfer
+      48   am_devices_rm67162_blocking_read
+        48   -> am_hal_mspi_blocking_transfer
+        48   -> am_hal_mspi_control
+      48   am_devices_rm67162_blocking_write
+        48   -> am_hal_mspi_blocking_transfer
+      32   am_devices_rm67162_command_write
+        32   -> am_hal_mspi_blocking_transfer
+      40   am_devices_rm67162_display_off
+        40   -> am_hal_mspi_blocking_transfer
+      32   am_devices_rm67162_display_on
+        32   -> am_hal_mspi_blocking_transfer
+      48   am_devices_rm67162_nonblocking_read
+        48   -> am_hal_flash_delay
+        48   -> am_hal_mspi_control
+        48   -> am_hal_mspi_nonblocking_transfer
+      56   am_devices_rm67162_nonblocking_write
+        56   -> am_hal_flash_delay
+        56   -> am_hal_mspi_control
+        56   -> am_hal_mspi_nonblocking_transfer
+      48   am_devices_rm67162_nonblocking_write_adv
+        48   -> am_hal_mspi_nonblocking_transfer
+      40   am_devices_rm67162_read_id
+        40   -> am_hal_mspi_blocking_transfer
+        40   -> am_hal_mspi_control
+      32   am_devices_rm67162_reset
+        32   -> am_hal_gpio_state_write
+        32   -> am_hal_mspi_blocking_transfer
+        32   -> am_util_delay_ms
+       8   am_devices_rm67162_term
+         8   -> am_hal_mspi_deinitialize
+         8   -> am_hal_mspi_disable
+         8   -> am_hal_mspi_power_control
+       0   pfnMSPI_RM67162_Callback
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable14
+       4  ??DataTable14_1
+       4  ??DataTable14_2
+       4  ??DataTable14_3
+      32  ?_0
+      28  ?_1
+      69  SerialDisplayMSPICfg
+          gs_display_info
+          gAmRm67162
+          g_MaxReadFreq
+   1'160  am_devices_mspi_rm67162_init
+     190  am_devices_mspi_rm67162_row_col_reset
+     194  am_devices_mspi_rm67162_set_transfer_window
+     190  am_devices_rm67162_blocking_read
+     176  am_devices_rm67162_blocking_write
+      64  am_devices_rm67162_command_write
+     132  am_devices_rm67162_display_off
+      66  am_devices_rm67162_display_on
+     126  am_devices_rm67162_nonblocking_read
+     114  am_devices_rm67162_nonblocking_write
+      58  am_devices_rm67162_nonblocking_write_adv
+      98  am_devices_rm67162_read_id
+     118  am_devices_rm67162_reset
+      42  am_devices_rm67162_term
+      20  g_sGraphic_conf
+       6  pfnMSPI_RM67162_Callback
+
+ 
+    89 bytes in section .data
+ 2'810 bytes in section .text
+ 
+ 2'810 bytes of CODE memory
+    89 bytes of DATA memory
+
+Errors: none
+Warnings: none

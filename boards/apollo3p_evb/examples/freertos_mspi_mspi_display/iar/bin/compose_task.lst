@@ -1,0 +1,823 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.50.6.265/W32 for ARM         08/Jul/2021  07:47:46
+# Copyright 1999-2020 IAR Systems AB.
+#
+#    Cpu mode                        
+#    Endian                       =  little
+#    Source file                  =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\compose_task.c
+#    Command line                 =
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EWF960.tmp
+#        (\\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\compose_task.c
+#        -D iar -D AM_UTIL_FAULTISR_PRINT -D AM_FREERTOS -D APS6404L -D
+#        AM_DEBUG_PRINTF -D AM_PART_APOLLO3P -D AM_PACKAGE_BGA -lcN
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --diag_suppress Pa050 -o
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --debug --endian=little --cpu=Cortex-M4 --no_path_in_file_macros -e
+#        --fpu=VFPv4_sp --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.4\arm\inc\c\DLib_Config_Normal.h" -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\mcu\apollo3p\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\src\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\AmbiqMicro\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\devices\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\bsp\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\ARM\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\utils\\
+#        -Ohs --no_size_constraints)
+#    Locale                       =  C
+#    List file                    =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\compose_task.lst
+#    Object file                  =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\compose_task.o
+#    Runtime model:                  
+#      __SystemLibrary            =  DLib
+#      __dlib_full_locale_support =  0
+#      __dlib_version             =  6
+#
+###############################################################################
+
+\\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\src\compose_task.c
+      1          //*****************************************************************************
+      2          //
+      3          //! @file compose_task.c
+      4          //!
+      5          //! @brief Task to handle composition operation.
+      6          //!
+      7          //*****************************************************************************
+      8          
+      9          //*****************************************************************************
+     10          //
+     11          // Copyright (c) 2020, Ambiq Micro, Inc.
+     12          // All rights reserved.
+     13          //
+     14          // Redistribution and use in source and binary forms, with or without
+     15          // modification, are permitted provided that the following conditions are met:
+     16          //
+     17          // 1. Redistributions of source code must retain the above copyright notice,
+     18          // this list of conditions and the following disclaimer.
+     19          //
+     20          // 2. Redistributions in binary form must reproduce the above copyright
+     21          // notice, this list of conditions and the following disclaimer in the
+     22          // documentation and/or other materials provided with the distribution.
+     23          //
+     24          // 3. Neither the name of the copyright holder nor the names of its
+     25          // contributors may be used to endorse or promote products derived from this
+     26          // software without specific prior written permission.
+     27          //
+     28          // Third party software included in this distribution is subject to the
+     29          // additional license terms as defined in the /docs/licenses directory.
+     30          //
+     31          // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+     32          // AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+     33          // IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+     34          // ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+     35          // LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+     36          // CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+     37          // SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+     38          // INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+     39          // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+     40          // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+     41          // POSSIBILITY OF SUCH DAMAGE.
+     42          //
+     43          // This is part of revision 2.5.1 of the AmbiqSuite Development Package.
+     44          //
+     45          //*****************************************************************************
+     46          #include "freertos_mspi_mspi_display.h"
+     47          #include "compose_task.h"
+     48          
+     49          //*****************************************************************************
+     50          //
+     51          // Composition Fragments
+     52          //
+     53          //*****************************************************************************
+     54          // Control the granularity of composition
+     55          // For SWIPE - this also controls the size of temp buffer
+     56          #define NUM_ROW_PER_COMPOSE_FRAGMENT      2
+     57          #define COMPOSE_FRAGMENT_SIZE             (NUM_ROW_PER_COMPOSE_FRAGMENT * ROW_SIZE)
+     58          #define NUM_COMPOSE_FRAGMENTS             ((ROW_NUM + NUM_ROW_PER_COMPOSE_FRAGMENT - 1) / NUM_ROW_PER_COMPOSE_FRAGMENT)
+     59          
+     60          
+     61          //*****************************************************************************
+     62          //
+     63          // Global Variables
+     64          //
+     65          //*****************************************************************************
+     66          volatile bool   g_bNewDisplay = false;
+     67          volatile bool   g_bNewFB = false;
+     68          void            *g_PsramHandle;
+     69          void            *g_MSPIPsramHandle;
+     70          
+     71          uint32_t        fb1 = PSRAM_ACTFB1_OFFSET;
+     72          uint32_t        fb2 = PSRAM_ACTFB2_OFFSET;
+     73          #ifdef SWIPE
+     74          uint8_t         numSwipes = 0;
+     75          bool            bSwipeHorizontal = true;
+     76          uint32_t        fb2Offset = COLUMN_NUM;
+     77          #endif
+     78          
+     79          
+     80          //*****************************************************************************
+     81          //
+     82          // Local Variables
+     83          //
+     84          //*****************************************************************************
+     85          // Buffer for non-blocking transactions for Source MSPI - Needs to be big enough to accomodate
+     86          // all the transactions
+     87          #ifndef CQ_RAW
+     88          // A factor of 2 is needed because each transaction could be split into 2 to ensure the large
+     89          // transaction always starts at word aligned address
+     90          static uint32_t        g_MspiPsramQBuffer[(AM_HAL_MSPI_CQ_ENTRY_SIZE / 4) * (NUM_FRAGMENTS + 1) * 2];
+     91          #else
+     92          static uint32_t        g_MspiPsramQBuffer[(AM_HAL_MSPI_CQ_ENTRY_SIZE / 4) * (2 + 1)];
+     93          
+     94          #endif
+     95          
+     96          #ifdef SWIPE
+     97          // Pre-constructed Image(s)
+     98          extern const unsigned char g_ambiq_logo_bmp[];
+     99          extern const unsigned char g_ambiq_logo_bmp0[];
+    100          extern const unsigned char g_ambiq_logo_bmp1[];
+    101          extern const unsigned char g_ambiq_logo_bmp2[];
+    102          extern const unsigned char g_ambiq_logo_bmp_allblack[];
+    103          uint8_t                    *img0 = (uint8_t *)g_ambiq_logo_bmp0;
+    104          uint8_t                    *img1 = (uint8_t *)g_ambiq_logo_bmp2;
+    105          //uint8_t                    *img0 = (uint8_t *)g_ambiq_logo_bmp_allblack;
+    106          //uint8_t                    *img1 = (uint8_t *)g_ambiq_logo_bmp_allblack;
+    107          #else
+    108          static uint32_t         g_RxFrag[2][COMPOSE_FRAGMENT_SIZE / 4];
+    109          static uint32_t         g_TxFrag[COMPOSE_FRAGMENT_SIZE / 4];
+    110          // Composition States: n is NUM_COMPOSE_FRAGMENTS
+    111          // 0: Initial State - Read two fragments
+    112          // 1: Compose frag # 0, Read Frag # 1
+    113          // 2: Compose frag # 1, Read Frag # 2
+    114          // 3: Compose frag # 2, Read Frag # 3
+    115          // 4: Compose frag # 3, Read Frag # 4
+    116          // n-1: Compose frag # n-1, Read Frag # 0
+    117          static uint32_t        g_ComposeState = 0;
+    118          static uint32_t        g_numCompose = 0;
+    119          
+    120          // Memory for hiprio transactions
+    121          // Need to use hiprio transactions to insert in between a running sequence
+    122          static uint8_t         g_MspiHiPrioBuf[(AM_HAL_MSPI_HIPRIO_ENTRY_SIZE)*6]; // We write two lines - which could be split into 4 transactions
+    123          #endif
+    124          
+    125          //*****************************************************************************
+    126          //
+    127          // Composition task handle.
+    128          //
+    129          //*****************************************************************************
+    130          TaskHandle_t compose_task_handle;
+    131          
+    132          //*****************************************************************************
+    133          //
+    134          // Handle for Compose-related events.
+    135          //
+    136          //*****************************************************************************
+    137          EventGroupHandle_t xComposeEventHandle;
+    138          
+    139          am_devices_mspi_psram_config_t MSPI_PSRAM_QuadCE0MSPIConfig =
+    140          {
+    141              .eDeviceConfig            = AM_HAL_MSPI_FLASH_QUAD_CE0,
+    142              .eClockFreq               = AM_HAL_MSPI_CLK_24MHZ,
+    143              .ui32NBTxnBufLength       = sizeof(g_MspiPsramQBuffer) / sizeof(uint32_t),
+    144              .pNBTxnBuf                = g_MspiPsramQBuffer,
+    145              .ui32ScramblingStartAddr  = 0,
+    146              .ui32ScramblingEndAddr    = 0,
+    147          };
+    148          
+    149          //*****************************************************************************
+    150          //
+    151          // Function prototypes
+    152          //
+    153          //*****************************************************************************
+    154          #ifdef DEBUG
+    155          uint32_t g_History[256];
+    156          uint8_t g_HistoryCount = 0;
+    157          
+    158          #define ADD_HISTORY(hist)  \
+    159          do { \
+    160            g_History[g_HistoryCount++] = (hist); \
+    161          } while(0)
+    162          #else
+    163          
+    164          #define ADD_HISTORY(x)
+    165          
+    166          #endif
+    167          
+    168          //! MSPI interrupts.
+    169          static const IRQn_Type mspi_psram_interrupts[] =
+    170          {
+    171              MSPI0_IRQn,
+    172          #if defined(AM_PART_APOLLO3P)
+    173              MSPI1_IRQn,
+    174              MSPI2_IRQn,
+    175          #endif
+    176          };
+    177          
+    178          //
+    179          // Take over the interrupt handler for whichever MSPI we're using.
+    180          //
+    181          #define psram_mspi_isr                                                          \
+    182              am_mspi_isr1(PSRAM_MSPI_MODULE)
+    183          #define am_mspi_isr1(n)                                                        \
+    184              am_mspi_isr(n)
+    185          #define am_mspi_isr(n)                                                         \
+    186              am_mspi ## n ## _isr
+    187          
+    188          //*****************************************************************************
+    189          //
+    190          // MSPI ISRs.
+    191          //
+    192          //*****************************************************************************
+    193          void psram_mspi_isr(void)
+    194          {
+    195              uint32_t      ui32Status;
+    196          
+    197              am_hal_mspi_interrupt_status_get(g_MSPIPsramHandle, &ui32Status, false);
+    198          
+    199              am_hal_mspi_interrupt_clear(g_MSPIPsramHandle, ui32Status);
+    200          
+    201              am_hal_mspi_interrupt_service(g_MSPIPsramHandle, ui32Status);
+    202          }
+    203          
+    204          // Initialization
+    205          uint32_t
+    206          psram_init(void)
+    207          {
+    208              uint32_t ui32Status;
+    209          
+    210              // Set up the MSPI configuraton for the N25Q256A part.
+    211              ui32Status = am_devices_mspi_psram_init(PSRAM_MSPI_MODULE,
+    212                                                      &MSPI_PSRAM_QuadCE0MSPIConfig,
+    213                                                      &g_PsramHandle,
+    214                                                      &g_MSPIPsramHandle);
+    215              NVIC_EnableIRQ(mspi_psram_interrupts[PSRAM_MSPI_MODULE]);
+    216          
+    217              am_hal_interrupt_master_enable();
+    218          #ifndef SWIPE
+    219              am_hal_mspi_hiprio_cfg_t mspiHiprioCfg;
+    220              mspiHiprioCfg.pBuf = g_MspiHiPrioBuf;
+    221              mspiHiprioCfg.size = sizeof(g_MspiHiPrioBuf);
+    222              am_hal_mspi_control(g_MSPIPsramHandle, AM_HAL_MSPI_REQ_INIT_HIPRIO, &mspiHiprioCfg);
+    223          #if (MODE_SRCBUF_READ != MODE_DMA) || (MODE_DESTBUF_WRITE != MODE_DMA)
+    224              //
+    225              // Set up for XIP operation.
+    226              //
+    227              am_util_stdio_printf("Putting the MSPI and External PSRAM into XIP mode\n");
+    228              ui32Status = am_devices_mspi_psram_enable_xip(g_PsramHandle);
+    229              if (AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS != ui32Status)
+    230              {
+    231                  am_util_stdio_printf("Failed to put the MSPI into XIP mode!\n");
+    232                  return -1;
+    233              }
+    234          #ifndef XIP_UNCACHED
+    235              ui32Status = am_hal_cachectrl_control(AM_HAL_CACHECTRL_CONTROL_FLASH_CACHE_INVALIDATE, 0);
+    236              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    237              {
+    238                  am_util_stdio_printf("Failed to invalidate Cache!\n");
+    239                  return -1;
+    240              }
+    241          #else
+    242              //  Mark XIP as non-cached - to make sure we see its impact
+    243              am_hal_cachectrl_nc_cfg_t ncCfg;
+    244              ncCfg.bEnable = true;
+    245              ncCfg.eNCRegion = AM_HAL_CACHECTRL_NCR0;
+    246              ncCfg.ui32StartAddr = PSRAM_XIP_BASE;
+    247              ncCfg.ui32EndAddr = PSRAM_XIP_BASE + PSRAM_XIP_SIZE;
+    248              ui32Status = am_hal_cachectrl_control(AM_HAL_CACHECTRL_CONTROL_NC_CFG, &ncCfg);
+    249              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    250              {
+    251                  am_util_stdio_printf("Failed to mark XIP region as non-cacheable\n");
+    252                  return -1;
+    253              }
+    254          #endif
+    255          
+    256          #endif
+    257          #endif
+    258          
+    259              return ui32Status;
+    260          }
+    261          
+    262          #ifdef VERIFY_SRCBUF
+    263          uint8_t rxBuf[TEMP_BUFFER_SIZE*4];
+    264          #endif
+    265          
+    266          int
+    267          init_mspi_psram_data(void)
+    268          {
+    269              uint32_t ui32Status;
+    270          
+    271              DEBUG_PRINT("Writing a known pattern to psram!\n");
+    272          
+    273          #ifdef SWIPE
+    274              ui32Status = am_devices_mspi_psram_write(g_PsramHandle, img0, fb1, FRAME_SIZE, true);
+    275              if (AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS != ui32Status)
+    276              {
+    277                  DEBUG_PRINT("Failed to write buffer to PSRAM Device!\n");
+    278                  return -1;
+    279              }
+    280          #ifdef VERIFY_SRCBUF
+    281              for (uint32_t address = 0; address < FRAME_SIZE; address += TEMP_BUFFER_SIZE)
+    282              {
+    283                  //
+    284                  // Read the data back into the RX buffer.
+    285                  //
+    286                  ui32Status = am_devices_mspi_psram_read(g_PsramHandle, rxBuf, (uint32_t)(address + fb1), TEMP_BUFFER_SIZE, true);
+    287                  if (AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS != ui32Status)
+    288                  {
+    289                      DEBUG_PRINT("Failed to read buffer to PSRAM Device!\n");
+    290                      return -1;
+    291                  }
+    292          
+    293                  uint32_t size = ((address + TEMP_BUFFER_SIZE) > FRAME_SIZE) ? (FRAME_SIZE - address) : TEMP_BUFFER_SIZE;
+    294                  //
+    295                  // Compare the buffers
+    296                  //
+    297                  for (uint32_t i = 0; i < size; i++)
+    298                  {
+    299                      if (rxBuf[i] != img0[i + address])
+    300                      {
+    301                          DEBUG_PRINT("TX and RX buffers failed to compare!\n");
+    302                          return -1;
+    303                      }
+    304                  }
+    305              }
+    306          #endif
+    307          
+    308              ui32Status = am_devices_mspi_psram_write(g_PsramHandle, img1, fb2, FRAME_SIZE, true);
+    309              if (AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS != ui32Status)
+    310              {
+    311                  DEBUG_PRINT("Failed to write buffer to PSRAM Device!\n");
+    312                  return -1;
+    313              }
+    314          #ifdef VERIFY_SRCBUF
+    315              for (uint32_t address = 0; address < FRAME_SIZE; address += TEMP_BUFFER_SIZE)
+    316              {
+    317                  //
+    318                  // Read the data back into the RX buffer.
+    319                  //
+    320                  ui32Status = am_devices_mspi_psram_read(g_PsramHandle, rxBuf, (uint32_t)(address + fb2), TEMP_BUFFER_SIZE, true);
+    321                  if (AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS != ui32Status)
+    322                  {
+    323                      DEBUG_PRINT("Failed to read buffer to PSRAM Device!\n");
+    324                      return -1;
+    325                  }
+    326          
+    327                  uint32_t size = ((address + TEMP_BUFFER_SIZE) > FRAME_SIZE) ? (FRAME_SIZE - address) : TEMP_BUFFER_SIZE;
+    328                  //
+    329                  // Compare the buffers
+    330                  //
+    331                  for (uint32_t i = 0; i < size; i++)
+    332                  {
+    333                      if (rxBuf[i] != img1[i + address])
+    334                      {
+    335                          DEBUG_PRINT("TX and RX buffers failed to compare!\n");
+    336                          return -1;
+    337                      }
+    338                  }
+    339              }
+    340          #endif
+    341          #else
+    342              uint32_t i, j;
+    343              //
+    344              // Generate raw color data into PSRAM frame buffer 1
+    345              //
+    346              for (i = 0; i < NUM_ROW_PER_COMPOSE_FRAGMENT; i++)
+    347              {
+    348                  uint32_t rowStart = i*(COLUMN_NUM / 4);
+    349                  for (j = 0; j < (COLUMN_NUM / 4); j++)
+    350                  {
+    351                      if (j < BAND_WIDTH / 4)
+    352                      {
+    353                          g_RxFrag[0][rowStart + j] = COLOR_4P(BAND_COLOR);
+    354                      }
+    355                      else
+    356                      {
+    357                          g_RxFrag[0][rowStart + j] = COLOR_4P(0xFF);
+    358                      }
+    359                      if (j >= (COLUMN_NUM - BAND_WIDTH) / 4)
+    360                      {
+    361                          g_RxFrag[1][rowStart + j] = COLOR_4P(COLOR_MAX ^ BAND_COLOR);
+    362                      }
+    363                      else
+    364                      {
+    365                          g_RxFrag[1][rowStart + j] = COLOR_4P(0xFF);
+    366                      }
+    367                  }
+    368              }
+    369          
+    370              // Initialize Src Buf 1
+    371              for (uint32_t address = 0; address < FRAME_SIZE; address += COMPOSE_FRAGMENT_SIZE)
+    372              {
+    373                  uint32_t size = ((address + COMPOSE_FRAGMENT_SIZE) > FRAME_SIZE) ? (FRAME_SIZE - address) : COMPOSE_FRAGMENT_SIZE;
+    374                  //
+    375                  // Write the buffer into the target address in PSRAM
+    376                  //
+    377                  ui32Status = am_devices_mspi_psram_write(g_PsramHandle, (uint8_t *)g_RxFrag[0], PSRAM_SRCFB1_OFFSET + address, size, true);
+    378                  if (AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS != ui32Status)
+    379                  {
+    380                      DEBUG_PRINT("Failed to write buffer to PSRAM Device!\n");
+    381                      return -1;
+    382                  }
+    383              }
+    384          
+    385              // Initialize Src Buf 2
+    386              for (uint32_t address = 0; address < FRAME_SIZE; address += COMPOSE_FRAGMENT_SIZE)
+    387              {
+    388                  uint32_t size = ((address + COMPOSE_FRAGMENT_SIZE) > FRAME_SIZE) ? (FRAME_SIZE - address) : COMPOSE_FRAGMENT_SIZE;
+    389                  //
+    390                  // Write the buffer into the target address in PSRAM
+    391                  //
+    392                  ui32Status = am_devices_mspi_psram_write(g_PsramHandle, (uint8_t *)g_RxFrag[1], PSRAM_SRCFB2_OFFSET + address, size, true);
+    393                  if (AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS != ui32Status)
+    394                  {
+    395                      DEBUG_PRINT("Failed to write buffer to PSRAM Device!\n");
+    396                      return -1;
+    397                  }
+    398              }
+    399              // Initialize ActFB1
+    400              for (uint32_t address = 0; address < FRAME_SIZE; address += COMPOSE_FRAGMENT_SIZE)
+    401              {
+    402                  uint32_t size = ((address + COMPOSE_FRAGMENT_SIZE) > FRAME_SIZE) ? (FRAME_SIZE - address) : COMPOSE_FRAGMENT_SIZE;
+    403                  //
+    404                  // Write the buffer into the target address in PSRAM
+    405                  //
+    406                  ui32Status = am_devices_mspi_psram_write(g_PsramHandle, (uint8_t *)g_RxFrag[0], PSRAM_ACTFB1_OFFSET + address, size, true);
+    407                  if (AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS != ui32Status)
+    408                  {
+    409                      DEBUG_PRINT("Failed to write buffer to PSRAM Device!\n");
+    410                      return -1;
+    411                  }
+    412              }
+    413              // Prepare the Fragments for the 1st iteration - already accomplished above, as g_RxFrag[] is already initialized
+    414              g_ComposeState = 1;
+    415          #if (MODE_SRCBUF_READ == MODE_XIP)
+    416          #ifndef SRCBUF_XIP_UNCACHED
+    417              ui32Status = am_hal_cachectrl_control(AM_HAL_CACHECTRL_CONTROL_FLASH_CACHE_INVALIDATE, 0);
+    418              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    419              {
+    420                  am_util_stdio_printf("Failed to invalidate Cache!\n");
+    421                  return -1;
+    422              }
+    423          #else
+    424              //  Mark XIP SRCBUF as non-cached - to make sure we see its impact
+    425              am_hal_cachectrl_nc_cfg_t ncCfg;
+    426              ncCfg.bEnable = true;
+    427              ncCfg.eNCRegion = AM_HAL_CACHECTRL_NCR1;
+    428              ncCfg.ui32StartAddr = PSRAM_SRCFB_BASE;
+    429              ncCfg.ui32EndAddr = PSRAM_SRCFB_BASE + PSRAM_SRCFB_SIZE;
+    430              ui32Status = am_hal_cachectrl_control(AM_HAL_CACHECTRL_CONTROL_NC_CFG, &ncCfg);
+    431              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    432              {
+    433                  am_util_stdio_printf("Failed to mark XIP SRCBUF region as non-cacheable\n");
+    434                  return -1;
+    435              }
+    436          #endif
+    437          #endif
+    438          #endif
+    439              return 0;
+    440          }
+    441          //*****************************************************************************
+    442          //
+    443          // Perform initial setup for the compose task.
+    444          //
+    445          //*****************************************************************************
+    446          void
+    447          ComposeTaskSetup(void)
+    448          {
+    449              uint32_t iRet;
+    450              am_util_debug_printf("ComposeTask: setup\r\n");
+    451              //
+    452              // Create an event handle for our wake-up events.
+    453              //
+    454              xComposeEventHandle = xEventGroupCreate();
+    455          
+    456              //
+    457              // Make sure we actually allocated space for the events we need.
+    458              //
+    459              while (xComposeEventHandle == NULL);
+    460              // Initialize psram Data
+    461              iRet = init_mspi_psram_data();
+    462              if (iRet)
+    463              {
+    464                  DEBUG_PRINT("Unable to initialize MSPI psram data\n");
+    465                  while(1);
+    466              }
+    467              // Notify compose task that the frame is ready
+    468              xEventGroupSetBits(xComposeEventHandle, COMPOSE_EVENT_START_NEW_FRAME);
+    469          }
+    470          
+    471          #ifndef SWIPE
+    472          
+    473          void
+    474          frag_complete(void *pCallbackCtxt, uint32_t transactionStatus)
+    475          {
+    476              BaseType_t xHigherPriorityTaskWoken, xResult;
+    477              if (transactionStatus != AM_HAL_STATUS_SUCCESS)
+    478              {
+    479                  am_util_stdio_printf("\nCompose# %d:Fragment %d Failed 0x%x\n", g_numCompose, g_ComposeState, transactionStatus);
+    480              }
+    481              else
+    482              {
+    483                  DEBUG_PRINT_SUCCESS("\nCompose# %d:Fragment %d Done 0x%x\n", g_numCompose, g_ComposeState, transactionStatus);
+    484                  g_ComposeState++;
+    485              }
+    486              //
+    487              // Send an event to the main LED task
+    488              //
+    489              xHigherPriorityTaskWoken = pdFALSE;
+    490          
+    491              xResult = xEventGroupSetBitsFromISR(xComposeEventHandle, COMPOSE_EVENT_NEW_FRAG_READY,
+    492                                                  &xHigherPriorityTaskWoken);
+    493          
+    494              //
+    495              // If the LED task is higher-priority than the context we're currently
+    496              // running from, we should yield now and run the radio task.
+    497              //
+    498              if (xResult != pdFAIL)
+    499              {
+    500                  portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    501              }
+    502          
+    503          }
+    504          
+    505          // Compose the next fragment
+    506          static void
+    507          composeFragment(uint32_t *pSrcBuf1, uint32_t *pSrcBuf2, uint32_t *pDestBuf, uint32_t numRows)
+    508          {
+    509              uint32_t i, j;
+    510              // Compute the output FB fragment
+    511              for (i = 0; i < numRows; i++)
+    512              {
+    513                  uint32_t rowStart = i*(COLUMN_NUM / 4);
+    514                  for (j = 0; j < (COLUMN_NUM / 4); j++)
+    515                  {
+    516                      if (pSrcBuf2[rowStart + (j + g_numCompose) % (COLUMN_NUM / 4)] != COLOR_4P(0xFF))
+    517                      {
+    518                          if (pSrcBuf1[rowStart + ((j + (COLUMN_NUM / 4) - g_numCompose % (COLUMN_NUM / 4)) % (COLUMN_NUM / 4))] != COLOR_4P(0xFF))
+    519                          {
+    520                              // Overlap region
+    521                              pDestBuf[rowStart + j] = COLOR_4P(COLOR_MAX ^ (g_numCompose % COLOR_MAX));
+    522                          }
+    523                          else
+    524                          {
+    525                              // Only Src2
+    526                              pDestBuf[rowStart + j] = pSrcBuf2[rowStart + (j + g_numCompose) % (COLUMN_NUM / 4)];
+    527                          }
+    528                      }
+    529                      else
+    530                      {
+    531                          if (pSrcBuf1[rowStart + ((j + (COLUMN_NUM / 4) - g_numCompose % (COLUMN_NUM / 4)) % (COLUMN_NUM / 4))] != COLOR_4P(0xFF))
+    532                          {
+    533                              // Only Src1
+    534                              pDestBuf[rowStart + j] = pSrcBuf1[rowStart + ((j + (COLUMN_NUM / 4) - g_numCompose % (COLUMN_NUM / 4)) % (COLUMN_NUM / 4))];
+    535                          }
+    536                          else
+    537                          {
+    538                              // None
+    539                              pDestBuf[rowStart + j] = COLOR_4P(g_numCompose % COLOR_MAX);
+    540                          }
+    541                      }
+    542                  }
+    543              }
+    544          }
+    545          
+    546          // Simulate the composition task using a state machine
+    547          // The composition is done in piecemeal - one fragment at a time
+    548          // Each step includes: Compose the output fragment. Write to Destibation FB PSRAM. Preload Src Fragments from PSRAM
+    549          uint32_t
+    550          compose(void)
+    551          {
+    552              static uint32_t lastState = 0;
+    553              uint32_t ui32Status;
+    554              uint32_t *pSrcBuf1;
+    555              uint32_t *pSrcBuf2;
+    556              uint32_t *pDestBuf;
+    557          
+    558              uint32_t actFbOffset = (g_numCompose & 0x1) ? PSRAM_ACTFB2_OFFSET: PSRAM_ACTFB1_OFFSET;
+    559          
+    560          
+    561          #if (MODE_SRCBUF_READ == MODE_XIP)
+    562              pSrcBuf1 = (uint32_t *)(MSPI_XIP_BASEADDRn(PSRAM_MSPI_MODULE) + PSRAM_SRCFB1_OFFSET + (g_ComposeState - 1)*COMPOSE_FRAGMENT_SIZE);
+    563              pSrcBuf2 = (uint32_t *)(MSPI_XIP_BASEADDRn(PSRAM_MSPI_MODULE) + PSRAM_SRCFB2_OFFSET + (g_ComposeState - 1)*COMPOSE_FRAGMENT_SIZE);
+    564          #elif (MODE_SRCBUF_READ == MODE_XIPMM)
+    565              pSrcBuf1 = (uint32_t *)(MSPI_XIPMM_BASEADDRn(PSRAM_MSPI_MODULE) + PSRAM_SRCFB1_OFFSET + (g_ComposeState - 1)*COMPOSE_FRAGMENT_SIZE);
+    566              pSrcBuf2 = (uint32_t *)(MSPI_XIPMM_BASEADDRn(PSRAM_MSPI_MODULE) + PSRAM_SRCFB2_OFFSET + (g_ComposeState - 1)*COMPOSE_FRAGMENT_SIZE);
+    567          #else
+    568              pSrcBuf1 = g_RxFrag[0];
+    569              pSrcBuf2 = g_RxFrag[1];
+    570          #endif
+    571          
+    572          #if (MODE_DESTBUF_WRITE == MODE_XIPMM)
+    573              pDestBuf = (uint32_t *)(MSPI_XIPMM_BASE_ADDRn(PSRAM_MSPI_MODULE) + actFbOffset + lastState*COMPOSE_FRAGMENT_SIZE);
+    574          #else
+    575              pDestBuf = (uint32_t *)g_TxFrag;
+    576          #endif
+    577          
+    578              if ((g_ComposeState != lastState) && g_bNewFB)
+    579              {
+    580                  composeFragment(pSrcBuf1, pSrcBuf2, pDestBuf, NUM_ROW_PER_COMPOSE_FRAGMENT);
+    581                  if (xSemaphoreTake(xMSPIMutex, portMAX_DELAY) != pdTRUE)
+    582                  {
+    583                      am_util_stdio_printf("Failed to get the semaphore\n");
+    584                      return AM_HAL_STATUS_FAIL;
+    585                  }
+    586                  // Write the fragment to next frame buffer
+    587          #if (MODE_DESTBUF_WRITE != MODE_XIPMM)
+    588          #if (MODE_SRCBUF_READ == MODE_DMA)
+    589                  ui32Status = am_devices_mspi_psram_write_hiprio(g_PsramHandle, (uint8_t *)g_TxFrag, actFbOffset + lastState*COMPOSE_FRAGMENT_SIZE, COMPOSE_FRAGMENT_SIZE, NULL, 0);
+    590          #else
+    591                  ui32Status = am_devices_mspi_psram_write_hiprio(g_PsramHandle, (uint8_t *)g_TxFrag, actFbOffset + lastState*COMPOSE_FRAGMENT_SIZE, COMPOSE_FRAGMENT_SIZE, frag_complete, 0);
+    592          #endif
+    593                  if (AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS != ui32Status)
+    594                  {
+    595                      am_util_stdio_printf("Failed to write buffer to PSRAM Device!\n");
+    596                      xSemaphoreGive(xMSPIMutex);
+    597                      return ui32Status;
+    598                  }
+    599          #endif
+    600          
+    601                  if (g_ComposeState == NUM_COMPOSE_FRAGMENTS)
+    602                  {
+    603                      // This FB is ready - now we can start for the next one
+    604                      g_ComposeState = 0;
+    605                  }
+    606                  lastState = g_ComposeState;
+    607          #if (MODE_SRCBUF_READ == MODE_DMA)
+    608                  // Read the two base fragments
+    609                  ui32Status = am_devices_mspi_psram_read_hiprio(g_PsramHandle, (uint8_t *)pSrcBuf2, PSRAM_SRCFB2_OFFSET + g_ComposeState*COMPOSE_FRAGMENT_SIZE, COMPOSE_FRAGMENT_SIZE, NULL, 0);
+    610                  if (AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS != ui32Status)
+    611                  {
+    612                      am_util_stdio_printf("Failed to read buffer to Flash Device!\n");
+    613                      xSemaphoreGive(xMSPIMutex);
+    614                      return ui32Status;
+    615                  }
+    616                  ui32Status = am_devices_mspi_psram_read_hiprio(g_PsramHandle, (uint8_t *)pSrcBuf1, PSRAM_SRCFB1_OFFSET + g_ComposeState*COMPOSE_FRAGMENT_SIZE, COMPOSE_FRAGMENT_SIZE, frag_complete, 0);
+    617                  if (AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS != ui32Status)
+    618                  {
+    619                      am_util_stdio_printf("Failed to read buffer to Flash Device!\n");
+    620                      xSemaphoreGive(xMSPIMutex);
+    621                      return ui32Status;
+    622                  }
+    623          #endif
+    624                  xSemaphoreGive(xMSPIMutex);
+    625                  if (g_ComposeState == 0)
+    626                  {
+    627                      DEBUG_PRINT("Done composing ActFB @ 0x%x\n", actFbOffset);
+    628                      g_bNewFB = false;
+    629                      g_numCompose++;
+    630                      // Notify main task that the frame is ready
+    631                      xEventGroupSetBits(xMainEventHandle, MAIN_EVENT_NEW_FRAME_READY);
+    632          #if (MODE_DESTBUF_WRITE == MODE_XIPMM) && (MODE_SRCBUF_READ != MODE_DMA)
+    633                      g_ComposeState++;
+    634                  }
+    635                  else
+    636                  {
+    637                      // No DMA - self signal completion
+    638                      g_ComposeState++;
+    639                      xEventGroupSetBits(xComposeEventHandle, COMPOSE_EVENT_NEW_FRAG_READY);
+    640          #endif
+    641                  }
+    642              }
+    643              return 0;
+    644          }
+    645          #endif
+    646          
+    647          //*****************************************************************************
+    648          //
+    649          // Short Description.
+    650          //
+    651          //*****************************************************************************
+    652          void
+    653          ComposeTask(void *pvParameters)
+    654          {
+    655              uint32_t eventMask;
+    656          
+    657              while (1)
+    658              {
+    659                  //
+    660                  // Wait for an event to be posted to the Compose Event Handle.
+    661                  //
+    662                  eventMask = xEventGroupWaitBits(xComposeEventHandle, 0xF, pdTRUE,
+    663                                      pdFALSE, portMAX_DELAY);
+    664                  if (eventMask != 0)
+    665                  {
+    666                      if (eventMask & COMPOSE_EVENT_START_NEW_FRAME)
+    667                      {
+    668                          g_bNewFB = true;
+    669                      }
+    670                      else
+    671                      {
+    672                      }
+    673          #ifdef SWIPE
+    674                      // No compose needed - just change the scatter gather settings for rendering
+    675                      fb2Offset -= 4;
+    676                      if (fb2Offset == 0)
+    677                      {
+    678                          if (++numSwipes == MAX_SWIPES)
+    679                          {
+    680                              bSwipeHorizontal = !bSwipeHorizontal;
+    681                              numSwipes = 0;
+    682                          }
+    683                          // Swap FB1 and FB2
+    684                          if (bSwipeHorizontal)
+    685                          {
+    686                              fb2Offset = COLUMN_NUM;
+    687                          }
+    688                          else
+    689                          {
+    690                              fb2Offset = ROW_NUM;
+    691                          }
+    692                          uint32_t temp = fb1;
+    693                          fb1 = fb2;
+    694                          fb2 = temp;
+    695                      }
+    696                      // No Compositing - Just indicate Frame Ready
+    697                      xEventGroupSetBits(xMainEventHandle, MAIN_EVENT_NEW_FRAME_READY);
+    698          #else
+    699                      if (compose())
+    700                      {
+    701                          while(1);
+    702                      }
+    703          #endif
+    704                  }
+    705              }
+    706          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      24   ComposeTask
+        24   -> xEventGroupSetBits
+        24   -> xEventGroupWaitBits
+      16   ComposeTaskSetup
+        16   -> am_devices_mspi_psram_write
+        16   -> am_util_stdio_printf
+        16   -> xEventGroupCreate
+         0   -> xEventGroupSetBits
+      16   am_mspi0_isr
+        16   -> am_hal_mspi_interrupt_clear
+        16   -> am_hal_mspi_interrupt_service
+        16   -> am_hal_mspi_interrupt_status_get
+      16   init_mspi_psram_data
+        16   -> am_devices_mspi_psram_write
+       8   psram_init
+         8   -> am_devices_mspi_psram_init
+         8   -> am_hal_interrupt_master_enable
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable5
+       4  ??DataTable5_1
+       4  ??DataTable5_2
+       4  ??DataTable5_3
+      24  ?_0
+      98  ComposeTask
+      78  ComposeTaskSetup
+      36  am_mspi0_isr
+       4  compose_task_handle
+     264  g_MspiPsramQBuffer
+       1  g_bNewDisplay
+      56  g_bNewFB
+          numSwipes
+          bSwipeHorizontal
+          g_PsramHandle
+          g_MSPIPsramHandle
+          fb1
+          fb2
+          fb2Offset
+          img0
+          img1
+          xComposeEventHandle
+          MSPI_PSRAM_QuadCE0MSPIConfig
+      52  init_mspi_psram_data
+      38  psram_init
+
+ 
+ 269 bytes in section .bss
+  56 bytes in section .data
+ 342 bytes in section .text
+ 
+ 342 bytes of CODE memory
+ 325 bytes of DATA memory
+
+Errors: none
+Warnings: none

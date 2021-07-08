@@ -1,0 +1,1741 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.50.6.265/W32 for ARM         08/Jul/2021  07:47:43
+# Copyright 1999-2020 IAR Systems AB.
+#
+#    Cpu mode             
+#    Endian            =  little
+#    Source file       =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\devices\am_devices_mspi_psram_aps6404l.c
+#    Command line      =
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EWEF09.tmp
+#        (\\Mac\Home\Documents\Apollo3\A3_SDK\devices\am_devices_mspi_psram_aps6404l.c
+#        -D iar -D AM_UTIL_FAULTISR_PRINT -D AM_FREERTOS -D APS6404L -D
+#        AM_DEBUG_PRINTF -D AM_PART_APOLLO3P -D AM_PACKAGE_BGA -lcN
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --diag_suppress Pa050 -o
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin
+#        --debug --endian=little --cpu=Cortex-M4 --no_path_in_file_macros -e
+#        --fpu=VFPv4_sp --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.4\arm\inc\c\DLib_Config_Normal.h" -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\mcu\apollo3p\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\src\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\AmbiqMicro\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\devices\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\bsp\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\CMSIS\ARM\Include\\
+#        -I
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\..\..\..\..\..\utils\\
+#        -Ohs --no_size_constraints)
+#    Locale            =  C
+#    List file         =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\am_devices_mspi_psram_aps6404l.lst
+#    Object file       =
+#        \\Mac\Home\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_mspi_mspi_display\iar\bin\am_devices_mspi_psram_aps6404l.o
+#    Runtime model:       
+#      __SystemLibrary =  DLib
+#      __dlib_version  =  6
+#
+###############################################################################
+
+\\Mac\Home\Documents\Apollo3\A3_SDK\devices\am_devices_mspi_psram_aps6404l.c
+      1          //*****************************************************************************
+      2          //
+      3          //! @file am_devices_mspi_psram.c
+      4          //!
+      5          //! @brief General Multibit SPI PSRAM driver.
+      6          //
+      7          //*****************************************************************************
+      8          
+      9          //*****************************************************************************
+     10          //
+     11          // Copyright (c) 2020, Ambiq Micro, Inc.
+     12          // All rights reserved.
+     13          //
+     14          // Redistribution and use in source and binary forms, with or without
+     15          // modification, are permitted provided that the following conditions are met:
+     16          //
+     17          // 1. Redistributions of source code must retain the above copyright notice,
+     18          // this list of conditions and the following disclaimer.
+     19          //
+     20          // 2. Redistributions in binary form must reproduce the above copyright
+     21          // notice, this list of conditions and the following disclaimer in the
+     22          // documentation and/or other materials provided with the distribution.
+     23          //
+     24          // 3. Neither the name of the copyright holder nor the names of its
+     25          // contributors may be used to endorse or promote products derived from this
+     26          // software without specific prior written permission.
+     27          //
+     28          // Third party software included in this distribution is subject to the
+     29          // additional license terms as defined in the /docs/licenses directory.
+     30          //
+     31          // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+     32          // AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+     33          // IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+     34          // ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+     35          // LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+     36          // CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+     37          // SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+     38          // INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+     39          // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+     40          // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+     41          // POSSIBILITY OF SUCH DAMAGE.
+     42          //
+     43          // This is part of revision 2.5.1 of the AmbiqSuite Development Package.
+     44          //
+     45          //*****************************************************************************
+     46          
+     47          #include "am_mcu_apollo.h"
+     48          #include "am_devices_mspi_psram_aps6404l.h"
+     49          #include "am_util_stdio.h"
+     50          #include "am_bsp.h"
+     51          #include "am_util_delay.h"
+     52          
+     53          //*****************************************************************************
+     54          //
+     55          // Global variables.
+     56          //
+     57          //*****************************************************************************
+     58          #define AM_DEVICES_MSPI_PSRAM_TIMEOUT             1000000
+     59          
+     60          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+     61          am_hal_mspi_xip_config_t gXipConfig[] =
+     62          {
+     63            {
+     64              .ui32APBaseAddr       = MSPI0_APERTURE_START_ADDR,
+     65              .eAPMode              = AM_HAL_MSPI_AP_READ_WRITE,
+     66              .eAPSize              = AM_HAL_MSPI_AP_SIZE64M,
+     67              .scramblingStartAddr  = 0,
+     68              .scramblingEndAddr    = 0,
+     69            },
+     70            {
+     71              .ui32APBaseAddr       = MSPI1_APERTURE_START_ADDR,
+     72              .eAPMode              = AM_HAL_MSPI_AP_READ_WRITE,
+     73              .eAPSize              = AM_HAL_MSPI_AP_SIZE64M,
+     74              .scramblingStartAddr  = 0,
+     75              .scramblingEndAddr    = 0,
+     76            },
+     77            {
+     78              .ui32APBaseAddr       = MSPI2_APERTURE_START_ADDR,
+     79              .eAPMode              = AM_HAL_MSPI_AP_READ_WRITE,
+     80              .eAPSize              = AM_HAL_MSPI_AP_SIZE64M,
+     81              .scramblingStartAddr  = 0,
+     82              .scramblingEndAddr    = 0,
+     83            }
+     84          };
+     85          
+     86          am_hal_mspi_config_t gMspiCfg =
+     87          {
+     88            .ui32TCBSize          = 0,
+     89            .pTCB                 = NULL,
+     90            .bClkonD4             = 0
+     91          };
+     92          #endif
+     93          
+     94          am_hal_mspi_dev_config_t  SerialCE0MSPIConfig =
+     95          {
+     96            .ui8TurnAround        = 8,
+     97            .eAddrCfg             = AM_HAL_MSPI_ADDR_3_BYTE,
+     98            .eInstrCfg            = AM_HAL_MSPI_INSTR_1_BYTE,
+     99          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+    100            .ui16ReadInstr         = AM_DEVICES_MSPI_PSRAM_FAST_READ,
+    101            .ui16WriteInstr        = AM_DEVICES_MSPI_PSRAM_WRITE,
+    102          #else
+    103            .ui8ReadInstr         = AM_DEVICES_MSPI_PSRAM_FAST_READ,
+    104            .ui8WriteInstr        = AM_DEVICES_MSPI_PSRAM_WRITE,
+    105          #endif
+    106            .eDeviceConfig        = AM_HAL_MSPI_FLASH_SERIAL_CE0,
+    107            .eSpiMode             = AM_HAL_MSPI_SPI_MODE_0,
+    108            .eClockFreq           = AM_HAL_MSPI_CLK_24MHZ,
+    109            .bSendAddr            = true,
+    110            .bSendInstr           = true,
+    111            .bTurnaround          = true,
+    112          #if defined(AM_PART_APOLLO3P)
+    113            .ui8WriteLatency      = 0,
+    114            .bEnWriteLatency      = false,
+    115            .bEmulateDDR          = false,
+    116            .ui16DMATimeLimit     = 80,
+    117            .eDMABoundary         = AM_HAL_MSPI_BOUNDARY_BREAK1K,
+    118          #endif
+    119          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+    120            .ui8WriteLatency      = 0,
+    121            .bEnWriteLatency      = false,
+    122            .bEmulateDDR          = false,
+    123            .ui16DMATimeLimit     = 80,
+    124            .eDMABoundary         = AM_HAL_MSPI_BOUNDARY_BREAK1K,
+    125          #if defined(AM_PART_APOLL4)
+    126            .eDeviceNum           = AM_HAL_MSPI_DEVICE0,
+    127          #endif
+    128          #else
+    129            .ui32TCBSize          = 0,
+    130            .pTCB                 = NULL,
+    131            .scramblingStartAddr  = 0,
+    132            .scramblingEndAddr    = 0,
+    133          #endif
+    134          };
+    135          
+    136          am_hal_mspi_dev_config_t  SerialCE1MSPIConfig =
+    137          {
+    138            .ui8TurnAround        = 8,
+    139            .eAddrCfg             = AM_HAL_MSPI_ADDR_3_BYTE,
+    140            .eInstrCfg            = AM_HAL_MSPI_INSTR_1_BYTE,
+    141          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+    142            .ui16ReadInstr         = AM_DEVICES_MSPI_PSRAM_FAST_READ,
+    143            .ui16WriteInstr        = AM_DEVICES_MSPI_PSRAM_WRITE,
+    144          #else
+    145            .ui8ReadInstr         = AM_DEVICES_MSPI_PSRAM_FAST_READ,
+    146            .ui8WriteInstr        = AM_DEVICES_MSPI_PSRAM_WRITE,
+    147          #endif
+    148            .eDeviceConfig        = AM_HAL_MSPI_FLASH_SERIAL_CE1,
+    149            .eSpiMode             = AM_HAL_MSPI_SPI_MODE_0,
+    150            .eClockFreq           = AM_HAL_MSPI_CLK_24MHZ,
+    151            .bSendAddr            = true,
+    152            .bSendInstr           = true,
+    153            .bTurnaround          = true,
+    154          #if defined(AM_PART_APOLLO3P)
+    155            .ui8WriteLatency      = 0,
+    156            .bEnWriteLatency      = false,
+    157            .bEmulateDDR          = false,
+    158            .ui16DMATimeLimit     = 80,
+    159            .eDMABoundary         = AM_HAL_MSPI_BOUNDARY_BREAK1K,
+    160          #endif
+    161          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+    162            .ui8WriteLatency      = 0,
+    163            .bEnWriteLatency      = false,
+    164            .bEmulateDDR          = false,
+    165            .ui16DMATimeLimit     = 80,
+    166            .eDMABoundary         = AM_HAL_MSPI_BOUNDARY_BREAK1K,
+    167          #if defined(AM_PART_APOLL4)
+    168            .eDeviceNum           = AM_HAL_MSPI_DEVICE0,
+    169          #endif
+    170          #else
+    171            .ui32TCBSize          = 0,
+    172            .pTCB                 = NULL,
+    173            .scramblingStartAddr  = 0,
+    174            .scramblingEndAddr    = 0,
+    175          #endif
+    176          };
+    177          
+    178          am_hal_mspi_dev_config_t  QuadCE0MSPIConfig =
+    179          {
+    180            .ui8TurnAround        = 6,
+    181            .eAddrCfg             = AM_HAL_MSPI_ADDR_3_BYTE,
+    182            .eInstrCfg            = AM_HAL_MSPI_INSTR_1_BYTE,
+    183          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+    184            .ui16ReadInstr         = AM_DEVICES_MSPI_PSRAM_QUAD_READ,
+    185            .ui16WriteInstr        = AM_DEVICES_MSPI_PSRAM_QUAD_WRITE,
+    186          #else
+    187            .ui8ReadInstr         = AM_DEVICES_MSPI_PSRAM_QUAD_READ,
+    188            .ui8WriteInstr        = AM_DEVICES_MSPI_PSRAM_QUAD_WRITE,
+    189          #endif
+    190            .eDeviceConfig        = AM_HAL_MSPI_FLASH_QUAD_CE0,
+    191            .eSpiMode             = AM_HAL_MSPI_SPI_MODE_0,
+    192            .eClockFreq           = AM_HAL_MSPI_CLK_24MHZ,
+    193            .bSendAddr            = true,
+    194            .bSendInstr           = true,
+    195            .bTurnaround          = true,
+    196          #if defined(AM_PART_APOLLO3P)
+    197            .ui8WriteLatency      = 0,
+    198            .bEnWriteLatency      = false,
+    199            .bEmulateDDR          = false,
+    200            .ui16DMATimeLimit     = 30,
+    201            .eDMABoundary         = AM_HAL_MSPI_BOUNDARY_BREAK1K,
+    202          #endif
+    203          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+    204            .ui8WriteLatency      = 0,
+    205            .bEnWriteLatency      = false,
+    206            .bEmulateDDR          = false,
+    207            .ui16DMATimeLimit     = 30,
+    208            .eDMABoundary         = AM_HAL_MSPI_BOUNDARY_BREAK1K,
+    209          #if defined(AM_PART_APOLL4)
+    210            .eDeviceNum           = AM_HAL_MSPI_DEVICE0,
+    211          #endif
+    212          #else
+    213            .ui32TCBSize          = 0,
+    214            .pTCB                 = NULL,
+    215            .scramblingStartAddr  = 0,
+    216            .scramblingEndAddr    = 0,
+    217          #endif
+    218          };
+    219          
+    220          am_hal_mspi_dev_config_t  QuadCE1MSPIConfig =
+    221          {
+    222            .ui8TurnAround        = 6,
+    223            .eAddrCfg             = AM_HAL_MSPI_ADDR_3_BYTE,
+    224            .eInstrCfg            = AM_HAL_MSPI_INSTR_1_BYTE,
+    225          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+    226            .ui16ReadInstr         = AM_DEVICES_MSPI_PSRAM_QUAD_READ,
+    227            .ui16WriteInstr        = AM_DEVICES_MSPI_PSRAM_QUAD_WRITE,
+    228          #else
+    229            .ui8ReadInstr         = AM_DEVICES_MSPI_PSRAM_QUAD_READ,
+    230            .ui8WriteInstr        = AM_DEVICES_MSPI_PSRAM_QUAD_WRITE,
+    231          #endif
+    232            .eDeviceConfig        = AM_HAL_MSPI_FLASH_QUAD_CE1,
+    233            .eSpiMode             = AM_HAL_MSPI_SPI_MODE_0,
+    234            .eClockFreq           = AM_HAL_MSPI_CLK_24MHZ,
+    235            .bSendAddr            = true,
+    236            .bSendInstr           = true,
+    237            .bTurnaround          = true,
+    238          #if defined(AM_PART_APOLLO3P)
+    239            .ui8WriteLatency      = 0,
+    240            .bEnWriteLatency      = false,
+    241            .bEmulateDDR          = false,
+    242            .ui16DMATimeLimit     = 30,
+    243            .eDMABoundary         = AM_HAL_MSPI_BOUNDARY_BREAK1K,
+    244          #endif
+    245          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+    246            .ui8WriteLatency      = 0,
+    247            .bEnWriteLatency      = false,
+    248            .bEmulateDDR          = false,
+    249            .ui16DMATimeLimit     = 30,
+    250            .eDMABoundary         = AM_HAL_MSPI_BOUNDARY_BREAK1K,
+    251          #if defined(AM_PART_APOLL4)
+    252            .eDeviceNum           = AM_HAL_MSPI_DEVICE0,
+    253          #endif
+    254          #else
+    255            .ui32TCBSize          = 0,
+    256            .pTCB                 = NULL,
+    257            .scramblingStartAddr  = 0,
+    258            .scramblingEndAddr    = 0,
+    259          #endif
+    260          };
+    261          
+    262          typedef struct
+    263          {
+    264            uint32_t                    ui32Module;
+    265            void                        *pMspiHandle;
+    266            am_hal_mspi_device_e        eDeviceConfig;
+    267          #if defined(AM_PART_APOLLO3)
+    268            uint32_t                    maxTransSize;
+    269          #endif
+    270            bool                        bOccupied;
+    271          } am_devices_mspi_psram_t;
+    272          
+    273          am_devices_mspi_psram_t gAmPsram[AM_DEVICES_MSPI_PSRAM_MAX_DEVICE_NUM];
+    274          
+    275          #if defined(AM_PART_APOLLO3)
+    276          // Hardware does not support transaction splitting - so need to take care in driver
+    277          const struct
+    278          {
+    279            const uint32_t MHz;
+    280            const uint32_t MaxSize;
+    281          } g_Mspi_SpeedMax[] =
+    282          {
+    283            {AM_HAL_MSPI_CLK_48MHZ, AM_DEVICES_MSPI_PSRAM_48MHZ_MAX_BYTES},
+    284            {AM_HAL_MSPI_CLK_24MHZ, AM_DEVICES_MSPI_PSRAM_24MHZ_MAX_BYTES},
+    285            {AM_HAL_MSPI_CLK_16MHZ, AM_DEVICES_MSPI_PSRAM_16MHZ_MAX_BYTES},
+    286            {AM_HAL_MSPI_CLK_12MHZ, AM_DEVICES_MSPI_PSRAM_12MHZ_MAX_BYTES},
+    287            {AM_HAL_MSPI_CLK_8MHZ,  AM_DEVICES_MSPI_PSRAM_8MHZ_MAX_BYTES}  // Leave this in for PSRAM initialization at 8MHz.
+    288          };
+    289          #endif
+    290          
+    291          void pfnMSPI_PSRAM_Callback(void *pCallbackCtxt, uint32_t status)
+    292          {
+    293            // Set the DMA complete flag.
+    294            *(volatile bool *)pCallbackCtxt = true;
+    295          }
+    296          
+    297          //*****************************************************************************
+    298          //
+    299          // Generic Command Write function.
+    300          //
+    301          //*****************************************************************************
+    302          static uint32_t
+    303          am_device_command_write(void *pMspiHandle,
+    304                                  uint8_t ui8Instr,
+    305                                  bool bSendAddr,
+    306                                  uint32_t ui32Addr,
+    307                                  uint32_t *pData,
+    308                                  uint32_t ui32NumBytes)
+    309          {
+    310            am_hal_mspi_pio_transfer_t  Transaction;
+    311          
+    312            // Create the individual write transaction.
+    313            Transaction.ui32NumBytes            = ui32NumBytes;
+    314            Transaction.bScrambling             = false;
+    315            Transaction.eDirection              = AM_HAL_MSPI_TX;
+    316            Transaction.bSendAddr               = bSendAddr;
+    317            Transaction.ui32DeviceAddr          = ui32Addr;
+    318            Transaction.bSendInstr              = true;
+    319            Transaction.ui16DeviceInstr         = ui8Instr;
+    320            Transaction.bTurnaround             = false;
+    321          #if defined(AM_PART_APOLLO3P)
+    322            Transaction.bDCX                    = false;
+    323            Transaction.bEnWRLatency            = false;
+    324            Transaction.bContinue               = false;
+    325          #endif
+    326          #if !defined(AM_PART_APOLLO4) && !defined(AM_PART_APOLLO4B)
+    327            Transaction.bQuadCmd                = false;
+    328          #else
+    329            Transaction.bDCX                    = false;
+    330            Transaction.bEnWRLatency            = false;
+    331            Transaction.bContinue               = false;
+    332          #if defined(AM_PART_APOLLO4)
+    333            Transaction.eDeviceNum              = AM_HAL_MSPI_DEVICE0;
+    334          #endif
+    335          #endif
+    336            Transaction.pui32Buffer             = pData;
+    337          
+    338            // Execute the transction over MSPI.
+    339            return am_hal_mspi_blocking_transfer(pMspiHandle,
+    340                                                 &Transaction,
+    341                                                 AM_DEVICES_MSPI_PSRAM_TIMEOUT);
+    342          }
+    343          
+    344          //*****************************************************************************
+    345          //
+    346          // Generic Command Read function.
+    347          //
+    348          //*****************************************************************************
+    349          static uint32_t
+    350          am_device_command_read(void *pMspiHandle,
+    351                                 uint8_t ui8Instr,
+    352                                 bool bSendAddr,
+    353                                 uint32_t ui32Addr,
+    354                                 uint32_t *pData,
+    355                                 uint32_t ui32NumBytes)
+    356          {
+    357            am_hal_mspi_pio_transfer_t  Transaction;
+    358          
+    359            // Create the individual write transaction.
+    360            Transaction.ui32NumBytes            = ui32NumBytes;
+    361            Transaction.bScrambling             = false;
+    362            Transaction.eDirection              = AM_HAL_MSPI_RX;
+    363            Transaction.bSendAddr               = bSendAddr;
+    364            Transaction.ui32DeviceAddr          = ui32Addr;
+    365            Transaction.bSendInstr              = true;
+    366            Transaction.ui16DeviceInstr         = ui8Instr;
+    367            Transaction.bTurnaround             = false;
+    368          #if defined(AM_PART_APOLLO3P)
+    369            Transaction.bDCX                    = false;
+    370            Transaction.bEnWRLatency            = false;
+    371            Transaction.bContinue               = false;
+    372          #endif
+    373          #if !defined(AM_PART_APOLLO4) && !defined(AM_PART_APOLLO4B)
+    374            Transaction.bQuadCmd                = false;
+    375          #else
+    376            Transaction.bDCX                    = false;
+    377            Transaction.bEnWRLatency            = false;
+    378            Transaction.bContinue               = false;
+    379          #if defined(AM_PART_APOLLO4)
+    380            Transaction.eDeviceNum              = AM_HAL_MSPI_DEVICE0;
+    381          #endif
+    382          #endif
+    383            Transaction.pui32Buffer             = pData;
+    384          
+    385            // Execute the transction over MSPI.
+    386            return am_hal_mspi_blocking_transfer(pMspiHandle,
+    387                                                 &Transaction,
+    388                                                 AM_DEVICES_MSPI_PSRAM_TIMEOUT);
+    389          }
+    390          
+    391          //*****************************************************************************
+    392          //
+    393          // Reset the external psram
+    394          //
+    395          //*****************************************************************************
+    396          static uint32_t
+    397          am_devices_mspi_psram_aps6404l_reset(void *pMspiHandle)
+    398          {
+    399            uint32_t      ui32PIOBuffer;
+    400            //
+    401            // Send the command sequence to reset the device and return status.
+    402            //
+    403            if (AM_HAL_STATUS_SUCCESS != am_device_command_write(pMspiHandle, AM_DEVICES_MSPI_PSRAM_RESET_ENABLE, false, 0, &ui32PIOBuffer, 0))
+    404            {
+    405              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    406            }
+    407            if (AM_HAL_STATUS_SUCCESS != am_device_command_write(pMspiHandle, AM_DEVICES_MSPI_PSRAM_RESET_MEMORY, false, 0, &ui32PIOBuffer, 0))
+    408            {
+    409              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    410            }
+    411            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+    412          }
+    413          
+    414          //*****************************************************************************
+    415          //
+    416          //! @brief Reads the ID of the external psram and returns the value.
+    417          //!
+    418          //! @param pDeviceID - Pointer to the return buffer for the Device ID.
+    419          //!
+    420          //! This function reads the device ID register of the external psram, and returns
+    421          //! the result as an 32-bit unsigned integer value.
+    422          //!
+    423          //! @return 32-bit status
+    424          //
+    425          //*****************************************************************************
+    426          static uint32_t
+    427          am_devices_mspi_psram_aps6404l_id(void *pMspiHandle)
+    428          {
+    429            uint32_t      ui32Status;
+    430            uint32_t aui32Rawdata[2] = {0};
+    431            uint32_t      ui32DeviceID = 0;
+    432          
+    433            //
+    434            // Send the command sequence to read the Device ID and return status.
+    435            //
+    436            ui32Status = am_device_command_read(pMspiHandle, AM_DEVICES_MSPI_PSRAM_READ_ID, false, 0, aui32Rawdata, 5);
+    437            ui32DeviceID = ((aui32Rawdata[0] & 0xFF000000) >> 24) | ((aui32Rawdata[1] & 0xFF) << 8);
+    438            am_util_stdio_printf("PSRAM ID is 0x%x\n", ui32DeviceID);
+    439            if ((AM_DEVICES_MSPI_PSRAM_KGD_PASS == ui32DeviceID) &&
+    440                (AM_HAL_STATUS_SUCCESS == ui32Status))
+    441            {
+    442              return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+    443            }
+    444            else
+    445            {
+    446              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    447            }
+    448          }
+    449          
+    450          // This function takes care of splitting the transaction as needed, if the transaction crosses
+    451          // PSRAM page boundary or because of tCEM restrictions, if hardware does not support it
+    452          static uint32_t
+    453          psram_nonblocking_transfer(am_devices_mspi_psram_t *pPsram,
+    454                                     bool bHiPrio,
+    455                                     bool bWrite,
+    456                                     uint8_t *pui8Buffer,
+    457                                     uint32_t ui32Address,
+    458                                     uint32_t ui32NumBytes,
+    459                                     uint32_t ui32PauseCondition,
+    460                                     uint32_t ui32StatusSetClr,
+    461                                     am_hal_mspi_callback_t pfnCallback,
+    462                                     void *pCallbackCtxt)
+    463          {
+    464            uint32_t ui32Status = AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+    465            am_hal_mspi_dma_transfer_t    Transaction;
+    466          
+    467            // Set the DMA priority
+    468            Transaction.ui8Priority = 1;
+    469          
+    470          
+    471            // Set the transfer direction to RX (Read)
+    472            Transaction.eDirection = bWrite ? AM_HAL_MSPI_TX: AM_HAL_MSPI_RX;
+    473          
+    474          
+    475            // Initialize the CQ stimulus.
+    476            Transaction.ui32PauseCondition = ui32PauseCondition;
+    477            // Initialize the post-processing
+    478            Transaction.ui32StatusSetClr = 0;
+    479          
+    480            // Need to be aware of page size
+    481            while (ui32NumBytes)
+    482            {
+    483          #if defined(AM_PART_APOLLO3)
+    484              uint32_t maxSize = AM_DEVICES_MSPI_PSRAM_PAGE_SIZE - (ui32Address & (AM_DEVICES_MSPI_PSRAM_PAGE_SIZE - 1));
+    485              uint32_t limit = (maxSize > pPsram->maxTransSize) ? pPsram->maxTransSize : maxSize;
+    486              uint32_t size = (ui32NumBytes > limit) ? limit : ui32NumBytes;
+    487          #else
+    488              uint32_t size;
+    489              if ((ui32Address & 0x3) &&
+    490                  ((AM_DEVICES_MSPI_PSRAM_PAGE_SIZE - (ui32Address & (AM_DEVICES_MSPI_PSRAM_PAGE_SIZE - 1))) < ui32NumBytes))
+    491              {
+    492                // Hardware does not support Page splitting if address is not word aligned
+    493                // Need to split the transaction
+    494                size = 4 - (ui32Address & 0x3);
+    495              }
+    496              else
+    497              {
+    498                size = ui32NumBytes;
+    499              }
+    500          #endif
+    501              bool bLast = (size == ui32NumBytes);
+    502              // Set the transfer count in bytes.
+    503              Transaction.ui32TransferCount = size;
+    504          
+    505              // Set the address to read data from.
+    506              Transaction.ui32DeviceAddress = ui32Address;
+    507          
+    508              // Set the target SRAM buffer address.
+    509              Transaction.ui32SRAMAddress = (uint32_t)pui8Buffer;
+    510          
+    511              if (bLast)
+    512              {
+    513                Transaction.ui32StatusSetClr = ui32StatusSetClr;
+    514              }
+    515          #if defined(AM_PART_APOLLO4)
+    516            Transaction.eDeviceNum              = AM_HAL_MSPI_DEVICE0;
+    517          #endif
+    518          
+    519              if (bHiPrio)
+    520              {
+    521                ui32Status = am_hal_mspi_highprio_transfer(pPsram->pMspiHandle, &Transaction, AM_HAL_MSPI_TRANS_DMA,
+    522                                                           bLast ? pfnCallback : NULL,
+    523                                                           bLast ? pCallbackCtxt : NULL);
+    524              }
+    525              else
+    526              {
+    527                ui32Status = am_hal_mspi_nonblocking_transfer(pPsram->pMspiHandle, &Transaction, AM_HAL_MSPI_TRANS_DMA,
+    528                                                              bLast ? pfnCallback : NULL,
+    529                                                              bLast ? pCallbackCtxt : NULL);
+    530              }
+    531              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    532              {
+    533                break;
+    534              }
+    535              ui32Address += size;
+    536              ui32NumBytes -= size;
+    537              pui8Buffer += size;
+    538          
+    539              Transaction.ui32PauseCondition = 0;
+    540            }
+    541            return ui32Status;
+    542          }
+    543          
+    544          
+    545          //*****************************************************************************
+    546          //
+    547          //! @brief Initialize the mspi_psram driver.
+    548          //!
+    549          //! @param psMSPISettings - MSPI device structure describing the target spi psram.
+    550          //! @param pHandle - MSPI handler which needs to be return
+    551          //!
+    552          //! This function should be called before any other am_devices_mspi_psram
+    553          //! functions. It is used to set tell the other functions how to communicate
+    554          //! with the external psram hardware.
+    555          //!
+    556          //! @return status.
+    557          //
+    558          //*****************************************************************************
+    559          uint32_t
+    560          am_devices_mspi_psram_init(uint32_t ui32Module, am_devices_mspi_psram_config_t *pDevCfg, void **ppHandle, void **ppMspiHandle)
+    561          {
+    562              uint32_t                    ui32Status;
+    563              uint32_t                    ui32PIOBuffer;
+    564              am_hal_mspi_dev_config_t    *psMSPISettings1;
+    565              am_hal_mspi_dev_config_t    *psMSPISettings0;
+    566              am_hal_mspi_dev_config_t    mspiDevCfg;
+    567              void                        *pMspiHandle;
+    568              uint32_t                    ui32Index = 0;
+    569          
+    570              if ((ui32Module > AM_REG_MSPI_NUM_MODULES) || (pDevCfg == NULL))
+    571              {
+    572                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    573              }
+    574          
+    575              //
+    576              // Enable fault detection.
+    577              //
+    578          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+    579              am_hal_fault_capture_enable();
+    580          #else
+    581          #if AM_APOLLO3_MCUCTRL
+    582              am_hal_mcuctrl_control(AM_HAL_MCUCTRL_CONTROL_FAULT_CAPTURE_ENABLE, 0);
+    583          #else // AM_APOLLO3_MCUCTRL
+    584              am_hal_mcuctrl_fault_capture_enable();
+    585          #endif // AM_APOLLO3_MCUCTRL
+    586          #endif
+    587          
+    588              // Allocate a vacant device handle
+    589              for ( ui32Index = 0; ui32Index < AM_DEVICES_MSPI_PSRAM_MAX_DEVICE_NUM; ui32Index++ )
+    590              {
+    591                  if ( gAmPsram[ui32Index].bOccupied == false )
+    592                  {
+    593                      break;
+    594                  }
+    595              }
+    596              if ( ui32Index == AM_DEVICES_MSPI_PSRAM_MAX_DEVICE_NUM)
+    597              {
+    598                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    599              }
+    600          
+    601              //
+    602              // Re-Configure the MSPI for the requested operation mode.
+    603              //
+    604              switch (pDevCfg->eDeviceConfig)
+    605              {
+    606                  case AM_HAL_MSPI_FLASH_SERIAL_CE0:
+    607                      mspiDevCfg = SerialCE0MSPIConfig;
+    608                      break;
+    609                  case AM_HAL_MSPI_FLASH_SERIAL_CE1:
+    610                      mspiDevCfg = SerialCE1MSPIConfig;
+    611                      break;
+    612                  case AM_HAL_MSPI_FLASH_QUAD_CE0:
+    613                  case AM_HAL_MSPI_FLASH_QUAD_CE0_1_4_4:
+    614                      mspiDevCfg = QuadCE0MSPIConfig;
+    615                      break;
+    616                  case AM_HAL_MSPI_FLASH_QUAD_CE1:
+    617                  case AM_HAL_MSPI_FLASH_QUAD_CE1_1_4_4:
+    618                      mspiDevCfg = QuadCE1MSPIConfig;
+    619                      break;
+    620                  default:
+    621                      return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    622              }
+    623              mspiDevCfg.eDeviceConfig = pDevCfg->eDeviceConfig;
+    624              mspiDevCfg.eClockFreq = pDevCfg->eClockFreq;
+    625          #if !defined(AM_PART_APOLLO4) && !defined(AM_PART_APOLLO4B)
+    626              mspiDevCfg.ui32TCBSize = pDevCfg->ui32NBTxnBufLength;
+    627              mspiDevCfg.pTCB = pDevCfg->pNBTxnBuf;
+    628              mspiDevCfg.scramblingStartAddr = pDevCfg->ui32ScramblingStartAddr;
+    629              mspiDevCfg.scramblingEndAddr = pDevCfg->ui32ScramblingEndAddr;
+    630          #endif
+    631          
+    632          #if defined(AM_PART_APOLLO3)
+    633              //
+    634              // Look up the Max Transaction size to fit into 8usec for CE asserted
+    635              //
+    636              gAmPsram[ui32Index].maxTransSize = 0;
+    637              for (uint32_t i = 0; i < (sizeof(g_Mspi_SpeedMax) / sizeof(g_Mspi_SpeedMax[0])); i++)
+    638              {
+    639                  if (g_Mspi_SpeedMax[i].MHz == mspiDevCfg.eClockFreq)
+    640                  {
+    641                      gAmPsram[ui32Index].maxTransSize = g_Mspi_SpeedMax[i].MaxSize;
+    642                      break;
+    643                  }
+    644              }
+    645              if ( 0 == gAmPsram[ui32Index].maxTransSize ) // Return an error if Max Transaction size not found.
+    646              {
+    647                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    648              }
+    649          #endif
+    650          
+    651              //
+    652              // Configure the MSPI for Serial or Quad operation during initialization.
+    653              //
+    654              switch (mspiDevCfg.eDeviceConfig)
+    655              {
+    656                  case AM_HAL_MSPI_FLASH_SERIAL_CE0:
+    657                  case AM_HAL_MSPI_FLASH_QUAD_CE0:
+    658                  case AM_HAL_MSPI_FLASH_QUAD_CE0_1_4_4:
+    659                      psMSPISettings0 = &QuadCE0MSPIConfig;
+    660                      psMSPISettings1 = &SerialCE0MSPIConfig;
+    661                      break;
+    662                  case AM_HAL_MSPI_FLASH_SERIAL_CE1:
+    663                  case AM_HAL_MSPI_FLASH_QUAD_CE1:
+    664                  case AM_HAL_MSPI_FLASH_QUAD_CE1_1_4_4:
+    665                      psMSPISettings0 = &QuadCE1MSPIConfig;
+    666                      psMSPISettings1 = &SerialCE1MSPIConfig;
+    667                      break;
+    668                  default:
+    669                      return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    670                      //break;
+    671              }
+    672              psMSPISettings0->eDeviceConfig = pDevCfg->eDeviceConfig;
+    673          
+    674              // First configure in Quad mode and reset
+    675              if (AM_HAL_STATUS_SUCCESS != am_hal_mspi_initialize(ui32Module, &pMspiHandle))
+    676              {
+    677                  am_util_stdio_printf("Error - Failed to initialize MSPI.\n");
+    678                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    679              }
+    680          
+    681              if (AM_HAL_STATUS_SUCCESS != am_hal_mspi_power_control(pMspiHandle, AM_HAL_SYSCTRL_WAKE, false))
+    682              {
+    683                  am_util_stdio_printf("Error - Failed to power on MSPI.\n");
+    684                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    685              }
+    686          
+    687          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+    688              am_hal_mspi_config_t    mspiCfg = gMspiCfg;
+    689              mspiCfg.ui32TCBSize = pDevCfg->ui32NBTxnBufLength;
+    690              mspiCfg.pTCB = pDevCfg->pNBTxnBuf;
+    691              if (AM_HAL_STATUS_SUCCESS != am_hal_mspi_configure(pMspiHandle, &mspiCfg))
+    692              {
+    693                  am_util_stdio_printf("Error - Failed to configure MSPI device.\n");
+    694                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    695              }
+    696          #endif
+    697          
+    698              if (AM_HAL_STATUS_SUCCESS != am_hal_mspi_device_configure(pMspiHandle, psMSPISettings0))
+    699              {
+    700                  am_util_stdio_printf("Error - Failed to configure MSPI device.\n");
+    701                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    702              }
+    703          
+    704          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+    705              am_hal_mspi_xip_config_t    xipCfg = gXipConfig[ui32Module];
+    706          #if defined(AM_PART_APOLLO4)
+    707              xipCfg.eDeviceNum = psMSPISettings0->eDeviceNum;
+    708          #endif
+    709              xipCfg.scramblingStartAddr = pDevCfg->ui32ScramblingStartAddr;
+    710              xipCfg.scramblingEndAddr = pDevCfg->ui32ScramblingEndAddr;
+    711              ui32Status = am_hal_mspi_control(pMspiHandle, AM_HAL_MSPI_REQ_XIP_CONFIG, &xipCfg);
+    712              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    713              {
+    714                return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    715              }
+    716          #endif
+    717          
+    718              if (AM_HAL_STATUS_SUCCESS != am_hal_mspi_enable(pMspiHandle))
+    719              {
+    720                  am_util_stdio_printf("Error - Failed to enable MSPI.\n");
+    721                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    722              }
+    723              am_bsp_mspi_pins_enable(ui32Module, psMSPISettings0->eDeviceConfig);
+    724              am_util_delay_us(150);
+    725          
+    726              if (AM_HAL_STATUS_SUCCESS != am_devices_mspi_psram_aps6404l_reset(pMspiHandle))
+    727              {
+    728                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    729              }
+    730          
+    731              // Revert to Serial mode
+    732              switch (mspiDevCfg.eDeviceConfig)
+    733              {
+    734                  case AM_HAL_MSPI_FLASH_SERIAL_CE0:
+    735                  case AM_HAL_MSPI_FLASH_SERIAL_CE1:
+    736                      // Nothing to do.  Device defaults to SPI mode.
+    737                      break;
+    738                  case AM_HAL_MSPI_FLASH_QUAD_CE0:
+    739                  case AM_HAL_MSPI_FLASH_QUAD_CE0_1_4_4:
+    740                  case AM_HAL_MSPI_FLASH_QUAD_CE1:
+    741                  case AM_HAL_MSPI_FLASH_QUAD_CE1_1_4_4:
+    742                      ui32Status = am_device_command_write(pMspiHandle, AM_DEVICES_MSPI_PSRAM_QUAD_MODE_EXIT, false, 0, &ui32PIOBuffer, 0);
+    743                      if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    744                      {
+    745                          return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    746                      }
+    747                      break;
+    748                  default:
+    749                      return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    750                      //break;
+    751              }
+    752          
+    753              // Disable MSPI defore re-configuring it
+    754              ui32Status = am_hal_mspi_disable(pMspiHandle);
+    755              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    756              {
+    757                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    758              }
+    759          
+    760              if (AM_HAL_STATUS_SUCCESS != am_hal_mspi_device_configure(pMspiHandle, psMSPISettings1))
+    761              {
+    762                  am_util_stdio_printf("Error - Failed to configure MSPI.\n");
+    763                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    764              }
+    765          
+    766              if (AM_HAL_STATUS_SUCCESS != am_hal_mspi_enable(pMspiHandle))
+    767              {
+    768                  am_util_stdio_printf("Error - Failed to enable MSPI.\n");
+    769                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    770              }
+    771          //    am_bsp_mspi_pins_enable(ui32Module, psMSPISettings1->eDeviceConfig);
+    772          
+    773              am_util_delay_us(150);
+    774          
+    775              if (AM_HAL_STATUS_SUCCESS != am_devices_mspi_psram_aps6404l_reset(pMspiHandle))
+    776              {
+    777                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    778              }
+    779          
+    780              //
+    781              // Device specific MSPI psram initialization.
+    782              //
+    783              ui32Status = am_devices_mspi_psram_aps6404l_id(pMspiHandle);
+    784          
+    785              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    786              {
+    787                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    788              }
+    789          
+    790              //
+    791              // Configure the APS6404L Device mode.
+    792              //
+    793              switch (mspiDevCfg.eDeviceConfig)
+    794              {
+    795                  case AM_HAL_MSPI_FLASH_SERIAL_CE0:
+    796                  case AM_HAL_MSPI_FLASH_SERIAL_CE1:
+    797                      // Nothing to do.  Device defaults to SPI mode.
+    798                      break;
+    799                  case AM_HAL_MSPI_FLASH_QUAD_CE0:
+    800                  case AM_HAL_MSPI_FLASH_QUAD_CE0_1_4_4:
+    801                  case AM_HAL_MSPI_FLASH_QUAD_CE1:
+    802                  case AM_HAL_MSPI_FLASH_QUAD_CE1_1_4_4:
+    803                      ui32Status = am_device_command_write(pMspiHandle, AM_DEVICES_MSPI_PSRAM_QUAD_MODE_ENTER, false, 0, &ui32PIOBuffer, 0);
+    804                      if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    805                      {
+    806                          return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    807                      }
+    808                      break;
+    809                  default:
+    810                      return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    811              }
+    812          
+    813              // Disable MSPI defore re-configuring it
+    814              ui32Status = am_hal_mspi_disable(pMspiHandle);
+    815              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    816              {
+    817                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    818              }
+    819          
+    820              ui32Status = am_hal_mspi_device_configure(pMspiHandle, &mspiDevCfg);
+    821              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    822              {
+    823                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    824              }
+    825          
+    826              // Re-Enable MSPI
+    827              ui32Status = am_hal_mspi_enable(pMspiHandle);
+    828              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    829              {
+    830                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    831              }
+    832          
+    833              //
+    834              // Configure the MSPI pins.
+    835              //
+    836              am_bsp_mspi_pins_enable(ui32Module, mspiDevCfg.eDeviceConfig);
+    837          
+    838              //
+    839              // Enable MSPI interrupts.
+    840              //
+    841          
+    842              ui32Status = am_hal_mspi_interrupt_clear(pMspiHandle, AM_HAL_MSPI_INT_CQUPD | AM_HAL_MSPI_INT_ERR );
+    843              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    844              {
+    845                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    846              }
+    847          
+    848              ui32Status = am_hal_mspi_interrupt_enable(pMspiHandle, AM_HAL_MSPI_INT_CQUPD | AM_HAL_MSPI_INT_ERR );
+    849              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    850              {
+    851                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    852              }
+    853          
+    854              //
+    855              // Return the handle.
+    856              //
+    857              gAmPsram[ui32Index].bOccupied = true;
+    858              *ppHandle = (void *)&gAmPsram[ui32Index];
+    859              *ppMspiHandle = gAmPsram[ui32Index].pMspiHandle = pMspiHandle;
+    860              gAmPsram[ui32Index].ui32Module = ui32Module;
+    861              gAmPsram[ui32Index].eDeviceConfig = mspiDevCfg.eDeviceConfig;
+    862          
+    863              //
+    864              // Return the status.
+    865              //
+    866              return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+    867          }
+    868          
+    869          //*****************************************************************************
+    870          //
+    871          //! @brief DeInitialize the mspi_psram driver.
+    872          //!
+    873          //! @param psMSPISettings - MSPI device structure describing the target spi psram.
+    874          //! @param pHandle - MSPI handler.
+    875          //!
+    876          //! @return status.
+    877          //
+    878          //*****************************************************************************
+    879          uint32_t
+    880          am_devices_mspi_psram_deinit(void *pHandle)
+    881          {
+    882              uint32_t    ui32Status;
+    883              uint32_t    ui32PIOBuffer;
+    884              am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+    885          
+    886              //
+    887              // Device specific MSPI psram initialization.
+    888              //
+    889              // Revert to Serial mode
+    890              switch (pPsram->eDeviceConfig)
+    891              {
+    892                  case AM_HAL_MSPI_FLASH_SERIAL_CE0:
+    893                  case AM_HAL_MSPI_FLASH_SERIAL_CE1:
+    894                      // Nothing to do.  Device defaults to SPI mode.
+    895                      break;
+    896                  case AM_HAL_MSPI_FLASH_QUAD_CE0:
+    897                  case AM_HAL_MSPI_FLASH_QUAD_CE0_1_4_4:
+    898                  case AM_HAL_MSPI_FLASH_QUAD_CE1:
+    899                  case AM_HAL_MSPI_FLASH_QUAD_CE1_1_4_4:
+    900                      ui32Status = am_device_command_write(pPsram->pMspiHandle, AM_DEVICES_MSPI_PSRAM_QUAD_MODE_EXIT, false, 0, &ui32PIOBuffer, 0);
+    901                      if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    902                      {
+    903                          return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    904                      }
+    905                      break;
+    906                  default:
+    907                      return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    908                  //break;
+    909              }
+    910          
+    911              //
+    912              // Disable and clear the interrupts to start with.
+    913              //
+    914              ui32Status = am_hal_mspi_interrupt_disable(pPsram->pMspiHandle, 0xFFFFFFFF);
+    915              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    916              {
+    917                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    918              }
+    919              ui32Status = am_hal_mspi_interrupt_clear(pPsram->pMspiHandle, 0xFFFFFFFF);
+    920              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    921              {
+    922                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    923              }
+    924          
+    925              //
+    926              // Disable MSPI instance.
+    927              //
+    928              ui32Status = am_hal_mspi_disable(pPsram->pMspiHandle);
+    929              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    930              {
+    931                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    932              }
+    933              //
+    934              // Disable power to the MSPI instance.
+    935              //
+    936              if (AM_HAL_STATUS_SUCCESS != am_hal_mspi_power_control(pPsram->pMspiHandle, AM_HAL_SYSCTRL_DEEPSLEEP, false))
+    937              {
+    938                  am_util_stdio_printf("Error - Failed to power on MSPI.\n");
+    939                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    940              }
+    941              //
+    942              // Deinitialize the MPSI instance.
+    943              //
+    944              ui32Status = am_hal_mspi_deinitialize(pPsram->pMspiHandle);
+    945              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+    946              {
+    947                  return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+    948              }
+    949          
+    950              // Free this device handle
+    951              pPsram->bOccupied = false;
+    952          
+    953              //
+    954              // Return the status.
+    955              //
+    956              return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+    957          }
+    958          
+    959          //*****************************************************************************
+    960          //
+    961          //! @brief Reads the contents of the external PSRAM into a buffer.
+    962          //!
+    963          //! @param ui32Module - MSPI instance
+    964          //! @param pui8RxBuffer - Buffer to store the received data from the PSRAM
+    965          //! @param ui32ReadAddress - Address of desired data in external PSRAM
+    966          //! @param ui32NumBytes - Number of bytes to read from external PSRAM
+    967          //! @param bWaitForCompletion - Wait for transaction completion before exiting
+    968          //!
+    969          //! This function reads the external PSRAM at the provided address and stores
+    970          //! the received data into the provided buffer location. This function will
+    971          //! only store ui32NumBytes worth of data.  If the bWaitForCompletion is true,
+    972          //! then the function will poll for DMA completion indication flag before
+    973          //! returning.
+    974          //
+    975          //! @return 32-bit status
+    976          //
+    977          //*****************************************************************************
+    978          uint32_t
+    979          am_devices_mspi_psram_read(void *pHandle,
+    980                                     uint8_t *pui8RxBuffer,
+    981                                     uint32_t ui32ReadAddress,
+    982                                     uint32_t ui32NumBytes,
+    983                                     bool bWaitForCompletion)
+    984          {
+    985            uint32_t                      ui32Status;
+    986            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+    987          
+    988            if (bWaitForCompletion)
+    989            {
+    990              // Start the transaction.
+    991              volatile bool bDMAComplete = false;
+    992              ui32Status = psram_nonblocking_transfer(pPsram, false, false,
+    993                                                      pui8RxBuffer,
+    994                                                      ui32ReadAddress,
+    995                                                      ui32NumBytes,
+    996                                                      0,
+    997                                                      0,
+    998                                                      pfnMSPI_PSRAM_Callback,
+    999                                                      (void *)&bDMAComplete);
+   1000          
+   1001              // Check the transaction status.
+   1002              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1003              {
+   1004                return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1005              }
+   1006          
+   1007              // Wait for DMA Complete or Timeout
+   1008              for (uint32_t i = 0; i < AM_DEVICES_MSPI_PSRAM_TIMEOUT; i++)
+   1009              {
+   1010                if (bDMAComplete)
+   1011                {
+   1012                  break;
+   1013                }
+   1014                //
+   1015                // Call the BOOTROM cycle function to delay for about 1 microsecond.
+   1016                //
+   1017          #if !defined(AM_PART_APOLLO4) && !defined(AM_PART_APOLLO4B)
+   1018                am_hal_flash_delay( FLASH_CYCLES_US(1) );
+   1019          #else
+   1020                am_hal_delay_us(1);
+   1021          #endif
+   1022              }
+   1023          
+   1024              // Check the status.
+   1025              if (!bDMAComplete)
+   1026              {
+   1027                return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1028              }
+   1029            }
+   1030            else
+   1031            {
+   1032              // Check the transaction status.
+   1033              ui32Status = psram_nonblocking_transfer(pPsram, false, false,
+   1034                                                      pui8RxBuffer,
+   1035                                                      ui32ReadAddress,
+   1036                                                      ui32NumBytes,
+   1037                                                      0,
+   1038                                                      0,
+   1039                                                      NULL,
+   1040                                                      NULL);
+   1041              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1042              {
+   1043                return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1044              }
+   1045            }
+   1046            //
+   1047            // Return the status.
+   1048            //
+   1049            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1050          }
+   1051          
+   1052          //*****************************************************************************
+   1053          //
+   1054          //! @brief Reads the contents of the external PSRAM into a buffer.
+   1055          //!
+   1056          //! @param ui32Module - MSPI instance
+   1057          //! @param pui8RxBuffer - Buffer to store the received data from the PSRAM
+   1058          //! @param ui32ReadAddress - Address of desired data in external PSRAM
+   1059          //! @param ui32NumBytes - Number of bytes to read from external PSRAM
+   1060          //! @param ui32PauseCondition - Pause condition before transaction is executed
+   1061          //! @param ui32StatusSetClr - Post-transaction CQ condition
+   1062          //! @param pfnCallback - Post-transaction callback function
+   1063          //! @param pCallbackCtxt - Post-transaction callback context
+   1064          //!
+   1065          //! This function reads the external PSRAM at the provided address and stores
+   1066          //! the received data into the provided buffer location. This function will
+   1067          //! only store ui32NumBytes worth of data.  The Command Queue pre and post
+   1068          //! transaction conditions and a callback function and context are also
+   1069          //! provided.
+   1070          //
+   1071          //! @return 32-bit status
+   1072          //
+   1073          //*****************************************************************************
+   1074          uint32_t
+   1075          am_devices_mspi_psram_read_adv(void *pHandle,
+   1076                                         uint8_t *pui8RxBuffer,
+   1077                                         uint32_t ui32ReadAddress,
+   1078                                         uint32_t ui32NumBytes,
+   1079                                         uint32_t ui32PauseCondition,
+   1080                                         uint32_t ui32StatusSetClr,
+   1081                                         am_hal_mspi_callback_t pfnCallback,
+   1082                                         void *pCallbackCtxt)
+   1083          {
+   1084            uint32_t                      ui32Status;
+   1085            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1086          
+   1087            ui32Status = psram_nonblocking_transfer(pPsram, false, false,
+   1088                                                    pui8RxBuffer,
+   1089                                                    ui32ReadAddress,
+   1090                                                    ui32NumBytes,
+   1091                                                    ui32PauseCondition,
+   1092                                                    ui32StatusSetClr,
+   1093                                                    pfnCallback,
+   1094                                                    pCallbackCtxt);
+   1095          
+   1096            // Check the transaction status.
+   1097            if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1098            {
+   1099              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1100            }
+   1101          
+   1102            //
+   1103            // Return the status.
+   1104            //
+   1105            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1106          }
+   1107          
+   1108          //*****************************************************************************
+   1109          //
+   1110          //! @brief Reads the contents of the external psram into a buffer.
+   1111          //!
+   1112          //! @param pui8RxBuffer - Buffer to store the received data from the psram
+   1113          //! @param ui32ReadAddress - Address of desired data in external psram
+   1114          //! @param ui32NumBytes - Number of bytes to read from external psram
+   1115          //!
+   1116          //! This function reads the external psram at the provided address and stores
+   1117          //! the received data into the provided buffer location. This function will
+   1118          //! only store ui32NumBytes worth of data.
+   1119          //
+   1120          //! @return 32-bit status
+   1121          //
+   1122          //*****************************************************************************
+   1123          uint32_t
+   1124          am_devices_mspi_psram_read_hiprio(void *pHandle,
+   1125                                            uint8_t *pui8RxBuffer,
+   1126                                            uint32_t ui32ReadAddress,
+   1127                                            uint32_t ui32NumBytes,
+   1128                                            am_hal_mspi_callback_t pfnCallback,
+   1129                                            void *pCallbackCtxt)
+   1130          {
+   1131            uint32_t                      ui32Status;
+   1132            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1133          
+   1134            ui32Status = psram_nonblocking_transfer(pPsram, true, false,
+   1135                                                    pui8RxBuffer,
+   1136                                                    ui32ReadAddress,
+   1137                                                    ui32NumBytes,
+   1138                                                    0,
+   1139                                                    0,
+   1140                                                    pfnCallback,
+   1141                                                    pCallbackCtxt);
+   1142          
+   1143            // Check the transaction status.
+   1144            if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1145            {
+   1146              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1147            }
+   1148          
+   1149            //
+   1150            // Return the status.
+   1151            //
+   1152            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1153          }
+   1154          
+   1155          uint32_t
+   1156          am_devices_mspi_psram_nonblocking_read(void *pHandle,
+   1157                                                 uint8_t *pui8RxBuffer,
+   1158                                                 uint32_t ui32ReadAddress,
+   1159                                                 uint32_t ui32NumBytes,
+   1160                                                 am_hal_mspi_callback_t pfnCallback,
+   1161                                                 void *pCallbackCtxt)
+   1162          {
+   1163            uint32_t                      ui32Status;
+   1164            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1165          
+   1166            // Check the transaction status.
+   1167            ui32Status = psram_nonblocking_transfer(pPsram, false, false,
+   1168                                                    pui8RxBuffer,
+   1169                                                    ui32ReadAddress,
+   1170                                                    ui32NumBytes,
+   1171                                                    0,
+   1172                                                    0,
+   1173                                                    pfnCallback,
+   1174                                                    pCallbackCtxt);
+   1175            if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1176            {
+   1177              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1178            }
+   1179          
+   1180            //
+   1181            // Return the status.
+   1182            //
+   1183            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1184          }
+   1185          
+   1186          
+   1187          //*****************************************************************************
+   1188          //
+   1189          //! @brief Programs the given range of psram addresses.
+   1190          //!
+   1191          //! @param ui32DeviceNumber - Device number of the external psram
+   1192          //! @param pui8TxBuffer - Buffer to write the external psram data from
+   1193          //! @param ui32WriteAddress - Address to write to in the external psram
+   1194          //! @param ui32NumBytes - Number of bytes to write to the external psram
+   1195          //!
+   1196          //! This function uses the data in the provided pui8TxBuffer and copies it to
+   1197          //! the external psram at the address given by ui32WriteAddress. It will copy
+   1198          //! exactly ui32NumBytes of data from the original pui8TxBuffer pointer. The
+   1199          //! user is responsible for ensuring that they do not overflow the target psram
+   1200          //! memory or underflow the pui8TxBuffer array
+   1201          //
+   1202          //! @return 32-bit status
+   1203          //
+   1204          //*****************************************************************************
+   1205          uint32_t
+   1206          am_devices_mspi_psram_write(void *pHandle,
+   1207                                      uint8_t *pui8TxBuffer,
+   1208                                      uint32_t ui32WriteAddress,
+   1209                                      uint32_t ui32NumBytes,
+   1210                                      bool bWaitForCompletion)
+   1211          {
+   1212            uint32_t                      ui32Status;
+   1213            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1214          
+   1215            if (bWaitForCompletion)
+   1216            {
+   1217              // Start the transaction.
+   1218              volatile bool bDMAComplete = false;
+   1219              ui32Status = psram_nonblocking_transfer(pPsram, false, true,
+   1220                                                      pui8TxBuffer,
+   1221                                                      ui32WriteAddress,
+   1222                                                      ui32NumBytes,
+   1223                                                      0,
+   1224                                                      0,
+   1225                                                      pfnMSPI_PSRAM_Callback,
+   1226                                                      (void *)&bDMAComplete);
+   1227          
+   1228              // Check the transaction status.
+   1229              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1230              {
+   1231                return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1232              }
+   1233          
+   1234              // Wait for DMA Complete or Timeout
+   1235              for (uint32_t i = 0; i < AM_DEVICES_MSPI_PSRAM_TIMEOUT; i++)
+   1236              {
+   1237                if (bDMAComplete)
+   1238                {
+   1239                  break;
+   1240                }
+   1241                //
+   1242                // Call the BOOTROM cycle function to delay for about 1 microsecond.
+   1243                //
+   1244          #if !defined(AM_PART_APOLLO4) && !defined(AM_PART_APOLLO4B)
+   1245                am_hal_flash_delay( FLASH_CYCLES_US(1) );
+   1246          #else
+   1247                am_hal_delay_us(1);
+   1248          #endif
+   1249              }
+   1250          
+   1251              // Check the status.
+   1252              if (!bDMAComplete)
+   1253              {
+   1254                return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1255              }
+   1256            }
+   1257            else
+   1258            {
+   1259              // Check the transaction status.
+   1260              ui32Status = psram_nonblocking_transfer(pPsram, false, true,
+   1261                                                      pui8TxBuffer,
+   1262                                                      ui32WriteAddress,
+   1263                                                      ui32NumBytes,
+   1264                                                      0,
+   1265                                                      0,
+   1266                                                      NULL,
+   1267                                                      NULL);
+   1268              if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1269              {
+   1270                return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1271              }
+   1272            }
+   1273          
+   1274            //
+   1275            // Return the status.
+   1276            //
+   1277            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1278          }
+   1279          //*****************************************************************************
+   1280          //
+   1281          //! @brief Programs the given range of psram addresses.
+   1282          //!
+   1283          //! @param ui32DeviceNumber - Device number of the external psram
+   1284          //! @param pui8TxBuffer - Buffer to write the external psram data from
+   1285          //! @param ui32WriteAddress - Address to write to in the external psram
+   1286          //! @param ui32NumBytes - Number of bytes to write to the external psram
+   1287          //!
+   1288          //! This function uses the data in the provided pui8TxBuffer and copies it to
+   1289          //! the external psram at the address given by ui32WriteAddress. It will copy
+   1290          //! exactly ui32NumBytes of data from the original pui8TxBuffer pointer. The
+   1291          //! user is responsible for ensuring that they do not overflow the target psram
+   1292          //! memory or underflow the pui8TxBuffer array
+   1293          //
+   1294          //! @return 32-bit status
+   1295          //
+   1296          //*****************************************************************************
+   1297          uint32_t
+   1298          am_devices_mspi_psram_write_adv(void *pHandle,
+   1299                                          uint8_t *puiTxBuffer,
+   1300                                          uint32_t ui32WriteAddress,
+   1301                                          uint32_t ui32NumBytes,
+   1302                                          uint32_t ui32PauseCondition,
+   1303                                          uint32_t ui32StatusSetClr,
+   1304                                          am_hal_mspi_callback_t pfnCallback,
+   1305                                          void *pCallbackCtxt)
+   1306          {
+   1307            uint32_t                      ui32Status;
+   1308            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1309          
+   1310            ui32Status = psram_nonblocking_transfer(pPsram, false, true,
+   1311                                                    puiTxBuffer,
+   1312                                                    ui32WriteAddress,
+   1313                                                    ui32NumBytes,
+   1314                                                    ui32PauseCondition,
+   1315                                                    ui32StatusSetClr,
+   1316                                                    pfnCallback,
+   1317                                                    pCallbackCtxt);
+   1318          
+   1319            // Check the transaction status.
+   1320            if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1321            {
+   1322              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1323            }
+   1324          
+   1325            //
+   1326            // Return the status.
+   1327            //
+   1328            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1329          }
+   1330          
+   1331          //*****************************************************************************
+   1332          //
+   1333          //! @brief Programs the given range of psram addresses.
+   1334          //!
+   1335          //! @param ui32DeviceNumber - Device number of the external psram
+   1336          //! @param pui8TxBuffer - Buffer to write the external psram data from
+   1337          //! @param ui32WriteAddress - Address to write to in the external psram
+   1338          //! @param ui32NumBytes - Number of bytes to write to the external psram
+   1339          //!
+   1340          //! This function uses the data in the provided pui8TxBuffer and copies it to
+   1341          //! the external psram at the address given by ui32WriteAddress. It will copy
+   1342          //! exactly ui32NumBytes of data from the original pui8TxBuffer pointer. The
+   1343          //! user is responsible for ensuring that they do not overflow the target psram
+   1344          //! memory or underflow the pui8TxBuffer array
+   1345          //
+   1346          //! @return 32-bit status
+   1347          //
+   1348          //*****************************************************************************
+   1349          uint32_t
+   1350          am_devices_mspi_psram_write_hiprio(void *pHandle,
+   1351                                             uint8_t *pui8TxBuffer,
+   1352                                             uint32_t ui32WriteAddress,
+   1353                                             uint32_t ui32NumBytes,
+   1354                                             am_hal_mspi_callback_t pfnCallback,
+   1355                                             void *pCallbackCtxt)
+   1356          {
+   1357            uint32_t                      ui32Status;
+   1358            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1359          
+   1360            // Check the transaction status.
+   1361            ui32Status = psram_nonblocking_transfer(pPsram, true, true,
+   1362                                                    pui8TxBuffer,
+   1363                                                    ui32WriteAddress,
+   1364                                                    ui32NumBytes,
+   1365                                                    0,
+   1366                                                    0,
+   1367                                                    pfnCallback,
+   1368                                                    pCallbackCtxt);
+   1369          
+   1370            // Check the transaction status.
+   1371            if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1372            {
+   1373              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1374            }
+   1375          
+   1376            //
+   1377            // Return the status.
+   1378            //
+   1379            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1380          }
+   1381          uint32_t
+   1382          am_devices_mspi_psram_nonblocking_write(void *pHandle,
+   1383                                                  uint8_t *pui8TxBuffer,
+   1384                                                  uint32_t ui32WriteAddress,
+   1385                                                  uint32_t ui32NumBytes,
+   1386                                                  am_hal_mspi_callback_t pfnCallback,
+   1387                                                  void *pCallbackCtxt)
+   1388          {
+   1389            uint32_t                      ui32Status;
+   1390            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1391          
+   1392            // Check the transaction status.
+   1393            ui32Status = psram_nonblocking_transfer(pPsram, false, true,
+   1394                                                    pui8TxBuffer,
+   1395                                                    ui32WriteAddress,
+   1396                                                    ui32NumBytes,
+   1397                                                    0,
+   1398                                                    0,
+   1399                                                    pfnCallback,
+   1400                                                    pCallbackCtxt);
+   1401            if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1402            {
+   1403              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1404            }
+   1405          
+   1406            //
+   1407            // Return the status.
+   1408            //
+   1409            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1410          }
+   1411          
+   1412          
+   1413          //*****************************************************************************
+   1414          //
+   1415          //! @brief Sets up the MSPI and external psram into XIP mode.
+   1416          //!
+   1417          //! This function sets the external psram device and the MSPI into XIP mode.
+   1418          //
+   1419          //! @return 32-bit status
+   1420          //
+   1421          //*****************************************************************************
+   1422          uint32_t
+   1423          am_devices_mspi_psram_enable_xip(void *pHandle)
+   1424          {
+   1425            uint32_t ui32Status;
+   1426            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1427          
+   1428          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+   1429            //
+   1430            // Set Aperture XIP range
+   1431            //
+   1432            ui32Status = am_hal_mspi_control(pPsram->pMspiHandle, AM_HAL_MSPI_REQ_XIP_CONFIG, &gXipConfig[pPsram->ui32Module]);
+   1433            if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1434            {
+   1435              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1436            }
+   1437          #endif
+   1438          
+   1439            //
+   1440            // Enable XIP on the MSPI.
+   1441            //
+   1442          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+   1443            ui32Status = am_hal_mspi_control(pPsram->pMspiHandle, AM_HAL_MSPI_REQ_XIP_EN, &gXipConfig[pPsram->ui32Module]);
+   1444          #else
+   1445            ui32Status = am_hal_mspi_control(pPsram->pMspiHandle, AM_HAL_MSPI_REQ_XIP_EN, NULL);
+   1446          #endif
+   1447          
+   1448            if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1449            {
+   1450              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1451            }
+   1452          
+   1453            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1454          }
+   1455          
+   1456          //*****************************************************************************
+   1457          //
+   1458          //! @brief Removes the MSPI and external psram from XIP mode.
+   1459          //!
+   1460          //! This function removes the external device and the MSPI from XIP mode.
+   1461          //
+   1462          //! @return 32-bit status
+   1463          //
+   1464          //*****************************************************************************
+   1465          uint32_t
+   1466          am_devices_mspi_psram_disable_xip(void *pHandle)
+   1467          {
+   1468            uint32_t ui32Status;
+   1469            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1470          
+   1471            //
+   1472            // Disable XIP on the MSPI.
+   1473            //
+   1474          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+   1475            ui32Status = am_hal_mspi_control(pPsram->pMspiHandle, AM_HAL_MSPI_REQ_XIP_DIS, &gXipConfig[pPsram->ui32Module]);
+   1476          #else
+   1477            ui32Status = am_hal_mspi_control(pPsram->pMspiHandle, AM_HAL_MSPI_REQ_XIP_DIS, NULL);
+   1478          #endif
+   1479            if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1480            {
+   1481              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1482            }
+   1483          
+   1484            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1485          }
+   1486          
+   1487          //*****************************************************************************
+   1488          //
+   1489          //! @brief Sets up the MSPI and external psram into scrambling mode.
+   1490          //!
+   1491          //! This function sets the external psram device and the MSPI into scrambling mode.
+   1492          //
+   1493          //! @return 32-bit status
+   1494          //
+   1495          //*****************************************************************************
+   1496          uint32_t
+   1497          am_devices_mspi_psram_enable_scrambling(void *pHandle)
+   1498          {
+   1499            uint32_t ui32Status;
+   1500            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1501          
+   1502            //
+   1503            // Enable scrambling on the MSPI.
+   1504            //
+   1505          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+   1506            ui32Status = am_hal_mspi_control(pPsram->pMspiHandle, AM_HAL_MSPI_REQ_SCRAMB_EN, &gXipConfig[pPsram->ui32Module]);
+   1507          #else
+   1508            ui32Status = am_hal_mspi_control(pPsram->pMspiHandle, AM_HAL_MSPI_REQ_SCRAMB_EN, NULL);
+   1509          #endif
+   1510            if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1511            {
+   1512              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1513            }
+   1514            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1515          }
+   1516          
+   1517          //*****************************************************************************
+   1518          //
+   1519          //! @brief Removes the MSPI and external psram from scrambling mode.
+   1520          //!
+   1521          //! This function removes the external device and the MSPI from scrambling mode.
+   1522          //
+   1523          //! @return 32-bit status
+   1524          //
+   1525          //*****************************************************************************
+   1526          uint32_t
+   1527          am_devices_mspi_psram_disable_scrambling(void *pHandle)
+   1528          {
+   1529            uint32_t ui32Status;
+   1530            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1531          
+   1532            //
+   1533            // Disable Scrambling on the MSPI.
+   1534            //
+   1535          #if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B)
+   1536            ui32Status = am_hal_mspi_control(pPsram->pMspiHandle, AM_HAL_MSPI_REQ_SCRAMB_DIS, &gXipConfig[pPsram->ui32Module]);
+   1537          #else
+   1538            ui32Status = am_hal_mspi_control(pPsram->pMspiHandle, AM_HAL_MSPI_REQ_SCRAMB_DIS, NULL);
+   1539          #endif
+   1540            if (AM_HAL_STATUS_SUCCESS != ui32Status)
+   1541            {
+   1542              return AM_DEVICES_MSPI_PSRAM_STATUS_ERROR;
+   1543            }
+   1544          
+   1545            return AM_DEVICES_MSPI_PSRAM_STATUS_SUCCESS;
+   1546          }
+   1547          
+   1548          //*****************************************************************************
+   1549          //
+   1550          // Reset the external psram
+   1551          //
+   1552          //*****************************************************************************
+   1553          uint32_t
+   1554          am_devices_mspi_psram_reset(void *pHandle)
+   1555          {
+   1556            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1557            return am_devices_mspi_psram_aps6404l_reset(pPsram);
+   1558          }
+   1559          
+   1560          //*****************************************************************************
+   1561          //
+   1562          //! @brief Reads the ID of the external psram and returns the value.
+   1563          //!
+   1564          //! @param pDeviceID - Pointer to the return buffer for the Device ID.
+   1565          //!
+   1566          //! This function reads the device ID register of the external psram, and returns
+   1567          //! the result as an 32-bit unsigned integer value.
+   1568          //!
+   1569          //! @return 32-bit status
+   1570          //
+   1571          //*****************************************************************************
+   1572          uint32_t
+   1573          am_devices_mspi_psram_id(void *pHandle)
+   1574          {
+   1575            am_devices_mspi_psram_t *pPsram = (am_devices_mspi_psram_t *)pHandle;
+   1576          
+   1577            return am_devices_mspi_psram_aps6404l_id(pPsram);
+   1578          }
+   1579          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      40   am_devices_mspi_psram_deinit
+        40   -> am_hal_mspi_blocking_transfer
+        40   -> am_hal_mspi_deinitialize
+        40   -> am_hal_mspi_disable
+        40   -> am_hal_mspi_interrupt_clear
+        40   -> am_hal_mspi_interrupt_disable
+        40   -> am_hal_mspi_power_control
+        40   -> am_util_stdio_printf
+       8   am_devices_mspi_psram_disable_scrambling
+         8   -> am_hal_mspi_control
+       8   am_devices_mspi_psram_disable_xip
+         8   -> am_hal_mspi_control
+       8   am_devices_mspi_psram_enable_scrambling
+         8   -> am_hal_mspi_control
+       8   am_devices_mspi_psram_enable_xip
+         8   -> am_hal_mspi_control
+      48   am_devices_mspi_psram_id
+        48   -> am_hal_mspi_blocking_transfer
+        48   -> am_util_stdio_printf
+        48   -> memset
+     120   am_devices_mspi_psram_init
+       120   -> am_bsp_mspi_pins_enable
+       120   -> am_hal_mcuctrl_control
+       120   -> am_hal_mspi_blocking_transfer
+       120   -> am_hal_mspi_device_configure
+       120   -> am_hal_mspi_disable
+       120   -> am_hal_mspi_enable
+       120   -> am_hal_mspi_initialize
+       120   -> am_hal_mspi_interrupt_clear
+       120   -> am_hal_mspi_interrupt_enable
+       120   -> am_hal_mspi_power_control
+       120   -> am_util_delay_us
+       120   -> am_util_stdio_printf
+       120   -> memset
+      64   am_devices_mspi_psram_nonblocking_read
+        64   -> am_hal_mspi_nonblocking_transfer
+      64   am_devices_mspi_psram_nonblocking_write
+        64   -> am_hal_mspi_nonblocking_transfer
+      64   am_devices_mspi_psram_read
+        64   -> am_hal_flash_delay
+        64   -> am_hal_mspi_nonblocking_transfer
+      64   am_devices_mspi_psram_read_adv
+        64   -> am_hal_mspi_nonblocking_transfer
+      64   am_devices_mspi_psram_read_hiprio
+        64   -> am_hal_mspi_highprio_transfer
+      40   am_devices_mspi_psram_reset
+        40   -> am_hal_mspi_blocking_transfer
+      64   am_devices_mspi_psram_write
+        64   -> am_hal_flash_delay
+        64   -> am_hal_mspi_nonblocking_transfer
+      64   am_devices_mspi_psram_write_adv
+        64   -> am_hal_mspi_nonblocking_transfer
+      64   am_devices_mspi_psram_write_hiprio
+        64   -> am_hal_mspi_highprio_transfer
+       0   pfnMSPI_PSRAM_Callback
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable8
+       4  ??DataTable8_1
+       4  ??DataTable8_2
+       4  ??DataTable8_3
+       4  ??DataTable8_4
+       4  ??DataTable8_5
+       4  ??DataTable8_6
+     152  ?_0
+      20  ?_4
+      32  ?_5
+     168  SerialCE0MSPIConfig
+          SerialCE1MSPIConfig
+          QuadCE0MSPIConfig
+          QuadCE1MSPIConfig
+          gAmPsram
+     184  am_devices_mspi_psram_deinit
+      26  am_devices_mspi_psram_disable_scrambling
+      26  am_devices_mspi_psram_disable_xip
+      26  am_devices_mspi_psram_enable_scrambling
+      26  am_devices_mspi_psram_enable_xip
+     116  am_devices_mspi_psram_id
+   1'124  am_devices_mspi_psram_init
+     142  am_devices_mspi_psram_nonblocking_read
+     142  am_devices_mspi_psram_nonblocking_write
+     294  am_devices_mspi_psram_read
+     148  am_devices_mspi_psram_read_adv
+     142  am_devices_mspi_psram_read_hiprio
+     134  am_devices_mspi_psram_reset
+     298  am_devices_mspi_psram_write
+     146  am_devices_mspi_psram_write_adv
+     142  am_devices_mspi_psram_write_hiprio
+       6  pfnMSPI_PSRAM_Callback
+
+ 
+   168 bytes in section .data
+   152 bytes in section .rodata
+ 3'202 bytes in section .text
+ 
+ 3'202 bytes of CODE  memory
+   152 bytes of CONST memory
+   168 bytes of DATA  memory
+
+Errors: none
+Warnings: none

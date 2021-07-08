@@ -1,0 +1,323 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.50.6.265/W32 for ARM         07/Jul/2021  16:12:35
+# Copyright 1999-2020 IAR Systems AB.
+#
+#    Cpu mode                        
+#    Endian                       =  little
+#    Source file                  =
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\src\rtos.c
+#    Command line                 =
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EWCB5F.tmp
+#        (X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\src\rtos.c
+#        -D iar -D AM_PART_APOLLO3P -D AM_DEBUG_PRINTF -D AM_FREERTOS -D
+#        AM_PACKAGE_BGA -D AM_UTIL_FAULTISR_PRINT -lcN
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\bin
+#        --diag_suppress Pa050 -o
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\bin
+#        --debug --endian=little --cpu=Cortex-M4 --no_path_in_file_macros -e
+#        --fpu=VFPv4_sp --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.4\arm\inc\c\DLib_Config_Normal.h" -I
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2\\
+#        -I
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\..\src\\
+#        -I
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\..\..\..\..\..\\
+#        -I
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\..\..\..\..\..\CMSIS\ARM\Include\\
+#        -I
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\..\..\..\..\..\CMSIS\AmbiqMicro\Include\\
+#        -I
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\..\..\..\bsp\\
+#        -I
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\..\..\..\..\..\mcu\apollo3p\\
+#        -I
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\..\..\..\..\..\devices\\
+#        -I
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\..\..\..\..\..\utils\\
+#        -I
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\..\..\..\..\..\third_party\FreeRTOSv10.1.1\Source\include\\
+#        -Ohs --no_size_constraints)
+#    Locale                       =  C
+#    List file                    =
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\bin\rtos.lst
+#    Object file                  =
+#        X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\iar\bin\rtos.o
+#    Runtime model:                  
+#      __SystemLibrary            =  DLib
+#      __dlib_full_locale_support =  0
+#      __dlib_version             =  6
+#
+###############################################################################
+
+X:\Documents\Apollo3\A3_SDK\boards\apollo3p_evb\examples\freertos_lowpower\src\rtos.c
+      1          //*****************************************************************************
+      2          //
+      3          //! @file rtos.c
+      4          //!
+      5          //! @brief Essential functions to make the RTOS run correctly.
+      6          //!
+      7          //! These functions are required by the RTOS for ticking, sleeping, and basic
+      8          //! error checking.
+      9          //
+     10          //*****************************************************************************
+     11          
+     12          //*****************************************************************************
+     13          //
+     14          // Copyright (c) 2020, Ambiq Micro, Inc.
+     15          // All rights reserved.
+     16          //
+     17          // Redistribution and use in source and binary forms, with or without
+     18          // modification, are permitted provided that the following conditions are met:
+     19          //
+     20          // 1. Redistributions of source code must retain the above copyright notice,
+     21          // this list of conditions and the following disclaimer.
+     22          //
+     23          // 2. Redistributions in binary form must reproduce the above copyright
+     24          // notice, this list of conditions and the following disclaimer in the
+     25          // documentation and/or other materials provided with the distribution.
+     26          //
+     27          // 3. Neither the name of the copyright holder nor the names of its
+     28          // contributors may be used to endorse or promote products derived from this
+     29          // software without specific prior written permission.
+     30          //
+     31          // Third party software included in this distribution is subject to the
+     32          // additional license terms as defined in the /docs/licenses directory.
+     33          //
+     34          // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+     35          // AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+     36          // IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+     37          // ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+     38          // LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+     39          // CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+     40          // SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+     41          // INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+     42          // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+     43          // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+     44          // POSSIBILITY OF SUCH DAMAGE.
+     45          //
+     46          // This is part of revision 2.5.1 of the AmbiqSuite Development Package.
+     47          //
+     48          //*****************************************************************************
+     49          
+     50          #include <stdint.h>
+     51          #include <stdbool.h>
+     52          
+     53          #include "am_mcu_apollo.h"
+     54          #include "am_bsp.h"
+     55          
+     56          #include "FreeRTOS.h"
+     57          #include "task.h"
+     58          #include "queue.h"
+     59          #include "portmacro.h"
+     60          #include "portable.h"
+     61          #include "freertos_lowpower.h"
+     62          
+     63          //*****************************************************************************
+     64          //
+     65          // Task handle for the initial setup task.
+     66          //
+     67          //*****************************************************************************
+     68          TaskHandle_t xSetupTask;
+     69          
+     70          //*****************************************************************************
+     71          //
+     72          // Interrupt handler for the CTIMER module.
+     73          //
+     74          //*****************************************************************************
+     75          void
+     76          am_ctimer_isr(void)
+     77          {
+     78              uint32_t ui32Status;
+     79          
+     80              //
+     81              // Check the timer interrupt status.
+     82              //
+     83              ui32Status = am_hal_ctimer_int_status_get(false);
+     84              am_hal_ctimer_int_clear(ui32Status);
+     85          
+     86              //
+     87              // Run handlers for the various possible timer events.
+     88              //
+     89              am_hal_ctimer_int_service(ui32Status);
+     90          }
+     91          
+     92          //*****************************************************************************
+     93          //
+     94          // Sleep function called from FreeRTOS IDLE task.
+     95          // Do necessary application specific Power down operations here
+     96          // Return 0 if this function also incorporates the WFI, else return value same
+     97          // as idleTime
+     98          //
+     99          //*****************************************************************************
+    100          uint32_t am_freertos_sleep(uint32_t idleTime)
+    101          {
+    102              am_hal_sysctrl_sleep(AM_HAL_SYSCTRL_SLEEP_DEEP);
+    103              return 0;
+    104          }
+    105          
+    106          //*****************************************************************************
+    107          //
+    108          // Recovery function called from FreeRTOS IDLE task, after waking up from Sleep
+    109          // Do necessary 'wakeup' operations here, e.g. to power up/enable peripherals etc.
+    110          //
+    111          //*****************************************************************************
+    112          void am_freertos_wakeup(uint32_t idleTime)
+    113          {
+    114              return;
+    115          }
+    116          
+    117          
+    118          //*****************************************************************************
+    119          //
+    120          // FreeRTOS debugging functions.
+    121          //
+    122          //*****************************************************************************
+    123          void
+    124          vApplicationMallocFailedHook(void)
+    125          {
+    126              //
+    127              // Called if a call to pvPortMalloc() fails because there is insufficient
+    128              // free memory available in the FreeRTOS heap.  pvPortMalloc() is called
+    129              // internally by FreeRTOS API functions that create tasks, queues, software
+    130              // timers, and semaphores.  The size of the FreeRTOS heap is set by the
+    131              // configTOTAL_HEAP_SIZE configuration constant in FreeRTOSConfig.h.
+    132              //
+    133              while (1);
+    134          }
+    135          
+    136          void
+    137          vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName)
+    138          {
+    139              (void) pcTaskName;
+    140              (void) pxTask;
+    141          
+    142              //
+    143              // Run time stack overflow checking is performed if
+    144              // configconfigCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
+    145              // function is called if a stack overflow is detected.
+    146              //
+    147              while (1)
+    148              {
+    149                  __asm("BKPT #0\n") ; // Break into the debugger
+    150              }
+    151          }
+    152          
+    153          
+    154          //*****************************************************************************
+    155          //
+    156          // High priority task to run immediately after the scheduler starts.
+    157          //
+    158          // This task is used for any global initialization that must occur after the
+    159          // scheduler starts, but before any functional tasks are running. This can be
+    160          // useful for enabling events, semaphores, and other global, RTOS-specific
+    161          // features.
+    162          //
+    163          //*****************************************************************************
+    164          void
+    165          setup_task(void *pvParameters)
+    166          {
+    167              //
+    168              // Print a debug message.
+    169              //
+    170              am_util_debug_printf("Running setup tasks...\r\n");
+    171          
+    172              //
+    173              // Run setup functions.
+    174              //
+    175              LedTaskSetup();
+    176              disable_print_interface();
+    177              //
+    178              // Create the functional tasks
+    179              //
+    180              xTaskCreate(LedTask, "LEDTask", 512, 0, 3, &led_task_handle);
+    181              //
+    182              // The setup operations are complete, so suspend the setup task now.
+    183              //
+    184              vTaskSuspend(NULL);
+    185          
+    186              while (1);
+    187          }
+    188          
+    189          //*****************************************************************************
+    190          //
+    191          // Initializes all tasks
+    192          //
+    193          //*****************************************************************************
+    194          void
+    195          run_tasks(void)
+    196          {
+    197              //
+    198              // Set some interrupt priorities before we create tasks or start the scheduler.
+    199              //
+    200              // Note: Timer priority is handled by the FreeRTOS kernel, so we won't
+    201              // touch it here.
+    202              //
+    203          
+    204              //
+    205              // Create essential tasks.
+    206              //
+    207              xTaskCreate(setup_task, "Setup", 128, 0, 3, &xSetupTask);
+    208          
+    209          
+    210              //
+    211              // Start the scheduler.
+    212              //
+    213              vTaskStartScheduler();
+    214          }
+    215          
+    216          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   am_ctimer_isr
+         8   -> am_hal_ctimer_int_clear
+         0   -> am_hal_ctimer_int_service
+         8   -> am_hal_ctimer_int_status_get
+       8   am_freertos_sleep
+         8   -> am_hal_sysctrl_sleep
+       0   am_freertos_wakeup
+      16   run_tasks
+         0   -> vTaskStartScheduler
+        16   -> xTaskCreate
+      16   setup_task
+        16   -> LedTaskSetup
+        16   -> am_util_stdio_printf
+        16   -> disable_print_interface
+        16   -> vTaskSuspend
+        16   -> xTaskCreate
+       0   vApplicationMallocFailedHook
+       0   vApplicationStackOverflowHook
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable5
+       4  ??DataTable5_1
+       4  ??DataTable5_2
+       4  ??DataTable5_3
+      28  ?_0
+       8  ?_1
+       8  ?_2
+      24  am_ctimer_isr
+      16  am_freertos_sleep
+       2  am_freertos_wakeup
+      34  run_tasks
+      48  setup_task
+       2  vApplicationMallocFailedHook
+       4  vApplicationStackOverflowHook
+       4  xSetupTask
+
+ 
+   4 bytes in section .bss
+ 190 bytes in section .text
+ 
+ 190 bytes of CODE memory
+   4 bytes of DATA memory
+
+Errors: none
+Warnings: none
