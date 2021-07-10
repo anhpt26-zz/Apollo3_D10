@@ -275,15 +275,15 @@ LedTask(void *pvParameters)
             // Toggle respective LED(s)
             if (bitSet & (1 << 0))
             {
-                am_devices_led_toggle(am_bsp_psLEDs, 0);
+                am_devices_led_toggle(am_bsp_psLEDs, 2);
             }
             if (bitSet & (1 << 1))
             {
-                am_devices_led_toggle(am_bsp_psLEDs, 1);
+                am_devices_led_toggle(am_bsp_psLEDs, 0);
             }
             if (bitSet & (1 << 2))
             {
-                am_devices_led_toggle(am_bsp_psLEDs, 2);
+                am_devices_led_toggle(am_bsp_psLEDs, 1);
             }
         }
     }

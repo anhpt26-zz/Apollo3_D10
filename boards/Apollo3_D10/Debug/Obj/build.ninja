@@ -20,12 +20,17 @@ rule browsedata
 
 
 #Build steps
+build dx_driver.pbi : index dx_driver.xcl
+build dx_interface_spi.pbi : index dx_interface_spi.xcl
+build dx_usecases.pbi : index dx_usecases.xcl
+build dx_utils.pbi : index dx_utils.xcl
 build am_devices_button.pbi : index am_devices_button.xcl
 build am_devices_led.pbi : index am_devices_led.xcl
-build led_task.pbi : index led_task.xcl
+build debug.pbi : index debug.xcl
 build main.pbi : index main.xcl
-build rtos.pbi : index rtos.xcl
 build startup_iar.pbi : index startup_iar.xcl
+build ext_dsp_manager.pbi : index ext_dsp_manager.xcl
+build system.pbi : index system.xcl
 build croutine.pbi : index croutine.xcl
 build event_groups.pbi : index event_groups.xcl
 build heap_2.pbi : index heap_2.xcl
@@ -39,11 +44,11 @@ build am_util_debug.pbi : index am_util_debug.xcl
 build am_util_delay.pbi : index am_util_delay.xcl
 build am_util_faultisr.pbi : index am_util_faultisr.xcl
 build am_util_stdio.pbi : index am_util_stdio.xcl
-build Apollo3_D10_part0.pbi : link am_devices_button.pbi am_devices_led.pbi led_task.pbi main.pbi
-build Apollo3_D10_part1.pbi : link rtos.pbi startup_iar.pbi croutine.pbi event_groups.pbi
-build Apollo3_D10_part2.pbi : link heap_2.pbi list.pbi port.pbi queue.pbi
-build Apollo3_D10_part3.pbi : link stream_buffer.pbi tasks.pbi timers.pbi am_util_debug.pbi
-build Apollo3_D10_part4.pbi : link am_util_delay.pbi am_util_faultisr.pbi am_util_stdio.pbi
+build Apollo3_D10_part0.pbi : link dx_driver.pbi dx_interface_spi.pbi dx_usecases.pbi dx_utils.pbi am_devices_button.pbi
+build Apollo3_D10_part1.pbi : link am_devices_led.pbi debug.pbi main.pbi startup_iar.pbi ext_dsp_manager.pbi
+build Apollo3_D10_part2.pbi : link system.pbi croutine.pbi event_groups.pbi heap_2.pbi list.pbi
+build Apollo3_D10_part3.pbi : link port.pbi queue.pbi stream_buffer.pbi tasks.pbi timers.pbi
+build Apollo3_D10_part4.pbi : link am_util_debug.pbi am_util_delay.pbi am_util_faultisr.pbi am_util_stdio.pbi
 build Apollo3_D10.pbd : link Apollo3_D10_part0.pbi Apollo3_D10_part1.pbi Apollo3_D10_part2.pbi Apollo3_D10_part3.pbi Apollo3_D10_part4.pbi
 build Apollo3_D10.pbw : browsedata Apollo3_D10.pbd
 

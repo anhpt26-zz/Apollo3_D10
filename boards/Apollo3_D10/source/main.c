@@ -62,7 +62,16 @@
 //
 //*****************************************************************************
 #include "main.h"
-#include "rtos.h"
+#include "system.h"
+
+#if ENABLE_DEBUG_FEATURE
+#include "debug.h"
+#endif
+
+#if ENABLE_EXTERNAL_DPS
+#include "ext_dsp_manager.h"
+#endif
+
 
 
 //*****************************************************************************
@@ -95,6 +104,70 @@ disable_print_interface(void)
 
 //*****************************************************************************
 //
+// Sleep function called from FreeRTOS IDLE task.
+// Do necessary application specific Power down operations here
+// Return 0 if this function also incorporates the WFI, else return value same
+// as idleTime
+//
+//*****************************************************************************
+uint32_t am_freertos_sleep(uint32_t idleTime)
+{
+    //This function make CPU going to deep sleep
+    am_hal_sysctrl_sleep(AM_HAL_SYSCTRL_SLEEP_DEEP);
+    return 0;
+}
+
+//*****************************************************************************
+//
+// Recovery function called from FreeRTOS IDLE task, after waking up from Sleep
+// Do necessary 'wakeup' operations here, e.g. to power up/enable peripherals etc.
+//
+//*****************************************************************************
+void am_freertos_wakeup(uint32_t idleTime)
+{
+    return;
+}
+
+
+
+
+//*****************************************************************************
+//
+// FreeRTOS debugging functions.
+//
+//*****************************************************************************
+void
+vApplicationMallocFailedHook(void)
+{
+    //
+    // Called if a call to pvPortMalloc() fails because there is insufficient
+    // free memory available in the FreeRTOS heap.  pvPortMalloc() is called
+    // internally by FreeRTOS API functions that create tasks, queues, software
+    // timers, and semaphores.  The size of the FreeRTOS heap is set by the
+    // configTOTAL_HEAP_SIZE configuration constant in FreeRTOSConfig.h.
+    //
+    while (1);
+}
+
+void
+vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName)
+{
+    (void) pcTaskName;
+    (void) pxTask;
+
+    //
+    // Run time stack overflow checking is performed if
+    // configconfigCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
+    // function is called if a stack overflow is detected.
+    //
+    while (1)
+    {
+        __asm("BKPT #0\n") ; // Break into the debugger
+    }
+}
+
+//*****************************************************************************
+//
 // Main Function
 //
 //*****************************************************************************
@@ -104,7 +177,7 @@ main(void)
     //
     // Set the clock frequency.
     //
-    am_hal_clkgen_control(AM_HAL_CLKGEN_CONTROL_SYSCLK_MAX, 0);
+    am_hal_clkgen_control(AM_HAL_CLKGEN_CONTROL_RTC_SEL_XTAL, 0);
 
     //
     // Set the default cache configuration
@@ -154,16 +227,37 @@ main(void)
     am_util_debug_printf("FreeRTOS Low Power Example\n");
 
     //
-    // Run the application.
+    // Initialize system.
     //
-    run_tasks();
+    System_Init();
 
-    //
-    // We shouldn't ever get here.
-    //
-    while (1)
-    {
-    }
+#if ENABLE_DEBUG_FEATURE
+    Debug_Init();
+#endif
 
+#if ENABLE_EXTERNAL_DPS
+    ExtDspMgr_Init();
+#endif
+
+    System_EnableGPIOFunc();
+
+    xTaskCreate(System_Task,         //Task function
+              "system_task",       //Task name
+              SYS_TASK_STACK_SIZE, //Stack size
+              NULL,                //pvParameter
+              SYS_TASK_PRIORITY,   //Priority
+              NULL);
+
+#if ENABLE_EXTERNAL_DPS
+    xTaskCreate(ExtDspMgr_Task,         //Task function
+            "External_DSP_D10",              //Task name
+            EXTERNAL_DSP_STACK_SIZE, //Stack size
+            NULL,                   //pvParameter
+            EXT_DSP_TASK_PRIORITY,   //Priority
+            NULL);
+#endif
+
+    vTaskStartScheduler();
+    while(1);
 }
 

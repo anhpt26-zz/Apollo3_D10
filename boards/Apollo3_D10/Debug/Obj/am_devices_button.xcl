@@ -35,6 +35,14 @@ am_devices_button.pbi
 -I
 \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\utils\
 -I
+\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\..\..\Apollo3\A3_SDK\boards\Apollo3_D10\device\d10_new\include\
+-I
+\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\..\..\Apollo3\A3_SDK\boards\Apollo3_D10\device\d10_new\fw\
+-I
+\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\device\d10_new\
+-I
+\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\service_manager\
+-I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\inc\c
@@ -62,6 +70,14 @@ C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\inc\c
 \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\apollo3p_evb\bsp
 -I
 \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\utils
+-I
+\\Mac\Home\Documents\Apollo3\A3_SDK\boards\Apollo3_D10\device\d10_new\include
+-I
+\\Mac\Home\Documents\Apollo3\A3_SDK\boards\Apollo3_D10\device\d10_new\fw
+-I
+\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\device\d10_new
+-I
+\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\service_manager
 -D__CHAR_BITS__=8
 -D__CHAR_MAX__=0xff
 -D__CHAR_MIN__=0
@@ -359,8 +375,8 @@ C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\inc\c
 -DAM_FREERTOS=1
 -DAM_PACKAGE_BGA=1
 -DAM_UTIL_FAULTISR_PRINT=1
--D_DLIB_CONFIG_FILE_HEADER_NAME="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\inc\c\DLib_Config_Normal.h"
--D_DLIB_CONFIG_FILE_STRING="C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c\\DLib_Config_Normal.h"
+-D_DLIB_CONFIG_FILE_HEADER_NAME="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\inc\c\DLib_Config_Full.h"
+-D_DLIB_CONFIG_FILE_STRING="C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c\\DLib_Config_Full.h"
 -D__VERSION__="IAR ANSI C/C++ Compiler V8.50.6.265/W32 for ARM"
 -D_VA_DEFINED=
 -D_VA_LIST=struct __va_list

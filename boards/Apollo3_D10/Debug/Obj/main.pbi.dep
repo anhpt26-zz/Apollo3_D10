@@ -5,7 +5,7 @@ main.pbi: \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.4\arm\inc\c\ycheck.h \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.4\arm\inc\c\yvals.h \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.4\arm\inc\c\DLib_Defaults.h \
-  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.4\arm\inc\c\DLib_Config_Normal.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.4\arm\inc\c\DLib_Config_Full.h \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.4\arm\inc\c\DLib_Product.h \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.4\arm\inc\c\stdbool.h \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.4\arm\inc\c\string.h \
@@ -95,5 +95,10 @@ main.pbi: \
   \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\third_party\FreeRTOSv10.1.1\Source\include\event_groups.h \
   \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\third_party\FreeRTOSv10.1.1\Source\include/timers.h \
   \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\third_party\FreeRTOSv10.1.1\Source\include/task.h \
-  \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\source/led_task.h \
-  \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\source/rtos.h
+  \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\service_manager\system.h \
+  \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\third_party\FreeRTOSv10.1.1\Source\include\queue.h \
+  \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\third_party\FreeRTOSv10.1.1\Source\include\portable.h \
+  \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\third_party\FreeRTOSv10.1.1\Source\include\timers.h \
+  \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\source/debug.h \
+  \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\utils\am_util_stdio.h \
+  \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\service_manager\ext_dsp_manager.h

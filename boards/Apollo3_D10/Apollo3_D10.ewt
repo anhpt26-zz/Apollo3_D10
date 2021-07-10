@@ -2841,6 +2841,21 @@
     </configuration>
     <group>
         <name>device</name>
+        <group>
+            <name>DPS_D10</name>
+            <file>
+                <name>$PROJ_DIR$\device\d10_new\src\dx_driver.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\device\d10_new\include\dx_interface_spi.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\device\d10_new\src\dx_usecases.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\device\d10_new\src\dx_utils.c</name>
+            </file>
+        </group>
         <file>
             <name>$PROJ_DIR$\..\..\devices\am_devices_button.c</name>
         </file>
@@ -2851,16 +2866,22 @@
     <group>
         <name>source</name>
         <file>
-            <name>$PROJ_DIR$\source\led_task.c</name>
+            <name>$PROJ_DIR$\source\debug.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\source\main.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\source\rtos.c</name>
+            <name>$PROJ_DIR$\source\startup_iar.c</name>
+        </file>
+    </group>
+    <group>
+        <name>system_manager</name>
+        <file>
+            <name>$PROJ_DIR$\service_manager\ext_dsp_manager.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\source\startup_iar.c</name>
+            <name>$PROJ_DIR$\service_manager\system.c</name>
         </file>
     </group>
     <group>
