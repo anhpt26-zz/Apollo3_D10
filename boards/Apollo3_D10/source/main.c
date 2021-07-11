@@ -72,7 +72,9 @@
 #include "ext_dsp_manager.h"
 #endif
 
-
+#if ENABLE_TEST_TASK
+#include "test_task.h"
+#endif
 
 //*****************************************************************************
 //
@@ -239,6 +241,10 @@ main(void)
     ExtDspMgr_Init();
 #endif
 
+#if ENABLE_TEST_TASK
+    TestTask_Init();
+#endif
+
     System_EnableNVICIRQPin();
     System_EnableNVICTimer();
     //
@@ -259,6 +265,15 @@ main(void)
             EXTERNAL_DSP_STACK_SIZE, //Stack size
             NULL,                   //pvParameter
             EXT_DSP_TASK_PRIORITY,   //Priority
+            NULL);
+#endif
+
+#if ENABLE_TEST_TASK
+    xTaskCreate(TestTask_Task(),         //Task function
+            "Test_Task",              //Task name
+            TEST_TASK_STACK_SIZE, //Stack size
+            NULL,                   //pvParameter
+            TEST_TASK_TASK_PRIORITY,   //Priority
             NULL);
 #endif
 

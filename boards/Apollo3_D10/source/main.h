@@ -81,7 +81,7 @@
 //*****************************************************************************
 #define ENABLE_DEBUG_FEATURE    (1)
 #define ENABLE_EXTERNAL_DPS     (1)
-
+#define ENABLE_TEST_TASK        (1)
 
 //Define configuration for System Task
 #define SYS_TASK_STACK_SIZE 256
@@ -92,6 +92,12 @@
 #define EXTERNAL_DSP_STACK_SIZE   (512)
 #define EXT_DSP_TASK_PRIORITY     (5)
 #endif
+
+#if ENABLE_TEST_TASK
+#define TEST_TASK_STACK_SIZE        (512)
+#define TEST_TASK_TASK_PRIORITY     (5) 
+#endif
+
 //*****************************************************************************
 //
 // External function definitions
