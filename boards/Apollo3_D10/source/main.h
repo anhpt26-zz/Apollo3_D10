@@ -79,10 +79,14 @@
 // Definitions
 //
 //*****************************************************************************
+#define ENABLE_DEBUG_PRINTF     (0)
 #define ENABLE_DEBUG_FEATURE    (1)
-#define ENABLE_EXTERNAL_DPS     (1)
+#define ENABLE_EXTERNAL_DPS     (0)
 #define ENABLE_TEST_TASK        (1)
 
+/*
+  NOTICE: Max Priority in freeRtos config is 7
+*/
 //Define configuration for System Task
 #define SYS_TASK_STACK_SIZE 256
 #define SYS_TASK_PRIORITY 5
@@ -90,7 +94,7 @@
 //Define configuration for External DSP Task
 #if ENABLE_EXTERNAL_DPS
 #define EXTERNAL_DSP_STACK_SIZE   (512)
-#define EXT_DSP_TASK_PRIORITY     (5)
+#define EXT_DSP_TASK_PRIORITY     (4)
 #endif
 
 #if ENABLE_TEST_TASK

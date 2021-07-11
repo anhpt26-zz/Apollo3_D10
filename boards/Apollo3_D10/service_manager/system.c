@@ -70,14 +70,6 @@ void System_Task(void *pvParameter)
     Debug_Printf("Failed to create System Event Handle\n");
     return;
   }
-  
-#if SYSTEM_ENABLE_TWM_MODE
-  twm_timer_id = System_RegisterHWTimer(SYSTEM_STANDBY_IN_MS, TimerTWM_EventISR);
-#endif
-
-#if ENABLE_FILE_SYSTEM_TEST //To test file system
-  FileSystem_Test();
-#endif
 
   do
   {
@@ -122,7 +114,13 @@ int System_RegIRQPin(uint64_t pin_no,
 
 void System_EnableNVICIRQPin(void)
 {
-  if(System_Allow_Enable_GPIO_IRQ) NVIC_EnableIRQ(GPIO_IRQn);
+  if(System_Allow_Enable_GPIO_IRQ) 
+  {
+    //Set Priority for GPIO NVIC IRQ
+    NVIC_SetPriority(GPIO_IRQn, NVIC_configMAX_SYSCALL_INTERRUPT_PRIORITY);    
+    //Enable NVIC IRQ for GPIO
+    NVIC_EnableIRQ(GPIO_IRQn);
+  }
 }
 
 uint8_t System_RegisterHWTimer(uint32_t timeout_ms, sys_timer_cb_t isr_cb)
@@ -131,41 +129,36 @@ uint8_t System_RegisterHWTimer(uint32_t timeout_ms, sys_timer_cb_t isr_cb)
   uint32_t ret;
   int i;
   //Look for a free HW timer
-  for (i = 0; i < MAX_TIMER_COUNT; i++)
+  for (timer_id = 0; timer_id < MAX_TIMER_COUNT; timer_id++)
   {
-#if APOLLO4_REVB1
-    //These HW timers are broken in RevB1, check internal_timer_config() to confirm
-    if(i == 1 || i == 3 || i > 9) continue;   
-#endif
-    if (Sys_Hw_Timer_List[i].is_used == false)
+    if (Sys_Hw_Timer_List[timer_id].is_used == false)
       break;
   }
-  if (i < MAX_TIMER_COUNT)
+  if (timer_id < MAX_TIMER_COUNT)
   {
     System_Allow_Enable_Timer_IRQ = true;
-    timer_id = i;
     am_hal_clkgen_control(AM_HAL_CLKGEN_CONTROL_XTAL_START, 0);
-    am_hal_ctimer_config_t TimerConfig = 
+    am_hal_ctimer_config_t timer_cfg = 
     {
       .ui32Link = 0,
-      //Only use Timer config A
       .ui32TimerAConfig = AM_HAL_CTIMER_FN_ONCE |     //Single Count
                           AM_HAL_CTIMER_INT_ENABLE |  //Enable Interrupt when timer count
                           AM_HAL_CTIMER_XT_2_048KHZ,  //Set input XT clock source is 48kHz
       .ui32TimerBConfig = 0,
     };
     am_hal_ctimer_clear(timer_id, AM_HAL_CTIMER_TIMERA);
-    am_hal_ctimer_config(timer_id, &TimerConfig);
+    am_hal_ctimer_config(timer_id, &timer_cfg);
 
-    timeout_ms = timeout_ms * 48;
+    timeout_ms = timeout_ms;// * 48;
     am_hal_ctimer_period_set(timer_id, AM_HAL_CTIMER_TIMERA, timeout_ms,
                              (timeout_ms >> 1));
-    //
-    // Clear the timer Interrupt
-    //
-    am_hal_ctimer_int_clear((((uint32_t)0x01) << (uint8_t)(timer_id * 2)));
-    Sys_Hw_Timer_List[i].cb = isr_cb; //record the callback
-    Sys_Hw_Timer_List[i].is_used = true;
+    am_hal_ctimer_int_enable(((uint32_t)0x01) << ((uint32_t)(timer_id * 2)));
+    Sys_Hw_Timer_List[timer_id].cb = isr_cb; //record the callback
+    Sys_Hw_Timer_List[timer_id].is_used = true;
+  }
+  else 
+  {
+    timer_id = INVALID_TIMER_ID;
   }
 
   return timer_id;
@@ -173,7 +166,13 @@ uint8_t System_RegisterHWTimer(uint32_t timeout_ms, sys_timer_cb_t isr_cb)
 
 void System_EnableNVICTimer(void)
 {
-  if(System_Allow_Enable_Timer_IRQ) NVIC_EnableIRQ(CTIMER_IRQn);
+  if(System_Allow_Enable_Timer_IRQ) 
+  {
+    //Set Priority for CTIMER NVIC IRQ
+    NVIC_SetPriority(CTIMER_IRQn, NVIC_configMAX_SYSCALL_INTERRUPT_PRIORITY);
+    //Enable CTIMER NVIC IRQ
+    NVIC_EnableIRQ(CTIMER_IRQn);
+  }
 }
 
 void System_UnRegisterHwTimer(uint8_t timer_id)
@@ -208,10 +207,6 @@ int System_SetHWTimerTimeout(uint8_t timer_id, uint32_t timeout_ms)
     timeout_ms = timeout_ms * 48;
     am_hal_ctimer_period_set(timer_id, AM_HAL_CTIMER_TIMERA, timeout_ms,
                              (timeout_ms >> 1));
-    //
-    // Clear the timer Interrupt
-    //
-    am_hal_ctimer_int_clear((((uint32_t)0x01) << (uint8_t)(timer_id * 2)));
     return 0;
   }
   else
@@ -222,11 +217,8 @@ int System_SetHWTimerTimeout(uint8_t timer_id, uint32_t timeout_ms)
 
 int System_StartHwTimer(uint8_t timer_id)
 {
-  if (timer_id < MAX_TIMER_COUNT && Sys_Hw_Timer_List[timer_id].is_used)
+  if ((timer_id < MAX_TIMER_COUNT) && (Sys_Hw_Timer_List[timer_id].is_used))
   {
-    //Clear the counter and retstart the timer
-    // am_hal_timer_clear(timer_id);
-    // am_hal_timer_start(timer_id);
     am_hal_ctimer_clear(timer_id, AM_HAL_CTIMER_TIMERA);
     am_hal_ctimer_start(timer_id, AM_HAL_CTIMER_TIMERA);
     return 0;
@@ -239,7 +231,7 @@ int System_StartHwTimer(uint8_t timer_id)
 
 int System_ResumeHwTimer(uint8_t timer_id)
 {
-  if (timer_id < MAX_TIMER_COUNT && Sys_Hw_Timer_List[timer_id].is_used)
+  if ((timer_id < MAX_TIMER_COUNT) && (Sys_Hw_Timer_List[timer_id].is_used))
   {
     //Just retart timer
     am_hal_ctimer_start(timer_id, AM_HAL_CTIMER_TIMERA);    
@@ -253,7 +245,7 @@ int System_ResumeHwTimer(uint8_t timer_id)
 
 int System_StopHwTimer(uint8_t timer_id)
 {
-  if (timer_id < MAX_TIMER_COUNT && Sys_Hw_Timer_List[timer_id].is_used)
+  if ((timer_id < MAX_TIMER_COUNT) && (Sys_Hw_Timer_List[timer_id].is_used))
   {
     am_hal_ctimer_stop(timer_id, AM_HAL_CTIMER_TIMERA);
     return 0;
@@ -274,7 +266,9 @@ int System_SignalEvt(QueueHandle_t queue_handle, uint8_t event)
     //Debug_Printf("Failed to signal event \n");
     return -1;
   }
-  if (ret == pdTRUE && higher_priority_task_woken == pdTRUE) //a higher priority task need to wake up, should give yield now
+
+  //a higher priority task need to wake up, should give yield now
+  if (ret == pdTRUE && higher_priority_task_woken == pdTRUE) 
   {
     portYIELD_FROM_ISR(higher_priority_task_woken);
   }
@@ -297,19 +291,16 @@ void am_ctimer_isr(void)
 {
   uint32_t ctimer_status;
   uint8_t idx;
-    //
-    // Clear TimerA0 Interrupt (write to clear).
-    //
-    ctimer_status = am_hal_ctimer_int_status_get(true);
-    for(idx = 0; idx < MAX_TIMER_COUNT; idx++)
+  ctimer_status = am_hal_ctimer_int_status_get(true);
+  for(idx = 0; idx < MAX_TIMER_COUNT; idx++)
+  {
+    if(Sys_Hw_Timer_List[idx].is_used)
     {
-      if(Sys_Hw_Timer_List[idx].is_used)
+      if((ctimer_status >> (idx * 2)))
       {
-        if((ctimer_status >> (idx * 2)))
-        {
-          Sys_Hw_Timer_List[idx].cb();
-        }
+        Sys_Hw_Timer_List[idx].cb();
       }
     }
-    am_hal_ctimer_int_clear(ctimer_status);
+  }
+  am_hal_ctimer_int_clear(ctimer_status);
 } // am_ctimer_isr()

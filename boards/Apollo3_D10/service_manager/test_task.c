@@ -17,6 +17,7 @@
 #include "system.h"
 #include "am_mcu_apollo.h"
 #include "am_bsp.h"
+#include "test_task.h"
 //###########################################################################################################
 //      CONSTANT DEFINITION
 //###########################################################################################################
@@ -66,15 +67,12 @@ void TestTask_Task(void *pvParameter)
     return;
   }
 
-  if(Hw_Timer_Id == INVALID_TIMER_ID)
-  {
-    vTaskDelay(portMAX_DELAY);
-  }
-  System_StartHwTimer(Hw_Timer_Id);
+  if(Hw_Timer_Id != INVALID_TIMER_ID)
+    System_StartHwTimer(Hw_Timer_Id);
 
   while(1)
   {
-    xQueueReceive(System_Evt_Handle, &event, portMAX_DELAY);
+    xQueueReceive(TestTask_Evt_Handler, &event, portMAX_DELAY);
     switch (event)
     {
       case TESTTASK_SIGNAL_EVT_HW_TIMEOUT:

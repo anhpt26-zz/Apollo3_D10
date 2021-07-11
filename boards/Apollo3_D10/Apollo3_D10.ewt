@@ -2883,6 +2883,9 @@
         <file>
             <name>$PROJ_DIR$\service_manager\system.c</name>
         </file>
+        <file>
+            <name>$PROJ_DIR$\service_manager\test_task.c</name>
+        </file>
     </group>
     <group>
         <name>third_party</name>

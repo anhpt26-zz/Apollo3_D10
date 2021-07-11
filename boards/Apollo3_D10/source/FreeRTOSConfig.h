@@ -60,7 +60,7 @@ extern "C"
     #define configCPU_CLOCK_HZ                  24000000UL
 #endif
 #define configTICK_RATE_HZ                      1000
-#define configMAX_PRIORITIES                    4
+#define configMAX_PRIORITIES                    7
 #define configMINIMAL_STACK_SIZE                (256)
 #define configTOTAL_HEAP_SIZE                   (26 * 1024)
 #define configMAX_TASK_NAME_LEN                 16
@@ -113,9 +113,9 @@ extern "C"
 #define INCLUDE_vTaskSuspend                    1
 #define INCLUDE_xResumeFromISR                  0
 #define INCLUDE_vTaskDelayUntil                 1
-#define INCLUDE_vTaskDelay                      0
+#define INCLUDE_vTaskDelay                      1
 #define INCLUDE_xTaskGetSchedulerState          0
-#define INCLUDE_xTaskGetCurrentTaskHandle       0
+#define INCLUDE_xTaskGetCurrentTaskHandle       1
 #define INCLUDE_uxTaskGetStackHighWaterMark     0
 #define INCLUDE_xTaskGetIdleTaskHandle          0
 #define INCLUDE_xTimerGetTimerDaemonTaskHandle  0

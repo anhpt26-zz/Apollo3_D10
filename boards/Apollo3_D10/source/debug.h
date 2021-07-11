@@ -11,8 +11,11 @@ extern "C"
 #include <stdbool.h>
 #include "am_util_stdio.h"
 
+#if ENABLE_DEBUG_PRINTF
 #define Debug_Printf(format, ...)  am_util_stdio_printf(format, ##__VA_ARGS__)
-
+#else
+#define Debug_Printf(format, ...)
+#endif
 void Debug_Init();
 void Debug_SetDebugPin1(uint8_t val);
 void Debug_SetDebugPin2(uint8_t val);

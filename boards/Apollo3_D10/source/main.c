@@ -176,10 +176,11 @@ vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName)
 int
 main(void)
 {
+   
     //
     // Set the clock frequency.
     //
-    am_hal_clkgen_control(AM_HAL_CLKGEN_CONTROL_RTC_SEL_XTAL, 0);
+    am_hal_clkgen_control(AM_HAL_CLKGEN_CONTROL_SYSCLK_MAX, 0);
 
     //
     // Set the default cache configuration
@@ -187,47 +188,20 @@ main(void)
     am_hal_cachectrl_config(&am_hal_cachectrl_defaults);
     am_hal_cachectrl_enable();
 
-
-#ifndef NOFPU
     //
-    // Enable the floating point module, and configure the core for lazy
-    // stacking.
-    //
-    am_hal_sysctrl_fpu_enable();
-    am_hal_sysctrl_fpu_stacking_enable(true);
-#else
-    am_hal_sysctrl_fpu_disable();
-#endif
-
-    //
-    // Configure the board for low power.
+    // Configure the board for low power operation.
     //
     am_bsp_low_power_init();
 
-    //
-    // Turn off unneeded Flash & SRAM
-    //
-#if defined(AM_PART_APOLLO3)
-    am_hal_pwrctrl_memory_enable(AM_HAL_PWRCTRL_MEM_SRAM_96K);
-#endif
-#if defined(AM_PART_APOLLO3P)
-    am_hal_pwrctrl_memory_enable(AM_HAL_PWRCTRL_MEM_SRAM_32K_DTCM);
-#endif
+    am_bsp_itm_printf_enable();
 
-    am_hal_pwrctrl_memory_enable(AM_HAL_PWRCTRL_MEM_FLASH_MIN);
-
+    Debug_Printf("Start Program\r\n");
+    
     //
-    // Enable printing to the console.
+    // Enable Interrupts.
     //
-#ifdef AM_DEBUG_PRINTF
-    enable_print_interface();
-#endif
-
-    //
-    // Initialize plotting interface.
-    //
-    am_util_debug_printf("FreeRTOS Low Power Example\n");
-
+    am_hal_interrupt_master_enable();
+    
     //
     // Initialize system.
     //
@@ -247,10 +221,6 @@ main(void)
 
     System_EnableNVICIRQPin();
     System_EnableNVICTimer();
-    //
-    // Enable Interrupts.
-    //
-    am_hal_interrupt_master_enable();
 
     xTaskCreate(System_Task,         //Task function
               "system_task",       //Task name
@@ -269,7 +239,7 @@ main(void)
 #endif
 
 #if ENABLE_TEST_TASK
-    xTaskCreate(TestTask_Task(),         //Task function
+    xTaskCreate(TestTask_Task,         //Task function
             "Test_Task",              //Task name
             TEST_TASK_STACK_SIZE, //Stack size
             NULL,                   //pvParameter

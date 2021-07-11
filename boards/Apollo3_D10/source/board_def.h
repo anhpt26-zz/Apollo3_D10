@@ -14,8 +14,8 @@
 #define ABQ_D10_RST_PIN         (61)    //P11B_10   --DPS_PIN  RST 
 #define ABQ_D10_MCLK_PIN        (7)     //P11A_7    --DPS_PIN  MSTCLK
 
-#define ABQ_TEST_TASK_PIN_1     (5)     //P11A_11
-#define ABQ_TEST_TASK_PIN_2     (6)     //P11A_9
+#define ABQ_TEST_TASK_PIN_1     (44)    
+#define ABQ_TEST_TASK_PIN_2     (43)    
 
 
 #define ABQ_DEBUG_1_PIN         (36)    //P17A_13
