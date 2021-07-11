@@ -33,11 +33,7 @@
 //###########################################################################################################
 //NOTE: EVK setup cannot work with SCK > 12MHz
 #define DSP_SPI_FREQ_HZ              AM_HAL_IOM_12MHZ 
-#if SKMBv1_BOARD
-#define DSP_SPI_MODULE               3
-#else 
-#define DSP_SPI_MODULE               1
-#endif
+#define DSP_SPI_MODULE               ABQ_D10_SPI_MODULE
 //###########################################################################################################
 //      TYPEDEF DEFINITION
 //###########################################################################################################
@@ -106,8 +102,8 @@ uint32_t Dsp_Audio_Sample_Num;
 //      PRIVATE FUNCTION DECLARATION
 //###########################################################################################################
 static int extDspMgr_InitD10();
-static void d10_InterruptIsr(void *pArg);
-static void d10_InterruptReadyIsr(void *pArg);
+static void d10_InterruptIsr(void);
+static void d10_InterruptReadyIsr(void);
 void vt_vc_trigger(int chip);
 static void extDspMgr_StartVoiceStreaming(void);
 static void extDspMgr_StopVoiceStreaming(void);
@@ -117,45 +113,13 @@ static void extDspMgr_VoiceSamplesTimeout(void);
 //      PUBLIC FUNCTION DEFINITION
 //###########################################################################################################
 void ExtDspMgr_Init(void) {
-  am_hal_gpio_pincfg_t gpio_int_cfg =
-  {
-    .GP.cfg_b.uFuncSel = 3,
-    .GP.cfg_b.eDriveStrength = AM_HAL_GPIO_PIN_DRIVESTRENGTH_12MA,
-    .GP.cfg_b.eIntDir = AM_HAL_GPIO_PIN_INTDIR_LO2HI, //AM_HAL_GPIO_PIN_INTDIR_HI2LO,
-    .GP.cfg_b.eGPInput = AM_HAL_GPIO_PIN_INPUT_ENABLE,
-    .GP.cfg_b.eGPOutCfg = AM_HAL_GPIO_PIN_OUTCFG_DISABLE,
-    .GP.cfg_b.ePullup = AM_HAL_GPIO_PIN_PULLUP_NONE,  //AM_HAL_GPIO_PIN_PULLUP_50K,
-  };
-
-
-  uint32_t    irq_status;
-  uint32_t  irq_pin = ABQ_D10_INT_PIN;
-  IRQn_Type irq_num = GPIO0_203F_IRQn; 
-
   //configure input interrupts for INT and RDY INT signals from D10
-  am_hal_gpio_pinconfig(ABQ_D10_INT_PIN, gpio_int_cfg);
-  am_hal_gpio_pinconfig(ABQ_D10_RDY_PIN, gpio_int_cfg);
-
-  am_hal_gpio_interrupt_irq_status_get(irq_num, false, &irq_status);
-  am_hal_gpio_interrupt_irq_clear(irq_num, irq_status);
-  am_hal_gpio_interrupt_register(AM_HAL_GPIO_INT_CHANNEL_0, ABQ_D10_INT_PIN, d10_InterruptIsr, NULL);
-  am_hal_gpio_interrupt_control(AM_HAL_GPIO_INT_CHANNEL_0,AM_HAL_GPIO_INT_CTRL_INDV_ENABLE,(void *)&irq_pin);
-  NVIC_SetPriority((IRQn_Type)irq_num, 4);
-  NVIC_EnableIRQ((IRQn_Type)irq_num);
-
-
-  irq_pin = ABQ_D10_RDY_PIN;
-  irq_num = GPIO0_203F_IRQn;  
-  am_hal_gpio_interrupt_irq_status_get(irq_num, false, &irq_status);
-  am_hal_gpio_interrupt_irq_clear(irq_num, irq_status);
-  am_hal_gpio_interrupt_register(AM_HAL_GPIO_INT_CHANNEL_0, ABQ_D10_RDY_PIN, d10_InterruptReadyIsr, NULL);
-  am_hal_gpio_interrupt_control(AM_HAL_GPIO_INT_CHANNEL_0,AM_HAL_GPIO_INT_CTRL_INDV_ENABLE,(void *)&irq_pin);
-  NVIC_SetPriority((IRQn_Type)irq_num, 4);
-  NVIC_EnableIRQ((IRQn_Type)irq_num);
-
+  System_RegIRQPin(ABQ_D10_INT_PIN, AM_HAL_GPIO_PIN_DRIVESTRENGTH_12MA, AM_HAL_GPIO_PIN_INTDIR_LO2HI, d10_InterruptIsr);
+  System_RegIRQPin(ABQ_D10_RDY_PIN, AM_HAL_GPIO_PIN_DRIVESTRENGTH_12MA, AM_HAL_GPIO_PIN_INTDIR_LO2HI, d10_InterruptReadyIsr);
+  
   //configure outputs to drive WAKEUP and RST signals of D10
-  am_hal_gpio_pinconfig(ABQ_D10_RST_PIN, am_hal_gpio_pincfg_output);
-  am_hal_gpio_pinconfig(ABQ_D10_WAKEUP_PIN, am_hal_gpio_pincfg_output);
+  am_hal_gpio_pinconfig(ABQ_D10_RST_PIN, g_AM_HAL_GPIO_OUTPUT);
+  am_hal_gpio_pinconfig(ABQ_D10_WAKEUP_PIN, g_AM_HAL_GPIO_OUTPUT);
  
   //initialize SPI interface
   am_hal_iom_config_t iom_spi_settings =
@@ -172,92 +136,51 @@ void ExtDspMgr_Init(void) {
   am_hal_iom_enable(Dsp_Spi_Handler);
 
   //Init SPI pins
-#if  SKMBv1_BOARD
-    am_hal_gpio_pincfg_t pin_cfg =
-    {
-        .GP.cfg_b.uFuncSel             = AM_HAL_PIN_31_M3SCK,
-        .GP.cfg_b.eGPInput             = AM_HAL_GPIO_PIN_INPUT_NONE,
-        .GP.cfg_b.eGPRdZero            = AM_HAL_GPIO_PIN_RDZERO_READPIN,
-        .GP.cfg_b.eIntDir              = AM_HAL_GPIO_PIN_INTDIR_NONE,
-        .GP.cfg_b.eGPOutCfg            = AM_HAL_GPIO_PIN_OUTCFG_DISABLE,
-        .GP.cfg_b.eDriveStrength       = AM_HAL_GPIO_PIN_DRIVESTRENGTH_0P1X,
-        .GP.cfg_b.uSlewRate            = 0,
-        .GP.cfg_b.ePullup              = AM_HAL_GPIO_PIN_PULLUP_100K,
-        .GP.cfg_b.uNCE                 = 0,
-        .GP.cfg_b.eCEpol               = AM_HAL_GPIO_PIN_CEPOL_ACTIVELOW,
-        .GP.cfg_b.uRsvd_0              = 0,
-        .GP.cfg_b.ePowerSw             = AM_HAL_GPIO_PIN_POWERSW_NONE,
-        .GP.cfg_b.eForceInputEn        = AM_HAL_GPIO_PIN_FORCEEN_NONE,
-        .GP.cfg_b.eForceOutputEn       = AM_HAL_GPIO_PIN_FORCEEN_NONE,
-        .GP.cfg_b.uRsvd_1              = 0,
-    };
-
-    //Because base on , SPI peripheral. Idle status of MOSI and MISO pin is High
-    pin_cfg.GP.cfg_b.uFuncSel = AM_HAL_PIN_33_M3MISO;
-    am_hal_gpio_pinconfig(ABQ_D10_MISO_PIN, pin_cfg);
-
-    pin_cfg.GP.cfg_b.uFuncSel = AM_HAL_PIN_32_M3MOSI;
-    am_hal_gpio_pinconfig(ABQ_D10_MOSI_PIN, pin_cfg);
-    
-    //Because base on , SPI peripheral. Idle status of SCK and CS pin is High
-    //pin_cfg.GP.cfg_b.ePullup  = AM_HAL_GPIO_PIN_PULLUP_100K;
-
-    pin_cfg.GP.cfg_b.uFuncSel = AM_HAL_PIN_31_M3SCK;
-    am_hal_gpio_pinconfig(ABQ_D10_SCK_PIN,  pin_cfg);
-
-    //pin_cfg.GP.cfg_b.uFuncSel = AM_HAL_PIN_25_NCE25;
-    //pin_cfg.GP.cfg_b.uNCE     = AM_HAL_GPIO_NCE_IOM3CE0;
-    //am_hal_gpio_pinconfig(ABQ_D10_CS_PIN,   pin_cfg);
-
-    pin_cfg.GP.cfg_b.uFuncSel = AM_HAL_PIN_11_NCE11 ;
-    pin_cfg.GP.cfg_b.uNCE     = AM_HAL_GPIO_NCE_IOM3CE0;
-    am_hal_gpio_pinconfig(ABQ_D10_CS_PIN,   pin_cfg);  
-
-#else 
   am_hal_gpio_pincfg_t pin_cfg =
   {
-      .GP.cfg_b.uFuncSel             = AM_HAL_PIN_10_M1MISO,
-      .GP.cfg_b.eGPInput             = AM_HAL_GPIO_PIN_INPUT_NONE,
-      .GP.cfg_b.eGPRdZero            = AM_HAL_GPIO_PIN_RDZERO_READPIN,
-      .GP.cfg_b.eIntDir              = AM_HAL_GPIO_PIN_INTDIR_NONE,
-      .GP.cfg_b.eGPOutCfg            = AM_HAL_GPIO_PIN_OUTCFG_DISABLE,
-      .GP.cfg_b.eDriveStrength       = AM_HAL_GPIO_PIN_DRIVESTRENGTH_0P1X,
-      .GP.cfg_b.uSlewRate            = 0,
-      .GP.cfg_b.ePullup              = AM_HAL_GPIO_PIN_PULLUP_100K,
-      .GP.cfg_b.uNCE                 = 0,
-      .GP.cfg_b.eCEpol               = AM_HAL_GPIO_PIN_CEPOL_ACTIVELOW,
-      .GP.cfg_b.uRsvd_0              = 0,
-      .GP.cfg_b.ePowerSw             = AM_HAL_GPIO_PIN_POWERSW_NONE,
-      .GP.cfg_b.eForceInputEn        = AM_HAL_GPIO_PIN_FORCEEN_NONE,
-      .GP.cfg_b.eForceOutputEn       = AM_HAL_GPIO_PIN_FORCEEN_NONE,
-      .GP.cfg_b.uRsvd_1              = 0,
+    .uFuncSel             = AM_HAL_PIN_49_M5MISO,
+    .eGPInput             = AM_HAL_GPIO_PIN_INPUT_NONE,
+    .eGPRdZero            = AM_HAL_GPIO_PIN_RDZERO_READPIN,
+    .eIntDir              = AM_HAL_GPIO_PIN_INTDIR_NONE,
+    .eGPOutcfg            = AM_HAL_GPIO_PIN_OUTCFG_DISABLE,
+    .eDriveStrength       = AM_HAL_GPIO_PIN_DRIVESTRENGTH_12MA,
+    .ePullup              = AM_HAL_GPIO_PIN_PULLUP_24K,
+    .uNCE                 = 0,
+    .eCEpol               = AM_HAL_GPIO_PIN_CEPOL_ACTIVELOW,
+    .ePowerSw             = AM_HAL_GPIO_PIN_POWERSW_NONE,
+    .uRsvd23              = 0,
   };
-
   //Because base on , SPI peripheral. Idle status of MOSI and MISO pin is High
   am_hal_gpio_pinconfig(ABQ_D10_MISO_PIN, pin_cfg);
-  pin_cfg.GP.cfg_b.uFuncSel = AM_HAL_PIN_9_M1MOSI;
+  pin_cfg.uFuncSel = AM_HAL_PIN_47_M5MOSI;
   am_hal_gpio_pinconfig(ABQ_D10_MOSI_PIN, pin_cfg);
   //Because base on , SPI peripheral. Idle status of SCK and CS pin is High
-  //pin_cfg.GP.cfg_b.ePullup  = AM_HAL_GPIO_PIN_PULLUP_100K;
-  pin_cfg.GP.cfg_b.uFuncSel = AM_HAL_PIN_8_M1SCK;
+  //pin_cfg.ePullup  = AM_HAL_GPIO_PIN_PULLUP_100K;
+  pin_cfg.uFuncSel = AM_HAL_PIN_48_M5SCK;
   //NOTE: Need to increase drive strength to capture with Saleae
   //Can revert to lower drive strenght at the end to save power
-  pin_cfg.GP.cfg_b.eDriveStrength = AM_HAL_GPIO_PIN_DRIVESTRENGTH_0P5X; 
+  pin_cfg.eDriveStrength = AM_HAL_GPIO_PIN_DRIVESTRENGTH_12MA; 
   am_hal_gpio_pinconfig(ABQ_D10_SCK_PIN,  pin_cfg);
 
-  pin_cfg.GP.cfg_b.uFuncSel = AM_HAL_PIN_11_NCE11 ;
-  pin_cfg.GP.cfg_b.uNCE     = AM_HAL_GPIO_NCE_IOM1CE0;
+  pin_cfg.uFuncSel   = AM_HAL_PIN_46_NCE46;
+  pin_cfg.eDriveStrength      = AM_HAL_GPIO_PIN_DRIVESTRENGTH_12MA,
+  pin_cfg.eGPOutcfg           = AM_HAL_GPIO_PIN_OUTCFG_PUSHPULL,
+  pin_cfg.eGPInput            = AM_HAL_GPIO_PIN_INPUT_NONE,
+  pin_cfg.eIntDir             = AM_HAL_GPIO_PIN_INTDIR_LO2HI,
+  pin_cfg.bIomMSPIn           = 1,
+  pin_cfg.uIOMnum             = 1,
+  pin_cfg.uNCE                = 5,//This set CS pin is used to IOM5
+  pin_cfg.eCEpol              = AM_HAL_GPIO_PIN_CEPOL_ACTIVELOW;
   am_hal_gpio_pinconfig(ABQ_D10_CS_PIN,   pin_cfg);  
-#endif
 
 
   //32KHz 
   /* Generate 32KHz clock source to input to CYW43012 module  */
   am_hal_clkgen_control(AM_HAL_CLKGEN_CONTROL_RTC_SEL_XTAL, 0);   //Using LF XTAL(32KHz)
   am_hal_clkgen_clkout_enable(true, AM_HAL_CLKGEN_CLKOUT_XTAL_32768);
-  am_hal_gpio_pincfg_t pin_cfg_32 = AM_HAL_GPIO_PINCFG_OUTPUT;
-  pin_cfg_32.GP.cfg_b.uFuncSel = AM_HAL_PIN_33_CLKOUT;
-  am_hal_gpio_pinconfig(ABQ_D10_MCLK_PIN, pin_cfg_32);
+  am_hal_gpio_pincfg_t pin_outclk_7 = g_AM_HAL_GPIO_OUTPUT;
+  pin_outclk_7.uFuncSel = AM_HAL_PIN_7_CLKOUT;
+  am_hal_gpio_pinconfig(ABQ_D10_MCLK_PIN, pin_outclk_7);
 
   am_hal_gpio_output_clear(ABQ_D10_RST_PIN);
   am_hal_gpio_output_set(ABQ_D10_WAKEUP_PIN);
@@ -289,13 +212,15 @@ void ExtDsp_ClearBurstSpi() {
 }
 
 int ExtDsp_SpiTransfer(uint8_t *buf, int len, bool is_tx) {
+
   am_hal_iom_transfer_t Transaction;
+
   Transaction.ui8RepeatCount = 0;
   Transaction.ui32PauseCondition = 0;
   Transaction.ui32StatusSetClr = 0;
   Transaction.ui32NumBytes = len;
   Transaction.uPeerInfo.ui32SpiChipSelect = 0;
-  Transaction.ui64Instr = 0x00;
+  Transaction.ui32Instr = 0x00;
   Transaction.ui32InstrLen = 0;
   if(ExtDsp_Spi_Burst) {
     Transaction.bContinue = true;
@@ -307,12 +232,6 @@ int ExtDsp_SpiTransfer(uint8_t *buf, int len, bool is_tx) {
     Transaction.eDirection = AM_HAL_IOM_TX; //AM_HAL_IOM_TX;
     Transaction.pui32RxBuffer = NULL;
     Transaction.pui32TxBuffer = (uint32_t *)buf;
-    #if 0
-    Debug_Printf("\nSPI_TX:\n");
-    for(int i=0; i<len; i++){
-      Debug_Printf("0x%x,", buf[i]);
-    }
-    #endif
   } else {
     Transaction.eDirection = AM_HAL_IOM_RX;    
     Transaction.pui32RxBuffer = (uint32_t *)buf;
@@ -371,11 +290,11 @@ void ExtDspMgr_Task(void *pvParameter) {
         break;
       case EXT_DSP_START_STREAM_VOICE_EVT:
         extDspMgr_StartVoiceStreaming();
-        SoundMgr_StartLoopback();
+        // SoundMgr_StartLoopback();
         break;
       case EXT_DSP_STOP_STREAM_VOICE_EVT:
         extDspMgr_StopVoiceStreaming();
-        SoundMgr_StopLoopback();
+        // SoundMgr_StopLoopback();
         break;
       case EXT_DSP_READ_AUDIO_FRAME_EVT:
         if(Dsp_Stop_Voice_Streaming) break;
@@ -385,12 +304,12 @@ void ExtDspMgr_Task(void *pvParameter) {
         Debug_Printf("Recorded size = %d\n", recorded_sample_num);
         if(recorded_sample_num) {
           // Request Sound Manager to play with self ping-pong  
-          SoundMgr_PlayAudioSamples(Dsp_Audio_Samples, recorded_sample_num); 
+          // SoundMgr_PlayAudioSamples(Dsp_Audio_Samples, recorded_sample_num); 
           //Start next 93ms timeout to wait for next batch of audio samples
           System_StartHwTimer(Dsp_Audio_Samples_Timer);
         } else {
           extDspMgr_StopVoiceStreaming();
-          SoundMgr_StopLoopback();
+          // SoundMgr_StopLoopback();
         }
         break;
       default: break;
@@ -629,7 +548,7 @@ static int extDspMgr_InitD10() {
 static void extDspMgr_StartVoiceStreaming() {
   if(!Dsp_Stop_Voice_Streaming) return;   //skip any start event while streaming is in progress
   //Get the expected sample num for a ping pong buffer in sound_manager
-  Dsp_Audio_Sample_Num = SoundMgr_GetAudioSampleBufSize();
+  Dsp_Audio_Sample_Num = 0;//SoundMgr_GetAudioSampleBufSize();
   //NOTE: For unknown reasons, if we allocate/free multiple times, the system gets hardfault
   // Therefore, I use a global buffer and skip using dynamic allocation for now  
   //Dsp_Audio_Samples = fsl_malloc(Dsp_Audio_Sample_Num*2);   //we collect 16-bit audio samples from D10
@@ -674,7 +593,7 @@ static void extDspMgr_StopVoiceStreaming() {
 
 
 
-static void d10_InterruptIsr(void *pArg) {
+static void d10_InterruptIsr(void) {
   int chip = 0;
   int interrupt_events, current_events_status;
 #if OPTIMIZE_LEVEL == 0
@@ -722,7 +641,7 @@ static void d10_InterruptIsr(void *pArg) {
 #endif
 }
 
-static void d10_InterruptReadyIsr(void *pArg) {
+static void d10_InterruptReadyIsr(void) {
   set_ready_flag(0, FLAG_SET);
 }
 

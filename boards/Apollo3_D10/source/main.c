@@ -239,7 +239,12 @@ main(void)
     ExtDspMgr_Init();
 #endif
 
-    System_EnableGPIOFunc();
+    System_EnableNVICIRQPin();
+    System_EnableNVICTimer();
+    //
+    // Enable Interrupts.
+    //
+    am_hal_interrupt_master_enable();
 
     xTaskCreate(System_Task,         //Task function
               "system_task",       //Task name

@@ -3,8 +3,7 @@
 
 #include "main.h"
 
-//We dont need to use Wake-Up pin
-#define ABQ_D10_SPI_MODULE      (5)    
+#define ABQ_D10_SPI_MODULE      (5)     //IOM module used for communicate with External DPS D10
 #define ABQ_D10_MOSI_PIN        (47)    //P13A_11   --DPS_PIN  MOSI-GPIO4 
 #define ABQ_D10_MISO_PIN        (49)    //P13A_7    --DPS_PIN  MISO-GPIO5  
 #define ABQ_D10_SCK_PIN         (48)    //P13A_9    --DPS_PIN  SCK-GPIO3

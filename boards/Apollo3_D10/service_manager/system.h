@@ -17,7 +17,7 @@ extern "C"
 #define fsl_free(x)           vPortFree(x)
 #define MS_TO_TICKS(x)        (x / portTICK_PERIOD_MS)
 
-#define MAX_TIMER_COUNT     15
+#define MAX_TIMER_COUNT     8
 #define INVALID_TIMER_ID    255
 typedef enum {
   //NOTE: We use even/odd to differentiate COMPARE0 and COMPARE1
@@ -32,14 +32,27 @@ typedef enum {
   SYS_TIMER_MAX_EVT,  
 }sys_timer_evt_t;
 
+enum {
+  SYS_SIGNAL_EVT_EXT_DSP_RDY = 0, 
+  SYS_SIGNAL_EVT_MAX,  
+};
+
 typedef void (*sys_timer_cb_t)(void);
 
 int System_Init(void);
-int  System_SignalEvt(QueueHandle_t queue_handle, uint8_t event);
+void System_Task(void *pvParameter);
+int System_SignalEvt(QueueHandle_t queue_handle, uint8_t event);
 
+//System GPIO interrupt utilities
+int System_RegIRQPin(uint64_t pin_no, 
+                     uint32_t driver_strength, 
+                     uint32_t int_dir, 
+                     void (*irs_cb)(void));
+
+void System_EnableNVICIRQPin(void);
+void System_EnableNVICTimer(void);
 //System Timer utilities
 uint8_t System_RegisterHWTimer(uint32_t timeout_ms, sys_timer_cb_t isr_cb);
-uint8_t System_RegisterHWTimerUs(uint32_t timeout_us, sys_timer_cb_t isr_cb);
 void System_UnRegisterHwTimer(uint8_t timer_id);
 int System_SetHWTimerTimeout(uint8_t timer_id, uint32_t timeout_ms);
 int System_StartHwTimer(uint8_t timer_id);
