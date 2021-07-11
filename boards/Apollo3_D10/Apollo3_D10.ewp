@@ -366,8 +366,8 @@
                     <state>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2</state>
                     <state>$PROJ_DIR$\..\apollo3p_evb\bsp</state>
                     <state>$PROJ_DIR$\..\..\utils</state>
-                    <state>$PROJ_DIR$\..\..\..\..\Apollo3\A3_SDK\boards\Apollo3_D10\device\d10_new\include</state>
-                    <state>$PROJ_DIR$\..\..\..\..\Apollo3\A3_SDK\boards\Apollo3_D10\device\d10_new\fw</state>
+                    <state>$PROJ_DIR$\device\d10_new\include</state>
+                    <state>$PROJ_DIR$\device\d10_new\fw</state>
                     <state>$PROJ_DIR$\device\d10_new</state>
                     <state>$PROJ_DIR$\service_manager</state>
                 </option>

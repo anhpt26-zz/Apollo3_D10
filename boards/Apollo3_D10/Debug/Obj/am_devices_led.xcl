@@ -35,9 +35,9 @@ am_devices_led.pbi
 -I
 \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\utils\
 -I
-\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\..\..\Apollo3\A3_SDK\boards\Apollo3_D10\device\d10_new\include\
+\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\device\d10_new\include\
 -I
-\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\..\..\..\..\Apollo3\A3_SDK\boards\Apollo3_D10\device\d10_new\fw\
+\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\device\d10_new\fw\
 -I
 \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\device\d10_new\
 -I
@@ -71,9 +71,9 @@ C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\inc\c
 -I
 \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\utils
 -I
-\\Mac\Home\Documents\Apollo3\A3_SDK\boards\Apollo3_D10\device\d10_new\include
+\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\device\d10_new\include
 -I
-\\Mac\Home\Documents\Apollo3\A3_SDK\boards\Apollo3_D10\device\d10_new\fw
+\\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\device\d10_new\fw
 -I
 \\Mac\Home\Documents\git_cypress_proj\Apollo3_D10\boards\Apollo3_D10\device\d10_new
 -I
