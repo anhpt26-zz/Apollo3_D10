@@ -194,12 +194,9 @@ void ExtDspMgr_Init(void) {
   pin_outclk_7.uFuncSel = AM_HAL_PIN_7_CLKOUT;
   am_hal_gpio_pinconfig(ABQ_D10_MCLK_PIN, pin_outclk_7);
 
-  am_hal_gpio_output_clear(ABQ_D10_RST_PIN);
+  am_hal_gpio_output_set(ABQ_D10_RST_PIN);
   am_hal_gpio_output_set(ABQ_D10_WAKEUP_PIN);
 
-
-  // uint8_t test_buf[10] = {1,2,3,4,5,6,7,8,9,10};
-  // ExtDsp_SpiTransfer(test_buf, 10, true);
   return;
 }
 

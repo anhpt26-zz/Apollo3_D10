@@ -24,7 +24,8 @@
 
 void ms_delay(unsigned int msecond)
 {
-  delay_ms(msecond);
+  // delay_ms(msecond);
+  am_util_delay_ms(msecond);
 }
 
 //*****************************************************************************/

@@ -196,6 +196,7 @@ int32_t read_io_port(int chip, int32_t addr)		//spi_implementation
 	str[9] = 0;
 
 	if ((str[8] == 0) && (str[7] == 0) && (str[6] == 0) && (str[5] == 0) && (str[4] == 0) && (str[3] == 0) && (str[2] == 0) && (str[1] == 0)){
+		Debug_Printf("******************IN FUNCTION:%s**************************\n\n", __func__);
 		Debug_Printf("*************************************************************\n\n");
 		Debug_Printf("*************************************************************\n\n");
 		Debug_Printf("[%s]: reg 0x%X - Probably IO READ ERROR!!.\n\n", __func__, addr);
@@ -293,7 +294,7 @@ int16_t read_register(int chip, int16_t reg)		//spi_implementation
 	int ret, len;
 	unsigned char Buff[10] = {0};
 	char RegSet[18] = {0};
-
+	Debug_Printf("%s: Read register addr %d\r\n", __func__, reg);
 	len = sprintf(RegSet, "%03xr", reg);
 	RegSet[len]=0;
 	
@@ -333,6 +334,7 @@ int16_t read_register(int chip, int16_t reg)		//spi_implementation
 	/* in spi ascii protocol - bytes should not be real zeros (only ascii of zero 0x30) */
 	if ((Buff[4] == 0) && (Buff[3] == 0) && (Buff[2] == 0) && (Buff[1] == 0)){ 
 	//toggle_debug_gpio();		// for debug, when require.
+		Debug_Printf("******************IN FUNCTION:%s**************************\n\n", __func__);
 		Debug_Printf("*************************************************************\n\n");
 		Debug_Printf("*************************************************************\n\n");
 		Debug_Printf("[%s]: reg 0x%X - Probably IO READ ERROR!!.\n\n", __func__, reg);
@@ -394,6 +396,7 @@ int32_t read_register_32(int chip, int16_t reg)		//spi_implementation
 	Buff[9] = 0;
 
 	if ((Buff[8] == 0) && (Buff[7] == 0) && (Buff[6] == 0) && (Buff[5] == 0) && (Buff[4] == 0) && (Buff[3] == 0) && (Buff[2] == 0) && (Buff[1] == 0)){
+		Debug_Printf("******************IN FUNCTION:%s**************************\n\n", __func__);
 		Debug_Printf("*************************************************************\n\n");
 		Debug_Printf("*************************************************************\n\n");
 		Debug_Printf("[%s]: reg 0x%X - Probably IO READ ERROR!!.\n\n", __func__, reg);
