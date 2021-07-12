@@ -16,7 +16,7 @@ extern "C"
 #define fsl_malloc(x)         pvPortMalloc(x)
 #define fsl_free(x)           vPortFree(x)
 #define MS_TO_TICKS(x)        (x / portTICK_PERIOD_MS)
-
+#define delay_ms(x)           vTaskDelay(MS_TO_TICKS(x))
 #define MAX_TIMER_COUNT     8
 #define INVALID_TIMER_ID    255
 typedef enum {

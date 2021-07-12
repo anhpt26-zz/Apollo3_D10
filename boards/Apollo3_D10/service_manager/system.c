@@ -149,7 +149,7 @@ uint8_t System_RegisterHWTimer(uint32_t timeout_ms, sys_timer_cb_t isr_cb)
     am_hal_ctimer_clear(timer_id, AM_HAL_CTIMER_TIMERA);
     am_hal_ctimer_config(timer_id, &timer_cfg);
 
-    timeout_ms = timeout_ms;// * 48;
+    timeout_ms = timeout_ms*2;
     am_hal_ctimer_period_set(timer_id, AM_HAL_CTIMER_TIMERA, timeout_ms,
                              (timeout_ms >> 1));
     am_hal_ctimer_int_enable(((uint32_t)0x01) << ((uint32_t)(timer_id * 2)));
@@ -204,7 +204,7 @@ int System_SetHWTimerTimeout(uint8_t timer_id, uint32_t timeout_ms)
     am_hal_ctimer_clear(timer_id, AM_HAL_CTIMER_TIMERA);
     am_hal_ctimer_config(timer_id, &TimerConfig);
 
-    timeout_ms = timeout_ms * 48;
+    timeout_ms = timeout_ms;
     am_hal_ctimer_period_set(timer_id, AM_HAL_CTIMER_TIMERA, timeout_ms,
                              (timeout_ms >> 1));
     return 0;

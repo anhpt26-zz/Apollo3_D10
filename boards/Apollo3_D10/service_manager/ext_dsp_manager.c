@@ -101,7 +101,7 @@ uint32_t Dsp_Audio_Sample_Num;
 //###########################################################################################################
 //      PRIVATE FUNCTION DECLARATION
 //###########################################################################################################
-static int extDspMgr_InitD10();
+static void extDspMgr_InitD10();
 static void d10_InterruptIsr(void);
 static void d10_InterruptReadyIsr(void);
 void vt_vc_trigger(int chip);
@@ -109,6 +109,7 @@ static void extDspMgr_StartVoiceStreaming(void);
 static void extDspMgr_StopVoiceStreaming(void);
 static void extDspMgr_VoiceStreamTimeout(void);
 static void extDspMgr_VoiceSamplesTimeout(void);
+static void extDspMgr_FailedHandler(void);
 //###########################################################################################################
 //      PUBLIC FUNCTION DEFINITION
 //###########################################################################################################
@@ -127,8 +128,8 @@ void ExtDspMgr_Init(void) {
       .eInterfaceMode = AM_HAL_IOM_SPI_MODE,
       .ui32ClockFreq = DSP_SPI_FREQ_HZ,
       .eSpiMode = AM_HAL_IOM_SPI_MODE_0,
-      .ui32NBTxnBufLength = 0,
-      .pNBTxnBuf = NULL,
+      // .ui32NBTxnBufLength = 0,
+      // .pNBTxnBuf = NULL,
   };
   am_hal_iom_initialize(DSP_SPI_MODULE, &Dsp_Spi_Handler);
   am_hal_iom_power_ctrl(Dsp_Spi_Handler, AM_HAL_SYSCTRL_WAKE, false);
@@ -136,6 +137,7 @@ void ExtDspMgr_Init(void) {
   am_hal_iom_enable(Dsp_Spi_Handler);
 
   //Init SPI pins
+#if 0
   am_hal_gpio_pincfg_t pin_cfg =
   {
     .uFuncSel             = AM_HAL_PIN_49_M5MISO,
@@ -161,18 +163,28 @@ void ExtDspMgr_Init(void) {
   //Can revert to lower drive strenght at the end to save power
   pin_cfg.eDriveStrength = AM_HAL_GPIO_PIN_DRIVESTRENGTH_12MA; 
   am_hal_gpio_pinconfig(ABQ_D10_SCK_PIN,  pin_cfg);
-
+#if 0
   pin_cfg.uFuncSel   = AM_HAL_PIN_46_NCE46;
   pin_cfg.eDriveStrength      = AM_HAL_GPIO_PIN_DRIVESTRENGTH_12MA,
   pin_cfg.eGPOutcfg           = AM_HAL_GPIO_PIN_OUTCFG_PUSHPULL,
   pin_cfg.eGPInput            = AM_HAL_GPIO_PIN_INPUT_NONE,
   pin_cfg.eIntDir             = AM_HAL_GPIO_PIN_INTDIR_LO2HI,
-  pin_cfg.bIomMSPIn           = 1,
-  pin_cfg.uIOMnum             = 1,
-  pin_cfg.uNCE                = 5,//This set CS pin is used to IOM5
+  pin_cfg.bIomMSPIn           = 1,//Use this CS pin for SPI
+  pin_cfg.uIOMnum             = 5,//This CS pin is used for IOM5
+  pin_cfg.uNCE                = 0,//Slect CS number for IOM
   pin_cfg.eCEpol              = AM_HAL_GPIO_PIN_CEPOL_ACTIVELOW;
   am_hal_gpio_pinconfig(ABQ_D10_CS_PIN,   pin_cfg);  
-
+#endif 
+  pin_cfg = g_AM_BSP_GPIO_IOM5_CS;//This is setting for IOM5 CSE0
+  pin_cfg.uFuncSel = AM_HAL_PIN_46_NCE46;
+  pin_cfg.ePullup = AM_HAL_GPIO_PIN_PULLUP_24K;
+  am_hal_gpio_pinconfig(ABQ_D10_CS_PIN, pin_cfg);  
+#else
+  am_hal_gpio_pinconfig(ABQ_D10_SCK_PIN,  g_AM_BSP_GPIO_IOM5_SCK);
+  am_hal_gpio_pinconfig(ABQ_D10_MISO_PIN, g_AM_BSP_GPIO_IOM5_MISO);
+  am_hal_gpio_pinconfig(ABQ_D10_MOSI_PIN, g_AM_BSP_GPIO_IOM5_MOSI);
+  am_hal_gpio_pinconfig(ABQ_D10_CS_PIN,   g_AM_BSP_GPIO_IOM5_CS);
+#endif
 
   //32KHz 
   /* Generate 32KHz clock source to input to CYW43012 module  */
@@ -186,21 +198,22 @@ void ExtDspMgr_Init(void) {
   am_hal_gpio_output_set(ABQ_D10_WAKEUP_PIN);
 
 
-  //uint8_t test_buf[10] = {1,2,3,4,5,6,7,8,9,10};
-  //ExtDsp_SpiTransfer(test_buf, 10, true);
+  // uint8_t test_buf[10] = {1,2,3,4,5,6,7,8,9,10};
+  // ExtDsp_SpiTransfer(test_buf, 10, true);
+  return;
 }
 
 void ExtDsp_ResetChip() {
   am_hal_gpio_output_clear(ABQ_D10_RST_PIN);
-  am_util_delay_ms(10);
+  delay_ms(10);
   am_hal_gpio_output_set(ABQ_D10_RST_PIN);
 }
 
 void ExtDsp_WakeChip() {
   am_hal_gpio_output_clear(ABQ_D10_WAKEUP_PIN);
-  am_util_delay_ms(1);
+  delay_ms(1);
   am_hal_gpio_output_set(ABQ_D10_WAKEUP_PIN);
-  am_util_delay_ms(10);
+  delay_ms(10);
 }
 
 static bool ExtDsp_Spi_Burst = false;
@@ -214,7 +227,7 @@ void ExtDsp_ClearBurstSpi() {
 int ExtDsp_SpiTransfer(uint8_t *buf, int len, bool is_tx) {
 
   am_hal_iom_transfer_t Transaction;
-
+  int ret = -1;
   Transaction.ui8RepeatCount = 0;
   Transaction.ui32PauseCondition = 0;
   Transaction.ui32StatusSetClr = 0;
@@ -238,7 +251,7 @@ int ExtDsp_SpiTransfer(uint8_t *buf, int len, bool is_tx) {
     Transaction.pui32TxBuffer = (uint32_t *)NULL;
   }
 
-  int ret = am_hal_iom_blocking_transfer(Dsp_Spi_Handler, &Transaction);
+  ret = am_hal_iom_blocking_transfer(Dsp_Spi_Handler, &Transaction);
   if(ret) {
     Debug_Printf("Failed to write SPI to D10\n");
     return -1;
@@ -277,10 +290,7 @@ void ExtDspMgr_Task(void *pvParameter) {
     Debug_Printf("FAILED to create Ext DSP signal handler\r\n");  
     return;
   }
-  if(extDspMgr_InitD10()) {
-    Debug_Printf("Failed to init D10\n");
-    return;
-  }
+  extDspMgr_InitD10();
   Dsp_Stop_Voice_Streaming = true;
   while (1) {
     xQueueReceive(Dsp_Signal_Handler, &event, portMAX_DELAY);
@@ -500,8 +510,9 @@ void print_actual_states()
 
 }
 
-static int extDspMgr_InitD10() {
+static void extDspMgr_InitD10() {
   Debug_SetDebugPin1(1);
+  Debug_SetDebugPin2(1);
   prepare_project_configuration();
 #if OPTIMIZE_LEVEL == 0
   print_project_configuration();
@@ -511,7 +522,8 @@ static int extDspMgr_InitD10() {
   Debug_Printf("**** init_chip ******\n");
   if(init_chip(g_chip1) < 0) {
     Debug_Printf("Failed to init chip\n");
-    return -1;
+    Debug_SetDebugPin2(0);
+    extDspMgr_FailedHandler();
   }
   Debug_SetDebugPin1(0);
   Debug_Printf("**** init_config_chip ******\n");
@@ -531,7 +543,7 @@ static int extDspMgr_InitD10() {
     Debug_Printf ("Chip version = 0x%04X\n", value & 0xffff);
   } else {
     Debug_Printf("D10 not running\n");
-    return -1;
+    extDspMgr_FailedHandler();
   }
   //check_fw_errors(g_chip1);
   //Debug_SetDebugPin1(0);
@@ -541,8 +553,15 @@ static int extDspMgr_InitD10() {
   s_state = 1;
   check_fw_errors(g_chip1);
   Debug_SetDebugPin1(1);
+}
 
-  return 0;
+static void extDspMgr_FailedHandler(void)
+{
+  while (1)
+  {
+    vTaskDelay(portMAX_DELAY);
+  }
+  
 }
 
 static void extDspMgr_StartVoiceStreaming() {

@@ -53,7 +53,7 @@ void TestTask_Init(void)
                    TestTask_IRQGpio);
   am_hal_gpio_pinconfig(ABQ_TEST_TASK_PIN_2, g_AM_HAL_GPIO_OUTPUT);
 
-  Hw_Timer_Id = System_RegisterHWTimer(10, TestTask_IRQHwTimer);
+  Hw_Timer_Id = System_RegisterHWTimer(20, TestTask_IRQHwTimer);
   am_devices_led_array_init(am_bsp_psLEDs, AM_BSP_NUM_LEDS);
 }
 
@@ -67,8 +67,11 @@ void TestTask_Task(void *pvParameter)
     return;
   }
 
-  if(Hw_Timer_Id != INVALID_TIMER_ID)
-    System_StartHwTimer(Hw_Timer_Id);
+  if(Hw_Timer_Id == INVALID_TIMER_ID)
+  {
+    vTaskDelay(portMAX_DELAY);
+  }
+  System_StartHwTimer(Hw_Timer_Id);
 
   while(1)
   {

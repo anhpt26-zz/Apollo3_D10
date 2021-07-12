@@ -1,27 +1,945 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <fileVersion>4</fileVersion>
-    <fileChecksum>3021180016</fileChecksum>
+    <fileChecksum>3554020709</fileChecksum>
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\device\d10_new\src\dx_driver.c</file>
-            <file>$PROJ_DIR$\device\d10_new\src\dx_utils.c</file>
-            <file>$PROJ_DIR$\..\..\devices\am_devices_button.c</file>
-            <file>$PROJ_DIR$\device\d10_new\src\dx_usecases.c</file>
-            <file>$PROJ_DIR$\source\debug.c</file>
-            <file>$PROJ_DIR$\device\d10_new\include\dx_interface_spi.c</file>
-            <file>$PROJ_DIR$\source\main.c</file>
-            <file>$PROJ_DIR$\source\startup_iar.c</file>
-            <file>$PROJ_DIR$\service_manager\ext_dsp_manager.c</file>
-            <file>$PROJ_DIR$\service_manager\test_task.c</file>
-            <file>$PROJ_DIR$\..\..\devices\am_devices_led.c</file>
-            <file>$PROJ_DIR$\service_manager\system.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_secure_ota.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_ctimer.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_iom.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_pwrctrl.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_global.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_sysctrl.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_burst.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_debug.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_adc.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_ble_patch_b0.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_pdm.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_interrupt.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_reset.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_cmdq.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_mcuctrl.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_rtc.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_security.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_flash.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_gpio.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_itm.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_mspi.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_queue.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_ble.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_scard.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_clkgen.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_stimer.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_cachectrl.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_ios.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_systick.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_cachectrl.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\dx_driver.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_devices_led.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\debug.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\dx_interface_spi.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_ble.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_devices_button.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\dx_utils.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\dx_usecases.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_groups.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\ext_dsp_manager.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\test_task.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\list.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\portasm.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\ext_dsp_manager.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_devices_led.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\heap_2.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\heap_2.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_devices_button.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_groups.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_util_debug.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_util_delay.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\port.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\queue.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\system.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_util_faultisr.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\dx_interface_spi.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\dx_usecases.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_util_faultisr.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_util_debug.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\dx_utils.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\stream_buffer.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\startup_iar.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\timers.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\croutine.o</file>
+            <file>$PROJ_DIR$\Debug\Exe\Apollo3_D10.out</file>
+            <file>$PROJ_DIR$\Debug\Obj\queue.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\tasks.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_util_stdio.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\Apollo3_D10.pbd</file>
+            <file>$PROJ_DIR$\Debug\Obj\system.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_mcuctrl.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_ble.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_iom.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_wdt.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_security.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_clkgen.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_cachectrl.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_systick.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_itm.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_pdm.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_burst.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_cmdq.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_adc.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_interrupt.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_flash.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_scard.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_global.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_debug.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_stimer.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_uart.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_sysctrl.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_ctimer.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_tpiu.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_burst.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_ble_patch_b0.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_gpio.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_rtc.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_mspi.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_ios.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_ble_patch_b0.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_iom.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_security.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_tpiu.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_util_delay.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\test_task.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_util_stdio.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\dx_driver.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_pwrctrl.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\stream_buffer.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_systick.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_reset.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_sysctrl.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\list.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\port.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_queue.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_uart.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\croutine.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\startup_iar.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\tasks.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_secure_ota.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\timers.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\debug.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_rtc.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_stimer.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_wdt.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_scard.xcl</file>
             <file>$PROJ_DIR$\..\..\utils\am_util_delay.c</file>
-            <file>$PROJ_DIR$\..\..\utils\am_util_faultisr.c</file>
-            <file>$PROJ_DIR$\..\..\utils\am_util_debug.c</file>
             <file>$PROJ_DIR$\..\..\utils\am_util_stdio.c</file>
+            <file>$PROJ_DIR$\source\debug.c</file>
+            <file>$PROJ_DIR$\source\startup_iar.c</file>
+            <file>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\timers.c</file>
+            <file>$PROJ_DIR$\service_manager\test_task.c</file>
+            <file>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2\port.c</file>
+            <file>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\portable\MemMang\heap_2.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_uart.c</file>
+            <file>$PROJ_DIR$\..\..\devices\am_devices_button.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_wdt.c</file>
+            <file>$PROJ_DIR$\device\d10_new\src\dx_driver.c</file>
+            <file>$PROJ_DIR$\source\main.c</file>
+            <file>$PROJ_DIR$\service_manager\ext_dsp_manager.c</file>
+            <file>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\croutine.c</file>
+            <file>$PROJ_DIR$\device\d10_new\include\dx_interface_spi.c</file>
+            <file>$PROJ_DIR$\..\..\devices\am_devices_led.c</file>
+            <file>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\event_groups.c</file>
+            <file>$PROJ_DIR$\device\d10_new\src\dx_usecases.c</file>
+            <file>$PROJ_DIR$\service_manager\system.c</file>
+            <file>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\queue.c</file>
+            <file>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\stream_buffer.c</file>
+            <file>$PROJ_DIR$\..\..\utils\am_util_debug.c</file>
+            <file>$PROJ_DIR$\..\..\utils\am_util_faultisr.c</file>
+            <file>$PROJ_DIR$\device\d10_new\src\dx_utils.c</file>
+            <file>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_tpiu.c</file>
+            <file>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\list.c</file>
+            <file>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2\portasm.s</file>
+            <file>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\tasks.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_mspi.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_clkgen.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_gpio.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_pwrctrl.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_ios.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_reset.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_ctimer.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_interrupt.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_pdm.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_cmdq.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_adc.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_itm.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_secure_ota.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_flash.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_queue.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_mcuctrl.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_debug.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\am_hal_global.o</file>
         </outputs>
+        <file>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 64</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_secure_ota.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 169</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 120</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_ctimer.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 163</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 92</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_iom.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 73</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 101</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_pwrctrl.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 160</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 108</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_global.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 174</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 87</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_sysctrl.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 91</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 112</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_burst.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 94</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 81</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_debug.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 173</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 88</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_adc.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 83</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 167</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_ble_patch_b0.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 95</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 100</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_pdm.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 165</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 80</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_interrupt.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 164</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 84</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_reset.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 162</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 111</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_cmdq.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 166</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 82</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_mcuctrl.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 172</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 71</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_rtc.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 97</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 124</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_security.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 75</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 102</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_flash.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 170</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 85</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_gpio.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 159</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 96</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_itm.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 168</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 79</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_mspi.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 157</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 98</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_queue.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 171</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 115</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_ble.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 34</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 72</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_scard.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 86</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 127</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_clkgen.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 158</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 76</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_stimer.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 89</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 125</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_cachectrl.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 29</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 77</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_ios.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 161</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 99</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_systick.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 78</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 110</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\utils\am_util_delay.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 104</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 50</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\utils\am_util_stdio.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 106</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 68</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\source\debug.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 32</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 123</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\source\startup_iar.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 61</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 118</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\timers.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 62</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 122</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\service_manager\test_task.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 105</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 40</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2\port.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 51</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 114</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\portable\MemMang\heap_2.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 45</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 46</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_uart.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 90</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 116</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\devices\am_devices_button.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 35</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 47</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_wdt.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 74</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 126</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\device\d10_new\src\dx_driver.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 30</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 107</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\source\main.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 66</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 121</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\service_manager\ext_dsp_manager.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 39</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 43</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\croutine.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 63</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 117</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\device\d10_new\include\dx_interface_spi.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 33</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 55</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\devices\am_devices_led.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 31</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 44</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\event_groups.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 38</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 48</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\device\d10_new\src\dx_usecases.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 37</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\service_manager\system.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 70</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 53</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\queue.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 52</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 65</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\stream_buffer.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 60</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 109</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\utils\am_util_debug.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 49</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 58</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\utils\am_util_faultisr.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 54</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 57</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\device\d10_new\src\dx_utils.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 36</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 59</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\mcu\apollo3p\hal\am_hal_tpiu.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 93</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 103</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\list.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 41</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 113</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\portable\IAR\AMapollo2\portasm.s</name>
+            <outputs>
+                <tool>
+                    <name>AARM</name>
+                    <file> 42</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\third_party\FreeRTOSv10.1.1\Source\tasks.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 67</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 119</file>
+                </tool>
+            </outputs>
+        </file>
     </configuration>
     <configuration>
         <name>Release</name>

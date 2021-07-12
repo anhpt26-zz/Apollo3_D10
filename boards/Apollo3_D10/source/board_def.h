@@ -7,7 +7,7 @@
 #define ABQ_D10_MOSI_PIN        (47)    //P13A_11   --DPS_PIN  MOSI-GPIO4 
 #define ABQ_D10_MISO_PIN        (49)    //P13A_7    --DPS_PIN  MISO-GPIO5  
 #define ABQ_D10_SCK_PIN         (48)    //P13A_9    --DPS_PIN  SCK-GPIO3
-#define ABQ_D10_CS_PIN          (46)    //P13A_13   --DPS_PIN  CS-GPIO2
+#define ABQ_D10_CS_PIN          (16)    //P18_6     --DPS_PIN  CS-GPIO2 //Because, on A3  blue plus, GP16 have ext pull-up register
 #define ABQ_D10_INT_PIN         (58)    //P13B_16   --DPS_PIN  INT-GPIO14 
 #define ABQ_D10_WAKEUP_PIN      (59)    //P13B_14   --DPS_PIN  WAKE-GPIO15 
 #define ABQ_D10_RDY_PIN         (60)    //P13B_12   --DPS_PIN  DSPRDY-GPIO10 
@@ -22,5 +22,7 @@
 #define ABQ_DEBUG_2_PIN         (37)    ///P17A_11
 #define ABQ_DEBUG_3_PIN         (38)    ///P17A_9
 
+#define ABQ_UART_DEBUG_UART_TX_PIN       (39) //P17A_7
+#define ABQ_UART_DEBUG_UART_RX_PIN       (40) //P17A_5
 
 #endif //_BOARD_DEF_H_
