@@ -549,6 +549,8 @@ static void extDspMgr_InitD10() {
   Debug_SetDebugPin1(0);
   s_state = 1;
   check_fw_errors(g_chip1);
+  
+  Debug_Printf("Finish to Initialize D%d DSPG\n",g_chip1);
   Debug_SetDebugPin1(1);
 }
 

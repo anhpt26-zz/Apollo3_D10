@@ -194,7 +194,9 @@ main(void)
     am_bsp_low_power_init();
 
     am_bsp_itm_printf_enable();
-
+#if ENABLE_DEBUG_PRINTF
+    am_util_stdio_terminal_clear();
+#endif
     Debug_Printf("Start Program\r\n");
     
     //

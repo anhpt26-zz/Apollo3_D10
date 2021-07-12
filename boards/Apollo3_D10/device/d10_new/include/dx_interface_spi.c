@@ -294,7 +294,7 @@ int16_t read_register(int chip, int16_t reg)		//spi_implementation
 	int ret, len;
 	unsigned char Buff[10] = {0};
 	char RegSet[18] = {0};
-	Debug_Printf("%s: Read register addr %d\r\n", __func__, reg);
+	Debug_Printf("%s: Read register addr 0x%X\r\n", __func__, reg);
 	len = sprintf(RegSet, "%03xr", reg);
 	RegSet[len]=0;
 	
@@ -341,7 +341,10 @@ int16_t read_register(int chip, int16_t reg)		//spi_implementation
 		Debug_Printf("*************************************************************\n\n");
 		Debug_Printf("*************************************************************\n\n");
 	}
-
+	else
+	{
+		Debug_Printf("%s: Read register addr 0x%X SUCCESS\r\n", __func__, reg);
+	}
 	val = atoh__((char*)&Buff[1]);
 #if OPTIMIZE_LEVEL == 0
 	if (!skip_prints) Debug_Printf("[%s]: register = 0x%X, val = 0x%X.\n", __func__, reg, val);

@@ -53,7 +53,7 @@ void TestTask_Init(void)
                    TestTask_IRQGpio);
   am_hal_gpio_pinconfig(ABQ_TEST_TASK_PIN_2, g_AM_HAL_GPIO_OUTPUT);
 
-  Hw_Timer_Id = System_RegisterHWTimer(20, TestTask_IRQHwTimer);
+  Hw_Timer_Id = System_RegisterHWTimer(10, TestTask_IRQHwTimer);
   am_devices_led_array_init(am_bsp_psLEDs, AM_BSP_NUM_LEDS);
 }
 

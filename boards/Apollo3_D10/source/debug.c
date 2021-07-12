@@ -39,7 +39,7 @@ const am_hal_uart_config_t uart_debug_cfg =
   //
   // Standard UART settings: 115200-8-N-1
   //
-  .ui32BaudRate = 115200,
+  .ui32BaudRate = 230400,
   .ui32DataBits = AM_HAL_UART_DATA_BITS_8,
   .ui32Parity = AM_HAL_UART_PARITY_NONE,
   .ui32StopBits = AM_HAL_UART_ONE_STOP_BIT,
@@ -174,6 +174,6 @@ uart_print(char *pcStr)
         //
         // Couldn't send the whole string!!
         //
-        while(1);
+        // while(1);
     }
 }

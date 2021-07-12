@@ -82,7 +82,7 @@
 #define ENABLE_DEBUG_PRINTF     (1)
 #define ENABLE_DEBUG_FEATURE    (1)
 #define ENABLE_EXTERNAL_DPS     (1)
-#define ENABLE_TEST_TASK        (1)
+#define ENABLE_TEST_TASK        (0)
 
 /*
   NOTICE: Max Priority in freeRtos config is 7
